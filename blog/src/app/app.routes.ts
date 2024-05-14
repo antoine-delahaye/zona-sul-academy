@@ -1,3 +1,40 @@
 import {Routes} from '@angular/router'
 
-export const routes: Routes = []
+import {NewsComponent} from '@page/news/news.component'
+import {PresentationComponent} from '@page/presentation/presentation.component'
+import {PlanningComponent} from '@page/planning/planning.component'
+import {PricesComponent} from '@page/prices/prices.component'
+import {PrivacyPolicyComponent} from '@page/privacy-policy/privacy-policy.component'
+
+export const navigationRoutes: Routes = [
+  {
+    title: 'Actualités',
+    path: '',
+    component: NewsComponent
+  },
+  {
+    title: 'Présentation',
+    path: 'presentation',
+    component: PresentationComponent
+  },
+  {
+    title: 'Planning',
+    path: 'planning',
+    component: PlanningComponent
+  },
+  {
+    title: 'Tarifs',
+    path: 'tarifs',
+    component: PricesComponent
+  }
+]
+
+export const legalRoutes: Routes = [
+  {
+    title: 'Politique de confidentialité',
+    path: 'confidentialite',
+    component: PrivacyPolicyComponent
+  }
+]
+
+export const routes: Routes = [...navigationRoutes, ...legalRoutes]

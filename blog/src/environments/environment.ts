@@ -1,9 +1,9 @@
 export const environment = {
-  production: false,
+  production: true,
   sanity: {
     projectId: 'a4vlamka',
     dataset: 'production',
-    apiVersion: '2022-05-01',
+    apiVersion: '2023-08-01',
     useCdn: true
   }
 }
