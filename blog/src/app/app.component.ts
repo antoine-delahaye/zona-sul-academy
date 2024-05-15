@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core'
+import {Component, inject, OnInit} from '@angular/core'
 import {
   ActivatedRoute,
   RouterLink,
@@ -7,6 +7,7 @@ import {
   Routes
 } from '@angular/router'
 import {AsyncPipe, NgOptimizedImage} from '@angular/common'
+import {Meta} from '@angular/platform-browser'
 
 import {legalRoutes, navigationRoutes} from '@app/app.routes'
 import {siteName} from '@app/title.provider'
@@ -24,7 +25,8 @@ import {siteName} from '@app/title.provider'
   ],
   standalone: true
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  private meta: Meta = inject(Meta)
   protected route: ActivatedRoute = inject(ActivatedRoute)
 
   protected navigationRoutes: Routes = navigationRoutes
@@ -41,4 +43,18 @@ export class AppComponent {
       url: 'https://www.helloasso.com/associations/zona-sul-academy'
     }
   ]
+
+  public ngOnInit(): void {
+    this.meta.addTags([
+      {
+        name: 'description',
+        content:
+          "Bienvenue sur le site de Zona Sul Academy, une association sportive loi 1901 proposant l'enseignement du jiu-jitsu brésilien et du grappling sur Orléans"
+      },
+      {
+        name: 'keywords',
+        content: 'JJB, Jiu-jitsu brésilien, Grappling, Sport, Combat, Orléans'
+      }
+    ])
+  }
 }
