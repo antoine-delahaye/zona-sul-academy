@@ -5,7 +5,7 @@ import {InMemoryCache} from '@apollo/client/core'
 
 import {environment} from '@environment/environment'
 
-const uri: string = `https://${environment.sanity.projectId}.api.sanity.io/v${environment.sanity.apiVersion}/graphql/${environment.sanity.dataset}`
+const uri: string = `https://${environment.sanity.projectId}.api.sanity.io/v${environment.sanity.apiVersion}/graphql/${environment.sanity.dataset}/default`
 
 export function apolloOptionsFactory(): {
   link: HttpLinkHandler

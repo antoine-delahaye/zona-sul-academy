@@ -8,14 +8,14 @@ import {PrivacyPolicyComponent} from '@page/privacy-policy/privacy-policy.compon
 
 export const navigationRoutes: Routes = [
   {
-    title: 'Actualités',
+    title: 'Présentation',
     path: '',
-    component: NewsComponent
+    component: PresentationComponent
   },
   {
-    title: 'Présentation',
-    path: 'presentation',
-    component: PresentationComponent
+    title: 'Actualités',
+    path: 'actualites',
+    component: NewsComponent
   },
   {
     title: 'Planning',

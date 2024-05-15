@@ -17,9 +17,10 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": ["ES2022", "dom", "esnext.asynciterable"],
+    "lib": ["es2020", "dom"],
     "paths": {
       "@app/*": ["./src/app/*"],
+      "@data/*": ["./src/app/data/*"],
       "@page/*": ["./src/app/pages/*"],
       "@environment/*": ["./src/environments/*"]
     },

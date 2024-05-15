@@ -40,31 +40,18 @@ export default defineType({
       type: 'blockContent',
     }),
     defineField({
+      name: 'featured',
+      title: 'Featured',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'featuredButtons',
       title: 'Featured Buttons',
       type: 'array',
       of: [
         {
-          title: 'Button',
-          type: 'object',
-          fields: [
-            {
-              title: 'Button Text',
-              name: 'buttonText',
-              type: 'string',
-            },
-            {
-              title: 'Button URL',
-              name: 'buttonUrl',
-              type: 'url',
-            },
-            {
-              title: 'Open in new tab',
-              name: 'openInNewTab',
-              type: 'boolean',
-              initialValue: false,
-            },
-          ],
+          type: 'featuredButton',
         },
       ],
     }),
