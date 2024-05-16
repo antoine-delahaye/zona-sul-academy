@@ -12,13 +12,3 @@ header .menu-horizontal > li {
     @apply underline underline-offset-8 decoration-2 decoration-primary;
   }
 }
-
-.drawer-content {
-  a:not(.btn) {
-    @apply hover:underline decoration-primary;
-  }
-
-  & > section:not(.hero) {
-    @apply grid grid-cols-1 gap-y-4 px-4 py-8 lg:px-6 lg:py-12;
-  }
-}

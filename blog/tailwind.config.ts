@@ -9,15 +9,21 @@ export default {
     fontFamily: {
       gravesend: ['gravesend-sans', 'sans-serif'],
       basic: ['basic-sans', 'sans-serif']
+    },
+    extend: {
+      colors: {
+        whiteBelt: '#FFFFFF',
+        blueBelt: '#0000FF',
+        purpleBelt: '#800080',
+        brownBelt: '#964B00',
+        blackBelt: '#000000'
+      }
     }
   },
   daisyui: {
     themes: [
       {
         zonasul: {
-          primary: '#009c3b',
-          secondary: '#ffdf00',
-          accent: '#002776',
           'base-100': '#ffffff',
           neutral: '#000000',
           'neutral-content': '#ffffff',

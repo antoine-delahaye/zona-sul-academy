@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h1, h2, h3 {
+    @apply font-bold;
+}
+
+h1 {
+    @apply text-5xl;
+}
+
+h2 {
+    @apply text-4xl;
+}
+
+h3 {
+    @apply text-3xl;
+}
+
+.drawer-content {
+    a:not(.btn) {
+        @apply hover:underline decoration-primary;
+    }
+
+    section:not(.hero) {
+        @apply grid gap-8 px-4 py-8 lg:p-16;
+    }
+}
