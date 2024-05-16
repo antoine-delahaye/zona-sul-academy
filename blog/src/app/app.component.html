@@ -1,6 +1,6 @@
 <header
-  class="navbar bg-neutral justify-between sticky top-0 z-50 drop-shadow font-gravesend">
-  <ul class="hidden lg:inline-flex flex-1 menu menu-horizontal">
+  class="navbar sticky top-0 z-50 justify-between bg-neutral font-gravesend drop-shadow">
+  <ul class="menu menu-horizontal hidden flex-1 lg:inline-flex">
     @for (
       route of navigationRoutes.slice(0, navigationRoutes.length / 2);
       track route.title
@@ -27,7 +27,7 @@
   </a>
 
   <ul
-    class="hidden lg:inline-flex flex-1 menu menu-horizontal justify-end font-gravesend">
+    class="menu menu-horizontal hidden flex-1 justify-end font-gravesend lg:inline-flex">
     @for (
       route of navigationRoutes.slice(navigationRoutes.length / 2);
       track route.title
@@ -44,7 +44,7 @@
   </ul>
 
   <label
-    class="btn btn-ghost lg:hidden text-white uppercase"
+    class="btn btn-ghost uppercase text-white lg:hidden"
     for="drawer"
     aria-label="ouvrir la barre latéral">
     {{ route.title | async }}
@@ -53,7 +53,7 @@
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      class="w-5 h-5 stroke-current stroke-2">
+      class="h-5 w-5 stroke-current stroke-2">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -70,7 +70,7 @@
   </div>
 
   <div class="drawer-side top-auto">
-    <ul class="menu menu-lg w-full h-full bg-white">
+    <ul class="menu menu-lg h-full w-full bg-white">
       @for (route of navigationRoutes; track route.title) {
         <li>
           <a
@@ -85,8 +85,8 @@
   </div>
 </main>
 
-<footer class="footer p-10 bg-neutral text-white">
-  <aside class="place-items-center lg:place-items-start mx-auto">
+<footer class="footer bg-neutral p-10 text-white">
+  <aside class="mx-auto place-items-center lg:place-items-start">
     <img
       class="h-14 w-auto"
       src="assets/logo.png"
