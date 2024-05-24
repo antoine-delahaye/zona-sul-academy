@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core'
-import {Apollo} from 'apollo-angular'
+import {Apollo, QueryRef} from 'apollo-angular'
 import {gql} from '@apollo/client/core'
 
 export type FeaturedContent = {
@@ -20,7 +20,7 @@ export type FeaturedContent = {
 export class FeaturedContentService {
   private apollo: Apollo = inject(Apollo)
 
-  public get() {
+  public get(): QueryRef<{allPost: FeaturedContent[]}> {
     return this.apollo.watchQuery<{allPost: FeaturedContent[]}>({
       query: gql`
         query {

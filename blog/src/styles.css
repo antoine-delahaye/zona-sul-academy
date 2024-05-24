@@ -20,10 +20,10 @@ h3 {
 
 .drawer-content {
     a:not(.btn) {
-        @apply hover:underline decoration-primary;
+        @apply hover:underline decoration-white;
     }
 
-    section:not(.hero) {
+    section:not(.hero), app-news {
         @apply grid gap-8 px-4 py-8 lg:p-16;
     }
 }

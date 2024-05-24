@@ -20,6 +20,7 @@
     "lib": ["es2020", "dom"],
     "paths": {
       "@app/*": ["./src/app/*"],
+      "@core/*": ["./src/app/core/*"],
       "@data/*": ["./src/app/data/*"],
       "@page/*": ["./src/app/pages/*"],
       "@environment/*": ["./src/environments/*"]

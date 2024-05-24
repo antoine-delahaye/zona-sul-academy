@@ -5,6 +5,7 @@ import {PresentationComponent} from '@page/presentation/presentation.component'
 import {PlanningComponent} from '@page/planning/planning.component'
 import {PricesComponent} from '@page/prices/prices.component'
 import {PrivacyPolicyComponent} from '@page/privacy-policy/privacy-policy.component'
+import {newsGuard} from '@app/core/guards/news.guard'
 
 export const navigationRoutes: Routes = [
   {
@@ -15,7 +16,8 @@ export const navigationRoutes: Routes = [
   {
     title: 'Actualités',
     path: 'actualites',
-    component: NewsComponent
+    component: NewsComponent,
+    canActivate: [newsGuard]
   },
   {
     title: 'Planning',

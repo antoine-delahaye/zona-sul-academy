@@ -10,7 +10,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common'
 import {Meta} from '@angular/platform-browser'
 
 import {legalRoutes, navigationRoutes} from '@app/app.routes'
-import {siteName} from '@app/title.provider'
+import {siteName} from '@app/core/providers/title.provider'
 
 @Component({
   selector: 'app-root',
