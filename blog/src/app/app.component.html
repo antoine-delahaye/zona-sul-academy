@@ -8,6 +8,7 @@
       <li>
         <a
           [routerLink]="route.path"
+          [routerLinkActiveOptions]="{exact: true}"
           routerLinkActive="active">
           {{ route.title }}
         </a>
@@ -61,7 +62,7 @@
   </label>
 </header>
 
-<main class="drawer">
+<main class="drawer mb-auto">
   <input id="drawer" class="drawer-toggle" title="drawer" type="checkbox" />
 
   <div class="drawer-content">

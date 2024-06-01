@@ -1,13 +1,12 @@
 @if (this.posts.length) {
   @for (post of posts; track post.slug.current) {
-    <article
-      class="card card-compact bg-base-100 lg:col-span-6 lg:col-start-4">
+    <article class="card card-compact bg-base-100 lg:col-span-6 lg:col-start-4">
       <figure>
         <img
           [ngSrc]="post.mainImage.asset.path"
           [width]="post.mainImage.asset.metadata.dimensions.width"
           [height]="post.mainImage.asset.metadata.dimensions.height"
-          alt="Illustration de post" />
+          [alt]="post.mainImage.asset.altText" />
       </figure>
       <div class="card-body border-x border-b">
         <h3 class="card-title justify-between">
@@ -21,7 +20,11 @@
         <p>{{ post.excerpt }}</p>
 
         <div class="card-actions justify-end">
-          <button class="btn btn-primary">Lire la suite</button>
+          <a
+            class="btn btn-primary"
+            routerLink="/actualites/{{ post.slug.current }}">
+            Lire la suite
+          </a>
         </div>
       </div>
     </article>

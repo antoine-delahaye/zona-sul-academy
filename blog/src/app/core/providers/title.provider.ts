@@ -5,7 +5,7 @@ import {Title} from '@angular/platform-browser'
 export const siteName: string = 'Zona Sul Academy'
 
 @Injectable()
-export class TemplatePageTitleStrategy extends TitleStrategy {
+export class TitleProvider extends TitleStrategy {
   constructor(private readonly title: Title) {
     super()
   }
@@ -17,5 +17,9 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
     } else {
       this.title.setTitle(siteName)
     }
+  }
+
+  public setNewsTitle(title: string): void {
+    this.title.setTitle(`${siteName} - ${title}`)
   }
 }

@@ -19,6 +19,7 @@
     "useDefineForClassFields": false,
     "lib": ["es2020", "dom"],
     "paths": {
+      "@src/*": ["./src/*"],
       "@app/*": ["./src/app/*"],
       "@core/*": ["./src/app/core/*"],
       "@data/*": ["./src/app/data/*"],

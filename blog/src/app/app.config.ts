@@ -16,7 +16,7 @@ import localeFr from '@angular/common/locales/fr'
 
 import {routes} from '@app/app.routes'
 import {graphqlProvider} from '@core/providers/graphql.provider'
-import {TemplatePageTitleStrategy} from '@core/providers/title.provider'
+import {TitleProvider} from '@core/providers/title.provider'
 
 registerLocaleData(localeFr)
 
@@ -37,7 +37,7 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: TitleStrategy,
-      useClass: TemplatePageTitleStrategy
+      useClass: TitleProvider
     },
     {
       provide: IMAGE_LOADER,

@@ -1,11 +1,13 @@
 import {Routes} from '@angular/router'
 
-import {NewsComponent} from '@page/news/news.component'
 import {PresentationComponent} from '@page/presentation/presentation.component'
 import {PlanningComponent} from '@page/planning/planning.component'
 import {PricesComponent} from '@page/prices/prices.component'
 import {PrivacyPolicyComponent} from '@page/privacy-policy/privacy-policy.component'
 import {newsGuard} from '@app/core/guards/news.guard'
+import {SingleComponent} from '@page/news/single/single.component'
+import {IndexComponent} from '@page/news/index/index.component'
+import {NotFoundComponent} from '@page/not-found/not-found.component'
 
 export const navigationRoutes: Routes = [
   {
@@ -16,7 +18,7 @@ export const navigationRoutes: Routes = [
   {
     title: 'Actualités',
     path: 'actualites',
-    component: NewsComponent,
+    component: IndexComponent,
     canActivate: [newsGuard]
   },
   {
@@ -39,4 +41,20 @@ export const legalRoutes: Routes = [
   }
 ]
 
-export const routes: Routes = [...navigationRoutes, ...legalRoutes]
+export const pageRoutes: Routes = [
+  {
+    path: 'actualites/:slug',
+    component: SingleComponent
+  },
+  {
+    title: 'Page introuvable',
+    path: '**',
+    component: NotFoundComponent
+  }
+]
+
+export const routes: Routes = [
+  ...navigationRoutes,
+  ...legalRoutes,
+  ...pageRoutes
+]
