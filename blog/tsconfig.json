@@ -26,7 +26,7 @@
       "@page/*": ["./src/app/pages/*"],
       "@environment/*": ["./src/environments/*"]
     },
-    "allowSyntheticDefaultImports": true
+    "types": ["@cloudflare/workers-types/2023-07-01"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

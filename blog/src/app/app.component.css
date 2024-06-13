@@ -1,14 +1,14 @@
 :host {
-  @apply flex flex-col min-h-lvh;
+  @apply flex min-h-lvh flex-col;
 }
 
 header .menu-horizontal > li {
   & > a,
   & summary {
-    @apply text-white font-bold uppercase;
+    @apply font-bold uppercase text-white;
   }
 
   a.active {
-    @apply underline underline-offset-8 decoration-2 decoration-primary;
+    @apply underline decoration-primary decoration-2 underline-offset-8;
   }
 }
