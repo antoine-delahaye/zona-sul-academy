@@ -36,7 +36,8 @@ export default {
           '--tab-radius': '0'
         }
       }
-    ]
+    ],
+    logs: false
   },
   plugins: [typography, daisyui]
 } satisfies Config
