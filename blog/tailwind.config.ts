@@ -20,6 +20,15 @@ export default {
       }
     }
   },
+  safelist: [
+    'sm:col-start-1',
+    'sm:col-start-2',
+    'sm:col-start-3',
+    'sm:col-start-4',
+    'sm:col-start-5',
+    'sm:col-start-6',
+    'sm:col-start-7'
+  ],
   daisyui: {
     themes: [
       {

@@ -1,0 +1,168 @@
+<ng-template #planningEvent let-event="event">
+  <li
+    class="relative mt-px sm:flex sm:col-start-{{ event.day }} {{
+      Number(event.day) === selectedDay ? 'flex' : 'hidden'
+    }}"
+    [style.grid-row]="
+      getGridPosition(event.duration.start, event.duration.end)
+    ">
+    <a
+      class="planning-event group absolute inset-1 flex cursor-pointer flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">
+      <p class="order-1 font-semibold">
+        {{ event.title }} {{ event.person ? 'avec ' + event.person : '' }}
+      </p>
+      <p>
+        <time [dateTime]="getDateFromHour(event.duration.start)">
+          {{ getDateFromHour(event.duration.start) | date: 'shortTime' }}
+        </time>
+      </p>
+    </a>
+  </li>
+</ng-template>
+
+<header
+  class="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
+  <h2 class="text-base font-semibold leading-6 text-gray-900">
+    <time [dateTime]="currentDate">
+      {{ currentDate | date: 'mediumDate' }}
+    </time>
+  </h2>
+
+  <div class="flex items-center gap-4">
+    <div class="join *:btn *:btn-outline *:join-item *:btn-sm sm:hidden">
+      <button
+        type="button"
+        title="Jour précédent"
+        [disabled]="selectedDay <= 1"
+        (click)="selectedDay = selectedDay - 1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="size-5">
+          <path
+            fill-rule="evenodd"
+            d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+            clip-rule="evenodd" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        title="Jour suivant"
+        [disabled]="selectedDay >= 7"
+        (click)="selectedDay = selectedDay + 1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="size-5">
+          <path
+            fill-rule="evenodd"
+            d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+            clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div
+  class="isolate flex flex-auto flex-col overflow-auto border-b bg-white lg:border-x">
+  <div
+    style="width: 165%"
+    class="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full">
+    <div
+      class="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8">
+      <!-- Mobile calendar header -->
+      <div class="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
+        @for (
+          dateOfTheWeek of daysOfTheWeek;
+          track dateOfTheWeek.getTime();
+          let i = $index
+        ) {
+          <button
+            type="button"
+            class="flex flex-col items-center pb-3 pt-2"
+            (click)="selectedDay = i + 1">
+            {{ dateOfTheWeek | date: 'ccccc' }}
+            <span
+              class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900"
+              [ngClass]="{
+                'rounded-full bg-black text-white': i + 1 === selectedDay
+              }">
+              {{ dateOfTheWeek | date: 'dd' }}
+            </span>
+          </button>
+        }
+      </div>
+
+      <!-- Desktop calendar header -->
+      <div
+        class="-mr-px hidden grid-cols-7 divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 sm:grid">
+        <div class="col-end-1 w-14"></div>
+        @for (dateOfTheWeek of daysOfTheWeek; track dateOfTheWeek.getTime()) {
+          <div class="flex items-center justify-center py-3">
+            <span
+              [ngClass]="{
+                'flex items-baseline':
+                  dateOfTheWeek.getDay() === currentDate.getDay()
+              }">
+              {{ dateOfTheWeek | date: 'ccc' }}
+              <span
+                class="items-center justify-center font-semibold text-gray-900"
+                [ngClass]="{
+                  'ml-1.5 flex h-8 w-8 rounded-full bg-black text-white':
+                    dateOfTheWeek.getDay() === currentDate.getDay()
+                }">
+                {{ dateOfTheWeek | date: 'dd' }}
+              </span>
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="flex flex-auto">
+      <div
+        class="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-gray-100"></div>
+      <div class="grid flex-auto grid-cols-1 grid-rows-1">
+        <!-- Horizontal lines -->
+        <div
+          class="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100"
+          style="grid-template-rows: repeat(38, minmax(3.5rem, 1fr))">
+          <div class="row-end-1 h-7"></div>
+          @for (hour of hoursOfTheDay; track hour) {
+            <div>
+              <div
+                class="sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
+                {{ hour }}h
+              </div>
+            </div>
+            <div></div>
+          }
+        </div>
+
+        <!-- Vertical lines -->
+        <div
+          class="col-start-1 col-end-2 row-start-1 hidden grid-cols-7 grid-rows-1 divide-x divide-gray-100 sm:grid sm:grid-cols-7">
+          <div class="col-start-1 row-span-full"></div>
+          <div class="col-start-2 row-span-full"></div>
+          <div class="col-start-3 row-span-full"></div>
+          <div class="col-start-4 row-span-full"></div>
+          <div class="col-start-5 row-span-full"></div>
+          <div class="col-start-6 row-span-full"></div>
+          <div class="col-start-7 row-span-full"></div>
+          <div class="col-start-8 row-span-full w-8"></div>
+        </div>
+
+        <!-- Events -->
+        <ol
+          class="col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7 sm:pr-8"
+          style="grid-template-rows: 1.75rem repeat(228, minmax(0, 1fr)) auto">
+          @for (event of events; track event._id) {
+            <div *ngTemplateOutlet="planningEvent; context: {event}"></div>
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
