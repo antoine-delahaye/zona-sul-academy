@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
-    "dev:wrangler": "npm run build && wrangler pages dev dist/cloudflare",
+    "dev:wrangler": "npm run build && wrangler pages dev dist/cloudflare --compatibility-date=2024-06-10",
     "build": "ng build && npm run process",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
