@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core'
-import {Apollo, QueryRef} from 'apollo-angular'
-import {gql} from '@apollo/client/core'
+import {Apollo, QueryRef, gql} from 'apollo-angular'
 
 export type FeaturedContent = {
   title: string
@@ -23,7 +22,7 @@ export class FeaturedContentService {
   public get(): QueryRef<{allPost: FeaturedContent[]}> {
     return this.apollo.watchQuery<{allPost: FeaturedContent[]}>({
       query: gql`
-        query {
+        query getFeaturedContent {
           allPost(where: {featured: {eq: true}}, limit: 1) {
             title
             slug {

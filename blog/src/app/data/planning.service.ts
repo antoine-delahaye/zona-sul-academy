@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core'
-import {Apollo, QueryRef} from 'apollo-angular'
-import {gql} from '@apollo/client/core'
+import {Apollo, QueryRef, gql} from 'apollo-angular'
 
 export type PlanningEvent = {
   _id: string
@@ -21,7 +20,7 @@ export class PlanningService {
   public get(): QueryRef<{allPlanningEvent: PlanningEvent[]}> {
     return this.apollo.watchQuery<{allPlanningEvent: PlanningEvent[]}>({
       query: gql`
-        query {
+        query getPlanningEvents {
           allPlanningEvent {
             _id
             title

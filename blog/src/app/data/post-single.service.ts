@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core'
-import {Apollo, QueryRef} from 'apollo-angular'
-import {gql} from '@apollo/client/core'
+import {Apollo, QueryRef, gql} from 'apollo-angular'
 
 export type Post = {
   title: string
@@ -33,7 +32,7 @@ export class PostSingleService {
   public get(slug: string): QueryRef<{allPost: Post[]}> {
     return this.apollo.watchQuery<{allPost: Post[]}>({
       query: gql`
-        query {
+        query getPost {
           allPost(where: {slug: {current: {eq: "${slug}"}}}) {
             title
             _createdAt

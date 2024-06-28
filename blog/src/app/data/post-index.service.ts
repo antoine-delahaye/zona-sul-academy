@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core'
-import {Apollo, QueryRef} from 'apollo-angular'
-import {gql} from '@apollo/client/core'
+import {Apollo, QueryRef, gql} from 'apollo-angular'
 
 export type PostPreview = {
   title: string
@@ -28,7 +27,7 @@ export class PostIndexService {
   ): QueryRef<{allPost: PostPreview[]}> {
     return this.apollo.watchQuery<{allPost: PostPreview[]}>({
       query: gql`
-        query {
+        query getPosts {
           allPost(limit: ${limit}, offset: ${offset}, sort: [{_createdAt: DESC}]) {
             title
             _createdAt
