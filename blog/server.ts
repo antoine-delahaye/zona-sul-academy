@@ -6,7 +6,10 @@ interface Env {
   ASSETS: {fetch: typeof fetch}
 }
 
-async function workerFetchHandler(request: Request, env: Env) {
+async function workerFetchHandler(
+  request: Request,
+  env: Env
+): Promise<Response> {
   const url: URL = new URL(request.url)
 
   const indexUrl: URL = new URL('/', url)
@@ -23,6 +26,7 @@ async function workerFetchHandler(request: Request, env: Env) {
 
 export default {
   fetch: (request: Request, env: Env) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any)['__zone_symbol__Promise'].resolve(
       workerFetchHandler(request, env)
     )

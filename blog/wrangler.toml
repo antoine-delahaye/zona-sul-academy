@@ -1,0 +1,4 @@
+name = "zona-sul-academy"
+compatibility_date = "2024-06-10"
+
+vars = { NODE_VERSION = "20.15.0" }
