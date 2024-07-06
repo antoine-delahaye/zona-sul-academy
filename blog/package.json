@@ -6,7 +6,7 @@
     "build": "ng build && npm run process",
     "deploy": "npm run build && wrangler pages deploy dist/cloudflare",
     "dev": "ng serve",
-    "dev:wrangler": "npm run build && wrangler pages dev dist/cloudflare --compatibility-date=2024-06-10",
+    "dev:wrangler": "npm run build && wrangler pages dev dist/cloudflare --compatibility-date=2024-06-28",
     "lint": "ng lint --fix",
     "ng": "ng",
     "process": "node tools/copy-files.mjs && node tools/alter-polyfills.mjs",
