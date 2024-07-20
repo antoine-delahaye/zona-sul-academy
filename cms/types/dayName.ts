@@ -12,7 +12,7 @@ export const dayName = defineType({
       {title: 'Thursday', value: '4'},
       {title: 'Friday', value: '5'},
       {title: 'Saturday', value: '6'},
-      {title: 'Sunday', value: '7'},
-    ],
-  },
+      {title: 'Sunday', value: '7'}
+    ]
+  }
 })

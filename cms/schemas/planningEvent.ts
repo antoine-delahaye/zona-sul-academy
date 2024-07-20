@@ -8,31 +8,31 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'string'
     }),
     defineField({
       name: 'date',
       title: 'Date',
-      type: 'date',
+      type: 'date'
     }),
     defineField({
       name: 'day',
-      type: 'dayName',
+      type: 'dayName'
     }),
     defineField({
       name: 'duration',
-      type: 'duration',
+      type: 'duration'
     }),
     defineField({
       name: 'location',
       title: 'Location',
-      type: 'string',
+      type: 'string'
     }),
     defineField({
       name: 'person',
       title: 'Person',
-      type: 'string',
-    }),
+      type: 'string'
+    })
   ],
   preview: {
     select: {
@@ -40,14 +40,14 @@ export default defineType({
       date: 'startTime',
       duration: 'duration',
       location: 'location',
-      person: 'person',
+      person: 'person'
     },
     prepare(selection) {
       const {title, duration, location} = selection
       return {
         title: `${title}`,
-        subtitle: `${duration.start} - ${duration.end} at ${location}`,
+        subtitle: `${duration.start} - ${duration.end} at ${location}`
       }
-    },
-  },
+    }
+  }
 })

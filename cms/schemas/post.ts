@@ -8,7 +8,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'string'
     }),
     defineField({
       name: 'slug',
@@ -17,33 +17,33 @@ export default defineType({
       validation: (Rule) => Rule.required(),
       options: {
         source: 'title',
-        maxLength: 96,
-      },
+        maxLength: 96
+      }
     }),
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
-      rows: 4,
+      rows: 4
     }),
     defineField({
       name: 'mainImage',
       title: 'Main image',
       type: 'image',
       options: {
-        hotspot: true,
-      },
+        hotspot: true
+      }
     }),
     defineField({
       name: 'body',
       title: 'Body',
-      type: 'blockContent',
+      type: 'blockContent'
     }),
     defineField({
       name: 'featured',
       title: 'Featured',
       type: 'boolean',
-      initialValue: false,
+      initialValue: false
     }),
     defineField({
       name: 'featuredButtons',
@@ -51,20 +51,20 @@ export default defineType({
       type: 'array',
       of: [
         {
-          type: 'featuredButton',
-        },
-      ],
-    }),
+          type: 'featuredButton'
+        }
+      ]
+    })
   ],
   preview: {
     select: {
       title: 'title',
       author: 'author.name',
-      media: 'mainImage',
+      media: 'mainImage'
     },
     prepare(selection) {
       const {author} = selection
       return {...selection, subtitle: author && `by ${author}`}
-    },
-  },
+    }
+  }
 })

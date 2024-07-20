@@ -7,4 +7,12 @@ import {duration} from './types/duration'
 import {timeValue} from './types/timeValue'
 import {dayName} from './types/dayName'
 
-export const schemaTypes = [blockContent, post, featuredButton, planningEvent, duration, timeValue, dayName]
+export const schemaTypes = [
+  blockContent,
+  post,
+  featuredButton,
+  planningEvent,
+  duration,
+  timeValue,
+  dayName
+]

@@ -8,13 +8,13 @@ export const duration = defineType({
   fields: [
     defineField({
       name: 'start',
-      type: 'timeValue',
+      type: 'timeValue'
     }),
     defineField({
       name: 'end',
-      type: 'timeValue',
-    }),
+      type: 'timeValue'
+    })
   ],
   // make the fields render next to each other
-  options: {columns: 2},
+  options: {columns: 2}
 })
