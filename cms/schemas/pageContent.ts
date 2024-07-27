@@ -1,8 +1,8 @@
-import {defineField, defineType, ImageRule, SlugRule, StringRule} from 'sanity'
+import {defineField, defineType, SlugRule, StringRule} from 'sanity'
 
 export default defineType({
-  name: 'imageMedia',
-  title: 'Image',
+  name: 'pageContent',
+  title: 'Page Content',
   type: 'document',
   fields: [
     defineField({
@@ -22,29 +22,14 @@ export default defineType({
       validation: (Rule: SlugRule) => Rule.required()
     }),
     defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          options: {
-            isHighlighted: true
-          }
-        }
-      ],
-      options: {
-        hotspot: true
-      },
-      validation: (Rule: ImageRule) => Rule.required()
+      name: 'body',
+      title: 'Body',
+      type: 'blockContent'
     })
   ],
   preview: {
     select: {
-      title: 'title',
-      media: 'image'
+      title: 'title'
     },
     prepare(selection) {
       return {...selection}

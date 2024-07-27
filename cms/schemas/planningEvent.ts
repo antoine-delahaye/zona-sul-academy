@@ -8,7 +8,7 @@ import {
 
 export default defineType({
   name: 'planningEvent',
-  title: 'Planning event',
+  title: 'Planning Event',
   type: 'document',
   fields: [
     defineField({

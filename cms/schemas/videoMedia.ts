@@ -34,10 +34,7 @@ export default defineType({
       media: 'video'
     },
     prepare(selection) {
-      return {
-        title: selection.title,
-        media: selection.media
-      }
+      return {...selection}
     }
   }
 })

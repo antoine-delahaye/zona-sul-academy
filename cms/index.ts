@@ -3,6 +3,7 @@ import post from './schemas/post'
 import planningEvent from './schemas/planningEvent'
 import imageMedia from './schemas/imageMedia'
 import videoMedia from './schemas/videoMedia'
+import pageContent from './schemas/pageContent'
 
 import featuredButton from './types/featuredButton'
 import duration from './types/duration'
@@ -15,6 +16,7 @@ export const schemaTypes = [
   planningEvent,
   imageMedia,
   videoMedia,
+  pageContent,
   featuredButton,
   duration,
   timeValue,
