@@ -6,6 +6,8 @@
     "postinstall": "(cd cms && npm install) && (cd blog && npm install)",
     "dev:cms": "cd cms && npm run dev",
     "dev:blog": "cd blog && npm run dev",
+    "lint:cms": "cd cms && npm run lint",
+    "lint:blog": "cd blog && npm run lint",
     "deploy": "cd cms && npm run deploy",
     "deploy:production": "(cd cms && npm run deploy:production) && (cd blog && npm run build)"
   }

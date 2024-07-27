@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
 
-export const duration = defineType({
+export default defineType({
   name: 'duration',
   title: 'Duration',
   description: 'A start and finish time',

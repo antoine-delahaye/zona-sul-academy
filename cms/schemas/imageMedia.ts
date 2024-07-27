@@ -1,8 +1,8 @@
 import {defineField, defineType, ImageRule, SlugRule, StringRule} from 'sanity'
 
 export default defineType({
-  name: 'post',
-  title: 'Post',
+  name: 'imageMedia',
+  title: 'Image',
   type: 'document',
   fields: [
     defineField({
@@ -22,14 +22,8 @@ export default defineType({
       validation: (Rule: SlugRule) => Rule.required()
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-      rows: 4
-    }),
-    defineField({
-      name: 'mainImage',
-      title: 'Main image',
+      name: 'image',
+      title: 'Image',
       type: 'image',
       fields: [
         {
@@ -45,38 +39,18 @@ export default defineType({
         hotspot: true
       },
       validation: (Rule: ImageRule) => Rule.required()
-    }),
-    defineField({
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent'
-    }),
-    defineField({
-      name: 'featured',
-      title: 'Featured',
-      type: 'boolean',
-      initialValue: false
-    }),
-    defineField({
-      name: 'featuredButtons',
-      title: 'Featured Buttons',
-      type: 'array',
-      of: [
-        {
-          type: 'featuredButton'
-        }
-      ]
     })
   ],
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
-      media: 'mainImage'
+      media: 'image'
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      return {
+        title: selection.title,
+        media: selection.media
+      }
     }
   }
 })

@@ -1,6 +1,6 @@
 import {defineType} from 'sanity'
 
-export const dayName = defineType({
+export default defineType({
   name: 'dayName',
   title: 'Day Name',
   type: 'string',

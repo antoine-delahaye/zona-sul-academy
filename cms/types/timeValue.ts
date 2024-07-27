@@ -1,6 +1,6 @@
 import {defineType} from 'sanity'
 
-export const timeValue = defineType({
+export default defineType({
   name: 'timeValue',
   title: 'Time',
   type: 'string',
@@ -10,7 +10,7 @@ export const timeValue = defineType({
 })
 
 // A function that generates an array of times from 00:00 to 23:30
-export function ALLOWED_TIMES() {
+export function ALLOWED_TIMES(): string[] {
   const times: string[] = []
   for (let h: number = 6; h < 24; h++) {
     for (let m: number = 0; m < 60; m += 15) {

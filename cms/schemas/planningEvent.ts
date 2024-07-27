@@ -1,4 +1,10 @@
-import {defineField, defineType} from 'sanity'
+import {
+  DateRule,
+  defineField,
+  defineType,
+  StringRule,
+  ValidationContext
+} from 'sanity'
 
 export default defineType({
   name: 'planningEvent',
@@ -8,16 +14,33 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string'
+      type: 'string',
+      validation: (Rule: StringRule) => Rule.required()
     }),
     defineField({
       name: 'date',
       title: 'Date',
-      type: 'date'
+      type: 'date',
+      validation: (Rule: DateRule) =>
+        Rule.custom((date: string | undefined, context: ValidationContext) => {
+          const day = context.document?.day
+          if (!date && !day) {
+            return 'Either date or day must be filled'
+          }
+          return true
+        })
     }),
     defineField({
       name: 'day',
-      type: 'dayName'
+      type: 'dayName',
+      validation: (Rule) =>
+        Rule.custom((day, context: ValidationContext) => {
+          const date = context.document?.date
+          if (!day && !date) {
+            return 'Either day or date must be filled'
+          }
+          return true
+        })
     }),
     defineField({
       name: 'duration',
