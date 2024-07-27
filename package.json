@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "echo '\\u001b[0;31mThis is not a monorepo. Run commands in /cms and /blog individually.\\u001b[0m'"
+    "postinstall": "(cd blog && npm install) && (cd cms && npm install)",
+    "deploy": "cd cms && npm run deploy",
+    "deploy:production": "(cd cms && npm run deploy:production) && (cd blog && npm run build)"
   }
 }
