@@ -14,12 +14,8 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96
-      },
-      validation: (Rule: SlugRule) => Rule.required()
+      type: 'string',
+      validation: (Rule: StringRule) => Rule.required()
     }),
     defineField({
       name: 'body',
