@@ -1,4 +1,6 @@
-import {defineField, defineType, SlugRule, StringRule} from 'sanity'
+import {CustomValidator, defineField, defineType, StringRule} from 'sanity'
+
+import {stringSlugValidator} from '../validators/stringSlug'
 
 export default defineType({
   name: 'pageContent',
@@ -15,7 +17,8 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'string',
-      validation: (Rule: StringRule) => Rule.required()
+      validation: (Rule: StringRule) =>
+        Rule.required().custom(stringSlugValidator as CustomValidator)
     }),
     defineField({
       name: 'body',

@@ -1,4 +1,12 @@
-import {defineField, defineType, FileRule, SlugRule, StringRule} from 'sanity'
+import {
+  CustomValidator,
+  defineField,
+  defineType,
+  FileRule,
+  StringRule
+} from 'sanity'
+
+import {stringSlugValidator} from '../validators/stringSlug'
 
 export default defineType({
   name: 'videoMedia',
@@ -14,12 +22,9 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      type: 'slug',
-      validation: (Rule: SlugRule) => Rule.required(),
-      options: {
-        source: 'title',
-        maxLength: 96
-      }
+      type: 'string',
+      validation: (Rule: StringRule) =>
+        Rule.required().custom(stringSlugValidator as CustomValidator)
     }),
     defineField({
       name: 'video',
