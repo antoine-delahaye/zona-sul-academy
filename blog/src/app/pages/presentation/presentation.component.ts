@@ -5,6 +5,7 @@ import {
   FeaturedContent,
   FeaturedContentService
 } from '@data/featured-content.service'
+import {PageContentRepository} from '@repository/page-content.repository'
 
 @Component({
   selector: 'app-presentation',
@@ -15,6 +16,9 @@ import {
 export class PresentationComponent implements OnInit {
   private featuredContentService: FeaturedContentService = inject(
     FeaturedContentService
+  )
+  protected pageContentRepository: PageContentRepository = inject(
+    PageContentRepository
   )
 
   protected featuredContent: FeaturedContent | undefined

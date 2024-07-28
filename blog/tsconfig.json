@@ -23,6 +23,8 @@
       "@app/*": ["./src/app/*"],
       "@core/*": ["./src/app/core/*"],
       "@data/*": ["./src/app/data/*"],
+      "@repository/*": ["./src/app/data/repositories/*"],
+      "@service/*": ["./src/app/data/services/*"],
       "@page/*": ["./src/app/pages/*"],
       "@environment/*": ["./src/environments/*"]
     },
