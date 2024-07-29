@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
-import {createStore, select, withProps} from '@ngneat/elf'
-import {getEntity, setEntities, withEntities} from '@ngneat/elf-entities'
+import {createStore, withProps} from '@ngneat/elf'
+import {getAllEntities, setEntities, withEntities} from '@ngneat/elf-entities'
 import {
   PaginationData,
   selectCurrentPageEntities,
@@ -45,6 +45,18 @@ export type PostSingle = {
   }[]
 }
 
+export type FeaturedPost = {
+  title: string
+  slug: string
+  excerpt: string
+  mainImage: {asset: {url: string}}
+  featuredButtons: {
+    text: string
+    url: string
+    openInNewTab: boolean
+  }[]
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,10 +68,6 @@ export class PostRepository {
     }),
     withPagination()
   )
-
-  public getPostPreview(slug: string): PostPreview | undefined {
-    return this.postPreviewStore.query(getEntity(slug))
-  }
 
   public setPostPreviews(
     response: PaginationData & {data: PostPreview[]}
@@ -80,10 +88,39 @@ export class PostRepository {
 
   public postSingleStore = createStore(
     {name: 'postSingle'},
-    withProps<PostSingle | undefined>(undefined)
+    withProps<PostSingle>({
+      _createdAt: '',
+      bodyRaw: [],
+      mainImage: {
+        asset: {
+          altText: '',
+          metadata: {dimensions: {height: 0, width: 0}},
+          path: ''
+        }
+      },
+      title: ''
+    })
   )
 
   public setPostSingle(post: PostSingle): void {
-    this.postSingleStore.update(() => post)
+    this.postSingleStore.update((state: PostSingle) => ({
+      ...state,
+      ...post
+    }))
+  }
+
+  public featuredPostStore = createStore(
+    {name: 'featuredPosts'},
+    withEntities<FeaturedPost, 'slug'>({
+      idKey: 'slug'
+    })
+  )
+
+  public getFeaturedPosts(): FeaturedPost[] {
+    return this.featuredPostStore.query(getAllEntities())
+  }
+
+  public setFeaturedPosts(posts: FeaturedPost[]): void {
+    this.featuredPostStore.update(setEntities(posts))
   }
 }

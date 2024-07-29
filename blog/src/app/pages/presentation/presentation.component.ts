@@ -1,11 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core'
 import {RouterLink} from '@angular/router'
 
-import {
-  FeaturedContent,
-  FeaturedContentService
-} from '@data/featured-content.service'
-import {PageContentRepository} from '@repository/page-content.repository'
+import {PostService} from '@service/post.service'
+import {FeaturedPost, PostRepository} from '@repository/post.repository'
+import {PageContentRepository} from '@src/app/data/repositories/page-content.repository'
 
 @Component({
   selector: 'app-presentation',
@@ -14,24 +12,21 @@ import {PageContentRepository} from '@repository/page-content.repository'
   templateUrl: 'presentation.component.html'
 })
 export class PresentationComponent implements OnInit {
-  private featuredContentService: FeaturedContentService = inject(
-    FeaturedContentService
-  )
+  private postService: PostService = inject(PostService)
+  protected postRepository: PostRepository = inject(PostRepository)
   protected pageContentRepository: PageContentRepository = inject(
     PageContentRepository
   )
 
-  protected featuredContent: FeaturedContent | undefined
+  protected featuredPost?: FeaturedPost
 
   public ngOnInit(): void {
-    this.featuredContentService
-      .get()
-      .valueChanges.subscribe(({data, loading}): void => {
+    this.postService.getFeaturedPosts().subscribe({
+      next: ({loading}): void => {
         if (!loading) {
-          if (data.allPost.length) {
-            this.featuredContent = data.allPost[0]
-          }
+          this.featuredPost = this.postRepository.getFeaturedPosts()[0]
         }
-      })
+      }
+    })
   }
 }

@@ -1,10 +1,11 @@
 @for (post of postRepository.postPreviews$ | async; track post.slug) {
   <article class="card card-compact bg-base-100 lg:col-span-6 lg:col-start-4">
-    <figure>
+    <figure class="relative h-48 w-full sm:h-52 md:h-56 lg:h-72 xl:h-80">
       <img
+        class="object-cover"
+        priority
+        fill
         [ngSrc]="post.mainImage.asset.path"
-        [width]="post.mainImage.asset.metadata.dimensions.width"
-        [height]="post.mainImage.asset.metadata.dimensions.height"
         [alt]="post.mainImage.asset.altText" />
     </figure>
     <div class="card-body border-x border-b">
@@ -46,7 +47,12 @@
   <a
     class="btn btn-outline join-item"
     routerLink="/actualites"
-    [queryParams]="{page: currentPage + 1}">
+    [queryParams]="{page: currentPage + 1}"
+    [ngClass]="{
+      'btn-disabled':
+        this.currentPage > 1 &&
+        (postRepository.postPreviews$ | async)?.length! < 3
+    }">
     Page suivante
   </a>
 </div>

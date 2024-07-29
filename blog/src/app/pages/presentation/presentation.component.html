@@ -1,23 +1,21 @@
 <section
   class="hero min-h-screen"
   [style.background-image]="
-    'url(' + featuredContent?.mainImage?.asset?.url! + ')'
+    'url(' + featuredPost?.mainImage?.asset?.url! + ')'
   ">
   <div class="hero-overlay bg-opacity-30"></div>
   <div class="hero-content text-center text-neutral-content">
     <div class="max-w-md">
-      <h2 class="mb-5">{{ featuredContent?.title }}</h2>
+      <h2 class="mb-5">{{ featuredPost?.title }}</h2>
 
-      <p class="mb-5">{{ featuredContent?.excerpt }}</p>
+      <p class="mb-5">{{ featuredPost?.excerpt }}</p>
 
       <div class="flex flex-wrap justify-center gap-4">
-        <a
-          class="btn"
-          [routerLink]="'actualites/' + featuredContent?.slug?.current">
+        <a class="btn" [routerLink]="'actualites/' + featuredPost?.slug">
           En savoir plus
         </a>
 
-        @for (button of featuredContent?.featuredButtons; track button.text) {
+        @for (button of featuredPost?.featuredButtons; track button.text) {
           <a class="btn" href="{{ button.url }}" target="_blank">
             {{ button.text }}
           </a>

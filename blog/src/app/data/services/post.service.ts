@@ -6,11 +6,13 @@ import {Observable, tap} from 'rxjs'
 import {
   PostPreview,
   PostSingle,
-  PostRepository
+  PostRepository,
+  FeaturedPost
 } from '@repository/post.repository'
 
-type postPreviewResponse = {allPost: PostPreview[]}
-type postSingleResponse = {allPost: PostSingle[]}
+type PostPreviewResponse = {allPost: PostPreview[]}
+type PostSingleResponse = {allPost: PostSingle[]}
+type FeaturedPostResponse = {allPost: FeaturedPost[]}
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,9 @@ export class PostService {
   public getPostPreviews(
     limit: number = 3,
     offset: number = 0
-  ): Observable<ApolloQueryResult<postPreviewResponse>> {
+  ): Observable<ApolloQueryResult<PostPreviewResponse>> {
     return this.apollo
-      .watchQuery<postPreviewResponse>({
+      .watchQuery<PostPreviewResponse>({
         query: gql`
         query getPostPreviews {
           allPost(limit: ${limit}, offset: ${offset}, sort: [{_createdAt: DESC}]) {
@@ -63,9 +65,9 @@ export class PostService {
 
   public getPostSingle(
     slug: string
-  ): Observable<ApolloQueryResult<postSingleResponse>> {
+  ): Observable<ApolloQueryResult<PostSingleResponse>> {
     return this.apollo
-      .watchQuery<postSingleResponse>({
+      .watchQuery<PostSingleResponse>({
         query: gql`
         query getPost {
           allPost(where: {slug: {eq: "${slug}"}}) {
@@ -91,6 +93,38 @@ export class PostService {
       .valueChanges.pipe(
         tap(({data}): void => {
           this.repository.setPostSingle(data.allPost[0])
+        })
+      )
+  }
+
+  public getFeaturedPosts(): Observable<
+    ApolloQueryResult<FeaturedPostResponse>
+  > {
+    return this.apollo
+      .watchQuery<FeaturedPostResponse>({
+        query: gql`
+          query getFeaturedPosts {
+            allPost(where: {featured: {eq: true}}) {
+              title
+              slug
+              excerpt
+              mainImage {
+                asset {
+                  url
+                }
+              }
+              featuredButtons {
+                text
+                url
+                openInNewTab
+              }
+            }
+          }
+        `
+      })
+      .valueChanges.pipe(
+        tap(({data}): void => {
+          this.repository.setFeaturedPosts(data.allPost)
         })
       )
   }
