@@ -17,7 +17,7 @@ export class PageContentService {
   private apollo: Apollo = inject(Apollo)
   private repository: PageContentRepository = inject(PageContentRepository)
 
-  public get(): Observable<ApolloQueryResult<response>> {
+  public getAll(): Observable<ApolloQueryResult<response>> {
     return this.apollo
       .watchQuery<response>({
         query: gql`

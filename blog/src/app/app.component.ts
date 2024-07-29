@@ -45,6 +45,6 @@ export class AppComponent implements OnInit {
   ]
 
   public ngOnInit(): void {
-    this.pageContentService.get().subscribe()
+    this.pageContentService.getAll().subscribe()
   }
 }
