@@ -1,7 +1,11 @@
 import {Component, inject, OnInit} from '@angular/core'
 import {AsyncPipe, DatePipe, NgClass, NgTemplateOutlet} from '@angular/common'
 
-import {PlanningEvent, PlanningService} from '@data/planning.service'
+import {PlanningEventService} from '@service/planning-event.service'
+import {
+  PlanningEvent,
+  PlanningEventRepository
+} from '@src/app/data/repositories/planning-event.repository'
 
 @Component({
   selector: 'app-planning',
@@ -15,7 +19,11 @@ import {PlanningEvent, PlanningService} from '@data/planning.service'
   `
 })
 export class PlanningComponent implements OnInit {
-  private planningService: PlanningService = inject(PlanningService)
+  private planningEventService: PlanningEventService =
+    inject(PlanningEventService)
+  private planningEventRepository: PlanningEventRepository = inject(
+    PlanningEventRepository
+  )
 
   protected currentDate: Date = new Date()
   protected daysOfTheWeek: Date[] = []
@@ -37,13 +45,13 @@ export class PlanningComponent implements OnInit {
       monday.setDate(monday.getDate() + 1)
     }
 
-    this.planningService
-      .get()
-      .valueChanges.subscribe(({data, loading}): void => {
+    this.planningEventService.getAll().subscribe({
+      next: ({loading}): void => {
         if (!loading) {
-          this.events = data.allPlanningEvent
+          this.events = this.planningEventRepository.getAll()
         }
-      })
+      }
+    })
   }
 
   protected getGridPosition(timeStart: string, timeEnd: string): string {
