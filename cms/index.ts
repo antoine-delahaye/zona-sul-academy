@@ -1,8 +1,7 @@
 import blockContent from './schemas/blockContent'
 import post from './schemas/post'
 import planningEvent from './schemas/planningEvent'
-import imageMedia from './schemas/imageMedia'
-import videoMedia from './schemas/videoMedia'
+import media from './schemas/media'
 import pageContent from './schemas/pageContent'
 
 import featuredButton from './types/featuredButton'
@@ -14,8 +13,7 @@ export const schemaTypes = [
   blockContent,
   post,
   planningEvent,
-  imageMedia,
-  videoMedia,
+  media,
   pageContent,
   featuredButton,
   duration,

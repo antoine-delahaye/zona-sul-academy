@@ -2,15 +2,15 @@ import {
   CustomValidator,
   defineField,
   defineType,
-  FileRule,
+  ImageRule,
   StringRule
 } from 'sanity'
 
 import {stringSlugValidator} from '../validators/stringSlug'
 
 export default defineType({
-  name: 'videoMedia',
-  title: 'Video',
+  name: 'media',
+  title: 'Media',
   type: 'document',
   fields: [
     defineField({
@@ -27,16 +27,26 @@ export default defineType({
         Rule.required().custom(stringSlugValidator as CustomValidator)
     }),
     defineField({
-      name: 'video',
-      title: 'Video',
-      type: 'file',
-      validation: (Rule: FileRule) => Rule.required()
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string'
+        }
+      ],
+      options: {
+        hotspot: true
+      },
+      validation: (Rule: ImageRule) => Rule.required()
     })
   ],
   preview: {
     select: {
       title: 'title',
-      media: 'video'
+      media: 'image'
     },
     prepare(selection) {
       return {...selection}
