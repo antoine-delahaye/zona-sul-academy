@@ -69,6 +69,8 @@ export class PostRepository {
     withPagination()
   )
 
+  public postPreviews$ = this.postPreviewStore.pipe(selectCurrentPageEntities())
+
   public setPostPreviews(
     response: PaginationData & {data: PostPreview[]}
   ): void {
@@ -83,8 +85,6 @@ export class PostRepository {
       )
     )
   }
-
-  public postPreviews$ = this.postPreviewStore.pipe(selectCurrentPageEntities())
 
   public postSingleStore = createStore(
     {name: 'postSingle'},
