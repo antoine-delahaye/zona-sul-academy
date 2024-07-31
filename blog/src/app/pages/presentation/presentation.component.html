@@ -1,23 +1,21 @@
 <section
   class="hero min-h-screen"
   [style.background-image]="
-    'url(' + featuredContent?.mainImage?.asset?.url! + ')'
+    'url(' + featuredPost?.mainImage?.asset?.url! + ')'
   ">
   <div class="hero-overlay bg-opacity-30"></div>
   <div class="hero-content text-center text-neutral-content">
     <div class="max-w-md">
-      <h2 class="mb-5">{{ featuredContent?.title }}</h2>
+      <h2 class="mb-5">{{ featuredPost?.title }}</h2>
 
-      <p class="mb-5">{{ featuredContent?.excerpt }}</p>
+      <p class="mb-5">{{ featuredPost?.excerpt }}</p>
 
       <div class="flex flex-wrap justify-center gap-4">
-        <a
-          class="btn"
-          [routerLink]="'actualites/' + featuredContent?.slug?.current">
+        <a class="btn" [routerLink]="'actualites/' + featuredPost?.slug">
           En savoir plus
         </a>
 
-        @for (button of featuredContent?.featuredButtons; track button.text) {
+        @for (button of featuredPost?.featuredButtons; track button.text) {
           <a class="btn" href="{{ button.url }}" target="_blank">
             {{ button.text }}
           </a>
@@ -31,20 +29,22 @@
   <div class="lg:col-span-4">
     <h2 class="mb-4">Le club</h2>
 
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.
-      Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies
-      sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a,
-      semper congue, euismod non, mi. Proin porttitor, orci nec nonummy
-      molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.
-      Duis semper.
-    </p>
+    @for (
+      content of pageContentRepository.get('presentation-le-club')?.bodyRaw;
+      track content._key
+    ) {
+      <p>{{ content.children[0].text }}</p>
+    } @empty {
+      <div class="flex w-full flex-col gap-4 *:skeleton *:h-4">
+        <div class="w-3/4"></div>
+        <div class="w-full"></div>
+        <div class="w-full"></div>
+      </div>
+    }
   </div>
 
   <div class="stack mb-5 mr-5 lg:col-span-6 lg:mb-10 lg:mr-10">
-    <img
-      src="assets/images/club-presentation.jpg"
-      alt="Photo des adherents de Zona Sul Academy" />
+    <app-media slug="les-membres-du-club" />
 
     <div
       class="h-full w-full !translate-y-5 translate-x-5 bg-black lg:!translate-y-10 lg:translate-x-10"></div>
@@ -55,21 +55,23 @@
   <div class="lg:col-span-4 lg:col-end-13">
     <h2 class="mb-4">Les coachs</h2>
 
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.
-      Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies
-      sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a,
-      semper congue, euismod non, mi. Proin porttitor, orci nec nonummy
-      molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.
-      Duis semper.
-    </p>
+    @for (
+      content of pageContentRepository.get('presentation-les-coachs')?.bodyRaw;
+      track content._key
+    ) {
+      <p>{{ content.children[0].text }}</p>
+    } @empty {
+      <div class="flex w-full flex-col gap-4 *:skeleton *:h-4">
+        <div class="w-3/4"></div>
+        <div class="w-full"></div>
+        <div class="w-full"></div>
+      </div>
+    }
   </div>
 
   <div
     class="stack ml-5 mt-5 lg:col-span-6 lg:col-end-9 lg:row-start-1 lg:ml-10 lg:mt-10">
-    <img
-      src="assets/images/coaches.jpg"
-      alt="Photo des coachs de Zona Sul Academy" />
+    <app-media slug="les-coachs" />
 
     <div
       class="h-full w-full !-translate-y-5 -translate-x-5 bg-black lg:!-translate-y-10 lg:-translate-x-10"></div>

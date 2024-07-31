@@ -17,12 +17,7 @@
   </ul>
 
   <a routerLink="/">
-    <img
-      class="h-14 w-auto flex-none"
-      src="assets/logo.png"
-      alt="Logo de {{ title }}"
-      height="512"
-      width="512" />
+    <app-media slug="logo" class="h-14 w-auto flex-none" />
     <h1 class="hidden">{{ title }}</h1>
   </a>
 
@@ -87,12 +82,7 @@
 
 <footer class="footer bg-neutral p-10 text-white">
   <aside class="mx-auto place-items-center lg:place-items-start">
-    <img
-      class="h-14 w-auto"
-      src="assets/logo.png"
-      alt="Logo de {{ title }}"
-      height="512"
-      width="512" />
+    <app-media slug="logo" class="h-14 w-auto" />
     <p>{{ currentDate.getFullYear() }} &copy; {{ title }}</p>
     <p class="max-w-md">
       Association sportive loi 1901 proposant l'enseignement du jiu-jitsu

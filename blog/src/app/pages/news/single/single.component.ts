@@ -1,8 +1,12 @@
 import {Component, inject, OnInit} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
+import {ActivatedRoute, Params} from '@angular/router'
 import {DatePipe, NgOptimizedImage} from '@angular/common'
 
-import {Post, PostSingleService} from '@data/post-single.service'
+import {PostService} from '@src/app/data/services/post.service'
+import {
+  PostRepository,
+  PostSingle
+} from '@src/app/data/repositories/post.repository'
 
 @Component({
   selector: 'app-news-single',
@@ -12,25 +16,24 @@ import {Post, PostSingleService} from '@data/post-single.service'
 })
 export class SingleComponent implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute)
-  private router: Router = inject(Router)
-  private postSingleService: PostSingleService = inject(PostSingleService)
+  private postService: PostService = inject(PostService)
+  private postRepository: PostRepository = inject(PostRepository)
 
-  protected post?: Post
+  protected post?: PostSingle
 
   public ngOnInit(): void {
-    const slug: string | null = this.route.snapshot.paramMap.get('slug')
-    if (slug) {
-      this.postSingleService
-        .get(slug)
-        .valueChanges.subscribe(({data, loading}): void => {
+    this.route.params.subscribe((params: Params): void => {
+      this.postService.getPostSingle(params['slug']).subscribe({
+        next: ({loading}): void => {
           if (!loading) {
-            if (data.allPost.length == 1) {
-              this.post = data.allPost[0]
-            } else {
-              this.router.navigateByUrl('/404').then()
-            }
+            this.postRepository.postSingleStore
+              .subscribe((post: PostSingle): void => {
+                this.post = post
+              })
+              .unsubscribe()
           }
-        })
-    }
+        }
+      })
+    })
   }
 }

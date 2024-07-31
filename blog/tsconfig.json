@@ -23,8 +23,11 @@
       "@app/*": ["./src/app/*"],
       "@core/*": ["./src/app/core/*"],
       "@data/*": ["./src/app/data/*"],
+      "@repository/*": ["./src/app/data/repositories/*"],
+      "@service/*": ["./src/app/data/services/*"],
       "@page/*": ["./src/app/pages/*"],
-      "@environment/*": ["./src/environments/*"]
+      "@environment/*": ["./src/environments/*"],
+      "@shared/*": ["./src/app/shared/*"]
     },
     "types": ["@cloudflare/workers-types/2023-07-01"]
   },

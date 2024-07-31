@@ -1,0 +1,9 @@
+@if (media) {
+  <img
+    priority
+    [class]="class"
+    [ngSrc]="media.image.asset.path"
+    [width]="media.image.asset.metadata.dimensions.width"
+    [height]="media.image.asset.metadata.dimensions.height"
+    [alt]="media.image.asset.altText" />
+}

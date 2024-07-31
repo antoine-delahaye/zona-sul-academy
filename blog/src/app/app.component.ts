@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core'
+import {Component, inject, OnInit} from '@angular/core'
 import {
   ActivatedRoute,
   RouterLink,
@@ -10,6 +10,9 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common'
 
 import {navigationRoutes, legalRoutes} from '@app/app.routes'
 import {siteName} from '@app/core/providers/title.provider'
+import {PageContentService} from '@service/page-content.service'
+import {MediaService} from '@service/media.service'
+import {MediaComponent} from '@shared/media/media.component'
 
 @Component({
   selector: 'app-root',
@@ -20,11 +23,14 @@ import {siteName} from '@app/core/providers/title.provider'
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,
-    AsyncPipe
+    AsyncPipe,
+    MediaComponent
   ],
   standalone: true
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  private pageContentService: PageContentService = inject(PageContentService)
+  private mediaService: MediaService = inject(MediaService)
   protected route: ActivatedRoute = inject(ActivatedRoute)
 
   protected navigationRoutes: Routes = navigationRoutes
@@ -41,4 +47,9 @@ export class AppComponent {
       url: 'https://www.helloasso.com/associations/zona-sul-academy'
     }
   ]
+
+  public ngOnInit(): void {
+    this.pageContentService.getAll().subscribe()
+    this.mediaService.getAll().subscribe()
+  }
 }

@@ -1,8 +1,16 @@
-import {defineField, defineType, ImageRule, SlugRule, StringRule} from 'sanity'
+import {
+  CustomValidator,
+  defineField,
+  defineType,
+  ImageRule,
+  StringRule
+} from 'sanity'
+
+import {stringSlugValidator} from '../validators/stringSlug'
 
 export default defineType({
-  name: 'imageMedia',
-  title: 'Image',
+  name: 'media',
+  title: 'Media',
   type: 'document',
   fields: [
     defineField({
@@ -14,12 +22,9 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96
-      },
-      validation: (Rule: SlugRule) => Rule.required()
+      type: 'string',
+      validation: (Rule: StringRule) =>
+        Rule.required().custom(stringSlugValidator as CustomValidator)
     }),
     defineField({
       name: 'image',
@@ -29,10 +34,7 @@ export default defineType({
         {
           name: 'alt',
           title: 'Alt Text',
-          type: 'string',
-          options: {
-            isHighlighted: true
-          }
+          type: 'string'
         }
       ],
       options: {

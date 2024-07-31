@@ -13,12 +13,14 @@
 
       <h2 class="mb-8 mt-2" itemprop="headline">{{ post.title }}</h2>
 
-      <img
-        class="mx-auto h-60 object-cover lg:h-56 xl:h-80 2xl:h-96"
-        [ngSrc]="post.mainImage.asset.path"
-        [width]="post.mainImage.asset.metadata.dimensions.width"
-        [height]="post.mainImage.asset.metadata.dimensions.height"
-        [alt]="post.mainImage.asset.altText" />
+      <div class="relative mx-auto h-60 lg:h-56 xl:h-80 2xl:h-96">
+        <img
+          class="object-cover"
+          priority
+          fill
+          [ngSrc]="post.mainImage.asset.path"
+          [alt]="post.mainImage.asset.altText" />
+      </div>
     </header>
 
     <section>

@@ -1,53 +1,32 @@
-@if (this.posts.length) {
-  @for (post of posts; track post.slug.current) {
-    <article class="card card-compact bg-base-100 lg:col-span-6 lg:col-start-4">
-      <figure>
-        <img
-          [ngSrc]="post.mainImage.asset.path"
-          [width]="post.mainImage.asset.metadata.dimensions.width"
-          [height]="post.mainImage.asset.metadata.dimensions.height"
-          [alt]="post.mainImage.asset.altText" />
-      </figure>
-      <div class="card-body border-x border-b">
-        <h3 class="card-title justify-between">
-          <span>{{ post.title }}</span>
+@for (post of postRepository.postPreviews$ | async; track post.slug) {
+  <article class="card card-compact bg-base-100 lg:col-span-6 lg:col-start-4">
+    <figure class="relative h-48 w-full sm:h-52 md:h-56 lg:h-72 xl:h-80">
+      <img
+        class="object-cover"
+        priority
+        fill
+        [ngSrc]="post.mainImage.asset.path"
+        [alt]="post.mainImage.asset.altText" />
+    </figure>
+    <div class="card-body border-x border-b">
+      <h3 class="card-title justify-between">
+        <span>{{ post.title }}</span>
 
-          <span class="text-base font-light">
-            {{ post['_createdAt'] | date: 'shortDate' }}
-          </span>
-        </h3>
+        <span class="text-base font-light">
+          {{ post['_createdAt'] | date: 'shortDate' }}
+        </span>
+      </h3>
 
-        <p>{{ post.excerpt }}</p>
+      <p>{{ post.excerpt }}</p>
 
-        <div class="card-actions justify-end">
-          <a
-            class="btn btn-primary"
-            routerLink="/actualites/{{ post.slug.current }}">
-            Lire la suite
-          </a>
-        </div>
+      <div class="card-actions justify-end">
+        <a class="btn btn-primary" routerLink="/actualites/{{ post.slug }}">
+          Lire la suite
+        </a>
       </div>
-    </article>
-  }
-
-  <div class="join col-span-full grid grid-cols-2 lg:col-span-6 lg:col-start-4">
-    <a
-      class="btn btn-outline join-item"
-      routerLink="/actualites"
-      [queryParams]="{page: currentPage - 1}"
-      [ngClass]="{'btn-disabled': this.currentPage === 1}">
-      Page précédente
-    </a>
-
-    <a
-      class="btn btn-outline join-item"
-      routerLink="/actualites"
-      [queryParams]="{page: currentPage + 1}"
-      [ngClass]="{'btn-disabled': this.posts.length !== 3}">
-      Page suivante
-    </a>
-  </div>
-} @else {
+    </div>
+  </article>
+} @empty {
   <section
     class="col-span-full grid-cols-2 text-center *:col-span-full lg:col-span-6 lg:col-start-4">
     <h2>Aucun post trouvé</h2>
@@ -55,3 +34,25 @@
     <a class="btn" routerLink="/actualites">Retour</a>
   </section>
 }
+
+<div class="join col-span-full grid grid-cols-2 lg:col-span-6 lg:col-start-4">
+  <a
+    class="btn btn-outline join-item"
+    routerLink="/actualites"
+    [queryParams]="{page: currentPage - 1}"
+    [ngClass]="{'btn-disabled': this.currentPage === 1}">
+    Page précédente
+  </a>
+
+  <a
+    class="btn btn-outline join-item"
+    routerLink="/actualites"
+    [queryParams]="{page: currentPage + 1}"
+    [ngClass]="{
+      'btn-disabled':
+        this.currentPage > 1 &&
+        (postRepository.postPreviews$ | async)?.length! < 3
+    }">
+    Page suivante
+  </a>
+</div>
