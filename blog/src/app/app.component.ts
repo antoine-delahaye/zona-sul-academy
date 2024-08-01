@@ -13,10 +13,7 @@ import {siteName} from '@app/core/providers/title.provider'
 import {PageContentService} from '@service/page-content.service'
 import {MediaService} from '@service/media.service'
 import {MediaComponent} from '@shared/media/media.component'
-import {
-  PageContent,
-  PageContentRepository
-} from '@repository/page-content.repository'
+import {BypassHtmlSanitizerPipe} from '@shared/pipes/bypass-html-sanitizer.pipe'
 
 @Component({
   selector: 'app-root',
@@ -28,7 +25,8 @@ import {
     RouterLink,
     RouterLinkActive,
     AsyncPipe,
-    MediaComponent
+    MediaComponent,
+    BypassHtmlSanitizerPipe
   ],
   standalone: true
 })
@@ -36,9 +34,6 @@ export class AppComponent implements OnInit {
   private pageContentService: PageContentService = inject(PageContentService)
   private mediaService: MediaService = inject(MediaService)
   protected route: ActivatedRoute = inject(ActivatedRoute)
-  protected pageContentRepository: PageContentRepository = inject(
-    PageContentRepository
-  )
 
   protected navigationRoutes: Routes = navigationRoutes
   protected legalRoutes: Routes = legalRoutes
@@ -54,15 +49,9 @@ export class AppComponent implements OnInit {
       url: 'https://www.helloasso.com/associations/zona-sul-academy'
     }
   ]
-  protected membershipLink?: PageContent
 
   public ngOnInit(): void {
-    this.pageContentService.getAll().subscribe({
-      next: (): void => {
-        this.membershipLink =
-          this.pageContentRepository.get('adhesion-helloasso')
-      }
-    })
+    this.pageContentService.getAll().subscribe()
     this.mediaService.getAll().subscribe()
   }
 }

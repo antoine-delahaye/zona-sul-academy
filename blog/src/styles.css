@@ -18,7 +18,7 @@ h3 {
     @apply text-3xl;
 }
 
-.drawer-content {
+main {
     a:not(.btn):not(.planning-event) {
         @apply hover:underline decoration-white;
     }

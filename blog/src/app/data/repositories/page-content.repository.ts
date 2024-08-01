@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core'
 import {createStore} from '@ngneat/elf'
-import {getEntity, setEntities, withEntities} from '@ngneat/elf-entities'
+import {
+  getEntity,
+  selectEntity,
+  setEntities,
+  withEntities
+} from '@ngneat/elf-entities'
 
 export type PageContent = {
   _id: string
@@ -28,6 +33,8 @@ export class PageContentRepository {
       idKey: 'slug'
     })
   )
+
+  public pageContent$ = (slug: string) => this.store.pipe(selectEntity(slug))
 
   public get(slug: string): PageContent | undefined {
     return this.store.query(getEntity(slug))
