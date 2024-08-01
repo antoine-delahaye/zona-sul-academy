@@ -1,6 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core'
 import {
-  ActivatedRoute,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
@@ -13,7 +12,6 @@ import {siteName} from '@app/core/providers/title.provider'
 import {PageContentService} from '@service/page-content.service'
 import {MediaService} from '@service/media.service'
 import {MediaComponent} from '@shared/media/media.component'
-import {BypassHtmlSanitizerPipe} from '@shared/pipes/bypass-html-sanitizer.pipe'
 
 @Component({
   selector: 'app-root',
@@ -25,15 +23,13 @@ import {BypassHtmlSanitizerPipe} from '@shared/pipes/bypass-html-sanitizer.pipe'
     RouterLink,
     RouterLinkActive,
     AsyncPipe,
-    MediaComponent,
-    BypassHtmlSanitizerPipe
+    MediaComponent
   ],
   standalone: true
 })
 export class AppComponent implements OnInit {
   private pageContentService: PageContentService = inject(PageContentService)
   private mediaService: MediaService = inject(MediaService)
-  protected route: ActivatedRoute = inject(ActivatedRoute)
 
   protected navigationRoutes: Routes = navigationRoutes
   protected legalRoutes: Routes = legalRoutes
