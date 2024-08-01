@@ -35,11 +35,7 @@
     ) {
       <p>{{ content.children[0].text }}</p>
     } @empty {
-      <div class="flex w-full flex-col gap-4 *:skeleton *:h-4">
-        <div class="w-3/4"></div>
-        <div class="w-full"></div>
-        <div class="w-full"></div>
-      </div>
+      <app-skeleton />
     }
   </div>
 
@@ -61,11 +57,7 @@
     ) {
       <p>{{ content.children[0].text }}</p>
     } @empty {
-      <div class="flex w-full flex-col gap-4 *:skeleton *:h-4">
-        <div class="w-3/4"></div>
-        <div class="w-full"></div>
-        <div class="w-full"></div>
-      </div>
+      <app-skeleton />
     }
   </div>
 
