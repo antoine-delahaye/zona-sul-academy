@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core'
+import {Component, HostListener, inject, OnInit} from '@angular/core'
 import {
   RouterLink,
   RouterLinkActive,
@@ -49,5 +49,20 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.pageContentService.getAll().subscribe()
     this.mediaService.getAll().subscribe()
+  }
+
+  @HostListener('window:scroll', [])
+  protected onWindowScroll(): void {
+    const footer: Element | null = document.querySelector('.footer')
+    const bottomNav: Element | null = document.querySelector('.btm-nav')
+    if (footer && bottomNav) {
+      const footerRect: DOMRect = footer.getBoundingClientRect()
+      const bottomNavRect: DOMRect = bottomNav.getBoundingClientRect()
+      if (bottomNavRect.bottom >= footerRect.top) {
+        bottomNav.classList.add('footer-transition')
+      } else {
+        bottomNav.classList.remove('footer-transition')
+      }
+    }
   }
 }

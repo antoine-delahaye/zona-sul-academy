@@ -12,3 +12,8 @@ header .menu-horizontal > li {
     @apply underline decoration-primary decoration-2 underline-offset-8;
   }
 }
+
+.footer-transition {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
