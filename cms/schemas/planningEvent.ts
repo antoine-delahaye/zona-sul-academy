@@ -32,6 +32,7 @@ export default defineType({
     }),
     defineField({
       name: 'day',
+      title: 'Day',
       type: 'dayName',
       validation: (Rule) =>
         Rule.custom((day, context: ValidationContext) => {
@@ -44,6 +45,7 @@ export default defineType({
     }),
     defineField({
       name: 'duration',
+      title: 'Duration',
       type: 'duration'
     }),
     defineField({

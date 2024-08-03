@@ -37,11 +37,11 @@ export default defineType({
       title: 'Main image',
       type: 'image',
       fields: [
-        {
+        defineField({
           name: 'alt',
-          title: 'Alt Text',
-          type: 'string'
-        }
+          type: 'string',
+          title: 'Alternative text'
+        })
       ],
       options: {
         hotspot: true
