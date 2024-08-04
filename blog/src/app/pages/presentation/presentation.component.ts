@@ -1,5 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core'
 import {RouterLink, RouterOutlet} from '@angular/router'
+import {NgClass, NgOptimizedImage} from '@angular/common'
 
 import {PostService} from '@service/post.service'
 import {FeaturedPost, PostRepository} from '@repository/post.repository'
@@ -11,7 +12,6 @@ import {
 } from '@repository/site-content.repository'
 import {MediaComponent} from '@shared/media/media.component'
 import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
-import {NgClass, NgOptimizedImage} from '@angular/common'
 
 @Component({
   selector: 'app-presentation',

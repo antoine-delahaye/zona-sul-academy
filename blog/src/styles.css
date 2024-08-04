@@ -23,11 +23,11 @@ main {
         @apply hover:underline decoration-white;
     }
 
-    section:not(.hero), app-news-index, app-news-single {
+    section:not(.hero), app-news-index, app-news-single, app-prices {
         @apply grid gap-8 px-4 py-8 lg:p-16;
     }
 
-    app-news-index, app-news-single {
+    app-news-index, app-news-single, app-prices {
         @apply lg:grid-cols-12;
     }
 }
