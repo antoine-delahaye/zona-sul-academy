@@ -4,27 +4,38 @@ import {RouterLink, RouterOutlet} from '@angular/router'
 import {PostService} from '@service/post.service'
 import {FeaturedPost, PostRepository} from '@repository/post.repository'
 import {
-  PageContent,
-  PageContentRepository
-} from '@src/app/data/repositories/page-content.repository'
+  ImageSection,
+  SiteContent,
+  SiteContentRepository,
+  VideoSection
+} from '@repository/site-content.repository'
 import {MediaComponent} from '@shared/media/media.component'
 import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
+import {NgClass, NgOptimizedImage} from '@angular/common'
 
 @Component({
   selector: 'app-presentation',
   standalone: true,
-  imports: [RouterLink, MediaComponent, SkeletonComponent, RouterOutlet],
+  imports: [
+    RouterLink,
+    MediaComponent,
+    SkeletonComponent,
+    RouterOutlet,
+    NgClass,
+    NgOptimizedImage
+  ],
   templateUrl: 'presentation.component.html'
 })
 export class PresentationComponent implements OnInit {
   private postService: PostService = inject(PostService)
-  protected postRepository: PostRepository = inject(PostRepository)
-  protected pageContentRepository: PageContentRepository = inject(
-    PageContentRepository
+  private postRepository: PostRepository = inject(PostRepository)
+  private siteContentRepository: SiteContentRepository = inject(
+    SiteContentRepository
   )
 
   protected featuredPost?: FeaturedPost
-  protected membershipLink?: PageContent
+  protected presentationSections: (ImageSection | VideoSection)[] = []
+  protected membershipButton?: SiteContent
 
   public ngOnInit(): void {
     this.postService.getFeaturedPosts().subscribe({
@@ -35,10 +46,19 @@ export class PresentationComponent implements OnInit {
       }
     })
 
-    this.pageContentRepository
-      .pageContent$('adhesion-helloasso')
-      .subscribe((membershipLink: PageContent | undefined): void => {
-        this.membershipLink = membershipLink
+    this.siteContentRepository
+      .siteContent$('presentation')
+      .subscribe((presentationContent: SiteContent | undefined): void => {
+        this.presentationSections = presentationContent?.pageBuilder as (
+          | ImageSection
+          | VideoSection
+        )[]
+      })
+
+    this.siteContentRepository
+      .siteContent$('bouton-adhesion')
+      .subscribe((membershipButton: SiteContent | undefined): void => {
+        this.membershipButton = membershipButton
       })
   }
 }

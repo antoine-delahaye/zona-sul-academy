@@ -42,7 +42,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: IMAGE_LOADER,
       useValue: (config: ImageLoaderConfig): string => {
-        return `https://cdn.sanity.io/${config.src}`
+        return `https://cdn.sanity.io/${config.src}?w=${config.width || 1000}`
       }
     }
   ]

@@ -1,9 +1,12 @@
-<section
-  class="hero min-h-screen"
-  [style.background-image]="
-    'url(' + featuredPost?.mainImage?.asset?.url! + ')'
-  ">
-  <div class="hero-overlay bg-opacity-30"></div>
+<section class="hero relative min-h-screen">
+  @if (featuredPost?.mainImage) {
+    <img
+      class="hero-overlay object-cover brightness-75"
+      fill
+      priority
+      [ngSrc]="featuredPost?.mainImage?.asset?.path!"
+      [alt]="featuredPost?.mainImage?.asset?.altText!" />
+  }
   <div class="hero-content text-center text-neutral-content">
     <div class="max-w-md">
       <h2 class="mb-5">{{ featuredPost?.title }}</h2>
@@ -25,56 +28,49 @@
   </div>
 </section>
 
-<section class="lg:grid-cols-12">
-  <div class="lg:col-span-4">
-    <h2 class="mb-4">Le club</h2>
+@for (section of presentationSections; track section._key; let isEven = $even) {
+  <section class="lg:grid-cols-12">
+    <div class="lg:col-span-4" [ngClass]="{'lg:col-end-13': !isEven}">
+      <h2 class="mb-4">{{ section.title }}</h2>
 
-    @for (
-      content of pageContentRepository.get('presentation-le-club')?.bodyRaw;
-      track content._key
-    ) {
-      <p>{{ content.children[0].text }}</p>
-    } @empty {
-      <app-skeleton />
+      @for (block of section?.bodyRaw; track block._key) {
+        <p>{{ block.children[0].text }}</p>
+      } @empty {
+        <app-skeleton />
+      }
+    </div>
+
+    @if (section.__typename === 'ImageSection') {
+      <div
+        class="stack lg:col-span-6"
+        [ngClass]="{
+          'mb-5 mr-5 lg:mb-10 lg:mr-10': isEven,
+          'ml-5 mt-5 lg:col-end-9 lg:row-start-1 lg:ml-10 lg:mt-10': !isEven
+        }">
+        <img
+          [ngSrc]="section.image.asset.path"
+          [width]="section.image.asset.metadata.dimensions.width"
+          [height]="section.image.asset.metadata.dimensions.height"
+          [alt]="section.image.asset.altText" />
+
+        <div
+          class="h-full w-full bg-black"
+          [ngClass]="{
+            '!translate-y-5 translate-x-5 lg:!translate-y-10 lg:translate-x-10':
+              isEven,
+            '!-translate-y-5 -translate-x-5 lg:!-translate-y-10 lg:-translate-x-10':
+              !isEven
+          }"></div>
+      </div>
     }
-  </div>
+  </section>
+}
 
-  <div class="stack mb-5 mr-5 lg:col-span-6 lg:mb-10 lg:mr-10">
-    <app-media slug="les-membres-du-club" />
-
-    <div
-      class="h-full w-full !translate-y-5 translate-x-5 bg-black lg:!translate-y-10 lg:translate-x-10"></div>
-  </div>
-</section>
-
-<section class="lg:grid-cols-12">
-  <div class="lg:col-span-4 lg:col-end-13">
-    <h2 class="mb-4">Les coachs</h2>
-
-    @for (
-      content of pageContentRepository.get('presentation-les-coachs')?.bodyRaw;
-      track content._key
-    ) {
-      <p>{{ content.children[0].text }}</p>
-    } @empty {
-      <app-skeleton />
-    }
-  </div>
-
-  <div
-    class="stack ml-5 mt-5 lg:col-span-6 lg:col-end-9 lg:row-start-1 lg:ml-10 lg:mt-10">
-    <app-media slug="les-coachs" />
-
-    <div
-      class="h-full w-full !-translate-y-5 -translate-x-5 bg-black lg:!-translate-y-10 lg:-translate-x-10"></div>
-  </div>
-</section>
-
-@if (membershipLink) {
+@if (membershipButton) {
   <a
     class="btn sticky bottom-28 left-full z-50 mb-12 mt-8 lg:btn-lg"
     target="_blank"
-    [href]="membershipLink.bodyRaw[0].children[0].text">
+    [href]="membershipButton.subtitleRaw[0].children[0].text">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-auto w-8 lg:w-10"

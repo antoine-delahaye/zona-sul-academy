@@ -110,7 +110,14 @@ export class PostService {
               excerpt
               mainImage {
                 asset {
-                  url
+                  altText
+                  path
+                  metadata {
+                    dimensions {
+                      width
+                      height
+                    }
+                  }
                 }
               }
               featuredButtons {

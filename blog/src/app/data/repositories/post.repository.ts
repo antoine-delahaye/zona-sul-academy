@@ -49,7 +49,13 @@ export type FeaturedPost = {
   title: string
   slug: string
   excerpt: string
-  mainImage: {asset: {url: string}}
+  mainImage: {
+    asset: {
+      altText: string
+      path: string
+      metadata: {dimensions: {width: number; height: number}}
+    }
+  }
   featuredButtons: {
     text: string
     url: string

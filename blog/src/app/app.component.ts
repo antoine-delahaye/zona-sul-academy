@@ -9,7 +9,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common'
 
 import {navigationRoutes, legalRoutes} from '@app/app.routes'
 import {siteName} from '@app/core/providers/title.provider'
-import {PageContentService} from '@service/page-content.service'
+import {SiteContentService} from '@service/site-content.service'
 import {MediaService} from '@service/media.service'
 import {MediaComponent} from '@shared/media/media.component'
 
@@ -28,7 +28,7 @@ import {MediaComponent} from '@shared/media/media.component'
   standalone: true
 })
 export class AppComponent implements OnInit {
-  private pageContentService: PageContentService = inject(PageContentService)
+  private siteContentService: SiteContentService = inject(SiteContentService)
   private mediaService: MediaService = inject(MediaService)
 
   protected navigationRoutes: Routes = navigationRoutes
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
   ]
 
   public ngOnInit(): void {
-    this.pageContentService.getAll().subscribe()
+    this.siteContentService.getAll().subscribe()
     this.mediaService.getAll().subscribe()
   }
 
