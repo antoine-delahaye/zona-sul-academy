@@ -7,6 +7,7 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity graphql deploy",
+    "predeploy:production": "sanity login",
     "deploy:production": "sanity deploy && sanity graphql deploy --dataset production",
     "lint": "eslint --fix . && prettier --write ."
   },
