@@ -6,11 +6,14 @@ import {
   PlanningEvent,
   PlanningEventRepository
 } from '@src/app/data/repositories/planning-event.repository'
+import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
+import {SiteContentRepository} from '@repository/site-content.repository'
+import {HourPipe} from '@shared/pipes/hour.pipe'
 
 @Component({
   selector: 'app-planning',
   standalone: true,
-  imports: [DatePipe, NgClass, AsyncPipe, NgTemplateOutlet],
+  imports: [DatePipe, NgClass, AsyncPipe, NgTemplateOutlet, SkeletonComponent, HourPipe],
   templateUrl: 'planning.component.html',
   styles: `
     :host {
@@ -24,6 +27,9 @@ export class PlanningComponent implements OnInit {
   private planningEventRepository: PlanningEventRepository = inject(
     PlanningEventRepository
   )
+  protected siteContentRepository: SiteContentRepository = inject(
+    SiteContentRepository
+  )
 
   protected currentDate: Date = new Date()
   protected daysOfTheWeek: Date[] = []
@@ -34,6 +40,15 @@ export class PlanningComponent implements OnInit {
   )
   protected events: PlanningEvent[] = []
   protected selectedDay: number = this.currentDate.getDay()
+  protected days: string[] = [
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi',
+    'Samedi',
+    'Dimanche'
+  ]
 
   public ngOnInit(): void {
     // Generate an array of dates for the current week, starting from Monday

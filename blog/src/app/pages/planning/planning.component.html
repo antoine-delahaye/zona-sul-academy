@@ -1,24 +1,75 @@
 <ng-template #planningEvent let-event="event">
-  <li
-    class="relative mt-px sm:flex sm:col-start-{{ event.day }} {{
-      Number(event.day) === selectedDay ? 'flex' : 'hidden'
-    }}"
-    [style.grid-row]="
-      getGridPosition(event.duration.start, event.duration.end)
-    ">
-    <a
-      class="planning-event group absolute inset-1 flex cursor-pointer flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">
-      <p class="order-1 font-semibold">
-        {{ event.title }} {{ event.person ? 'avec ' + event.person : '' }}
-      </p>
-      <p>
-        <time [dateTime]="getDateFromHour(event.duration.start)">
-          {{ getDateFromHour(event.duration.start) | date: 'shortTime' }}
-        </time>
-      </p>
-    </a>
-  </li>
+  @if (event.day) {
+    <li
+      class="relative mt-px sm:flex sm:col-start-{{ event.day }} {{
+        Number(event.day) === selectedDay ? 'flex' : 'hidden'
+      }}"
+      [style.grid-row]="
+        getGridPosition(event.duration.start, event.duration.end)
+      ">
+      <a
+        class="planning-event group absolute inset-1 flex cursor-pointer flex-col gap-0.5 overflow-y-auto bg-gray-100 p-2 text-xs leading-5 hover:bg-gray-200">
+        <p class="order-1 font-semibold">
+          {{ event.title }} {{ event.person ? 'avec ' + event.person : '' }}
+        </p>
+        <p class="order-2 inline-flex gap-0.5 font-semibold">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="size-4 shrink-0">
+            <path
+              fill-rule="evenodd"
+              d="m7.539 14.841.003.003.002.002a.755.755 0 0 0 .912 0l.002-.002.003-.003.012-.009a5.57 5.57 0 0 0 .19-.153 15.588 15.588 0 0 0 2.046-2.082c1.101-1.362 2.291-3.342 2.291-5.597A5 5 0 0 0 3 7c0 2.255 1.19 4.235 2.292 5.597a15.591 15.591 0 0 0 2.046 2.082 8.916 8.916 0 0 0 .189.153l.012.01ZM8 8.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+              clip-rule="evenodd" />
+          </svg>
+          {{ event.location }}
+        </p>
+        <p class="text-sm font-bold">
+          <time [dateTime]="getDateFromHour(event.duration.start)">
+            {{ event.duration.start | hour }}
+          </time>
+        </p>
+      </a>
+    </li>
+  }
 </ng-template>
+
+<section class="hero col-span-full">
+  <div class="hero-content max-w-2xl text-center">
+    <h2 class="mb-6 text-3xl font-bold">
+      {{ (siteContentRepository.siteContent$('planning') | async)?.title }}
+    </h2>
+  </div>
+</section>
+
+<section class="overflow-x-auto">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Horaires</th>
+        <th>Lieu</th>
+        <th>Coach</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (event of events; track event._id) {
+        @if (event.day) {
+          <tr>
+            <th>{{ days[Number(event.day) - 1] }}</th>
+            <td>
+              {{ event.duration.start | hour }} -
+              {{ event.duration.end | hour }}
+            </td>
+            <td>{{ event.location }}</td>
+            <td>{{ event.person }}</td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</section>
 
 <header
   class="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
