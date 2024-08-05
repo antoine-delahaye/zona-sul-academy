@@ -49,7 +49,13 @@ export type FeaturedPost = {
   title: string
   slug: string
   excerpt: string
-  mainImage: {asset: {url: string}}
+  mainImage: {
+    asset: {
+      altText: string
+      path: string
+      metadata: {dimensions: {width: number; height: number}}
+    }
+  }
   featuredButtons: {
     text: string
     url: string
@@ -90,6 +96,7 @@ export class PostRepository {
     {name: 'postSingle'},
     withProps<PostSingle>({
       _createdAt: '',
+      title: '',
       bodyRaw: [],
       mainImage: {
         asset: {
@@ -97,8 +104,7 @@ export class PostRepository {
           metadata: {dimensions: {height: 0, width: 0}},
           path: ''
         }
-      },
-      title: ''
+      }
     })
   )
 

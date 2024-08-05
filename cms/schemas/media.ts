@@ -28,18 +28,15 @@ export default defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Image',
       type: 'image',
       fields: [
-        {
+        defineField({
           name: 'alt',
-          title: 'Alt Text',
-          type: 'string'
-        }
+          type: 'string',
+          title: 'Alternative text'
+        })
       ],
-      options: {
-        hotspot: true
-      },
+      options: {hotspot: true},
       validation: (Rule: ImageRule) => Rule.required()
     })
   ],

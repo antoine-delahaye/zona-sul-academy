@@ -22,7 +22,7 @@ export class PlanningEventService {
       .watchQuery<Response>({
         query: gql`
           query getPlanningEvents {
-            allPlanningEvent {
+            allPlanningEvent(sort: [{day: ASC}]) {
               _id
               title
               date

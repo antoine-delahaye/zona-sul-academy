@@ -1,6 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core'
+import {Component, HostListener, inject, OnInit} from '@angular/core'
 import {
-  ActivatedRoute,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
@@ -10,7 +9,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common'
 
 import {navigationRoutes, legalRoutes} from '@app/app.routes'
 import {siteName} from '@app/core/providers/title.provider'
-import {PageContentService} from '@service/page-content.service'
+import {SiteContentService} from '@service/site-content.service'
 import {MediaService} from '@service/media.service'
 import {MediaComponent} from '@shared/media/media.component'
 
@@ -29,9 +28,8 @@ import {MediaComponent} from '@shared/media/media.component'
   standalone: true
 })
 export class AppComponent implements OnInit {
-  private pageContentService: PageContentService = inject(PageContentService)
+  private siteContentService: SiteContentService = inject(SiteContentService)
   private mediaService: MediaService = inject(MediaService)
-  protected route: ActivatedRoute = inject(ActivatedRoute)
 
   protected navigationRoutes: Routes = navigationRoutes
   protected legalRoutes: Routes = legalRoutes
@@ -49,7 +47,22 @@ export class AppComponent implements OnInit {
   ]
 
   public ngOnInit(): void {
-    this.pageContentService.getAll().subscribe()
+    this.siteContentService.getAll().subscribe()
     this.mediaService.getAll().subscribe()
+  }
+
+  @HostListener('window:scroll', [])
+  protected onWindowScroll(): void {
+    const footer: Element | null = document.querySelector('.footer')
+    const bottomNav: Element | null = document.querySelector('.btm-nav')
+    if (footer && bottomNav) {
+      const footerRect: DOMRect = footer.getBoundingClientRect()
+      const bottomNavRect: DOMRect = bottomNav.getBoundingClientRect()
+      if (bottomNavRect.bottom >= footerRect.top) {
+        bottomNav.classList.add('footer-transition')
+      } else {
+        bottomNav.classList.remove('footer-transition')
+      }
+    }
   }
 }
