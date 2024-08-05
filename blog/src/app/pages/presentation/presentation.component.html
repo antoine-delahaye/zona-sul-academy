@@ -1,34 +1,54 @@
-<section class="hero relative min-h-screen">
-  @if (featuredPost?.mainImage) {
-    <img
-      class="hero-overlay object-cover brightness-75"
-      fill
-      priority
-      [ngSrc]="featuredPost?.mainImage?.asset?.path!"
-      [alt]="featuredPost?.mainImage?.asset?.altText!" />
-  }
-  <div class="hero-content text-center text-neutral-content">
-    <div class="max-w-md">
-      <h2 class="mb-5">{{ featuredPost?.title }}</h2>
+@if (featuredPost) {
+  <section class="hero relative min-h-screen">
+    @if (featuredPost.mainImage) {
+      <img
+        class="hero-overlay object-cover brightness-75"
+        fill
+        priority
+        [ngSrc]="featuredPost.mainImage.asset.path!"
+        [alt]="featuredPost.mainImage.asset.altText!" />
+    }
+    <div class="hero-content text-center text-neutral-content">
+      <div class="max-w-md">
+        <h2 class="mb-5">{{ featuredPost.title }}</h2>
 
-      <p class="mb-5">{{ featuredPost?.excerpt }}</p>
+        <p class="mb-5">{{ featuredPost.excerpt }}</p>
 
-      <div class="flex flex-wrap justify-center gap-4">
-        <a class="btn" [routerLink]="'actualites/' + featuredPost?.slug">
-          En savoir plus
-        </a>
-
-        @for (button of featuredPost?.featuredButtons; track button.text) {
-          <a class="btn" href="{{ button.url }}" target="_blank">
-            {{ button.text }}
+        <div class="flex flex-wrap justify-center gap-4">
+          <a class="btn" [routerLink]="'actualites/' + featuredPost.slug">
+            En savoir plus
           </a>
-        }
+
+          @for (button of featuredPost.featuredButtons; track button.text) {
+            <a class="btn" href="{{ button.url }}" target="_blank">
+              {{ button.text }}
+            </a>
+          }
+        </div>
       </div>
+    </div>
+  </section>
+}
+
+<section class="hero col-span-full px-4 py-8 lg:p-16">
+  <div class="hero-content text-center">
+    <div class="max-w-2xl">
+      <h1 class="mb-6 font-bold">{{ presentationContent?.title }}</h1>
+
+      @for (block of presentationContent?.subtitleRaw; track block._key) {
+        <p class="text-lg leading-8 text-gray-600">
+          {{ block.children[0].text }}
+        </p>
+      }
     </div>
   </div>
 </section>
 
-@for (section of presentationSections; track section._key; let isEven = $even) {
+@for (
+  section of presentationContent?.pageBuilder;
+  track section._key;
+  let isEven = $even
+) {
   <section class="lg:grid-cols-12">
     <div class="lg:col-span-4" [ngClass]="{'lg:col-end-13': !isEven}">
       <h2 class="mb-4">{{ section.title }}</h2>

@@ -1,14 +1,12 @@
 <section class="hero col-span-full">
   <div class="hero-content text-center">
     <div class="max-w-2xl">
-      <h2 class="mb-6 text-3xl font-bold">{{ content?.title }}</h2>
+      <h2 class="mb-6">{{ content?.title }}</h2>
 
       @for (block of content?.subtitleRaw; track block._key) {
         <p class="text-lg leading-8 text-gray-600">
           {{ block.children[0].text }}
         </p>
-      } @empty {
-        <app-skeleton />
       }
     </div>
   </div>

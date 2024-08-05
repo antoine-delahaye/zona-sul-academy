@@ -1,5 +1,6 @@
 @for (post of postRepository.postPreviews$ | async; track post.slug) {
-  <article class="card card-compact bg-base-100 lg:col-span-6 lg:col-start-4">
+  <article
+    class="card card-compact bg-base-100 lg:col-span-8 lg:col-start-3 xl:col-span-6 xl:col-start-4">
     <figure class="relative h-48 w-full sm:h-52 md:h-56 lg:h-72 xl:h-80">
       <img
         class="object-cover"
@@ -31,28 +32,30 @@
     class="col-span-full grid-cols-2 text-center *:col-span-full lg:col-span-6 lg:col-start-4">
     <h2>Aucun post trouvé</h2>
 
-    <a class="btn" routerLink="/actualites">Retour</a>
+    <a class="btn" routerLink="/">Retour</a>
   </section>
 }
 
-<div class="join col-span-full grid grid-cols-2 lg:col-span-6 lg:col-start-4">
-  <a
-    class="btn btn-outline join-item"
-    routerLink="/actualites"
-    [queryParams]="{page: currentPage - 1}"
-    [ngClass]="{'btn-disabled': this.currentPage === 1}">
-    Page précédente
-  </a>
+@if ((postRepository.postPreviews$ | async)?.length) {
+  <div class="join col-span-full grid grid-cols-2 lg:col-span-6 lg:col-start-4">
+    <a
+      class="btn btn-outline join-item"
+      routerLink="/actualites"
+      [queryParams]="{page: currentPage - 1}"
+      [ngClass]="{'btn-disabled': this.currentPage === 1}">
+      Page précédente
+    </a>
 
-  <a
-    class="btn btn-outline join-item"
-    routerLink="/actualites"
-    [queryParams]="{page: currentPage + 1}"
-    [ngClass]="{
-      'btn-disabled':
-        this.currentPage > 1 &&
-        (postRepository.postPreviews$ | async)?.length! < 3
-    }">
-    Page suivante
-  </a>
-</div>
+    <a
+      class="btn btn-outline join-item"
+      routerLink="/actualites"
+      [queryParams]="{page: currentPage + 1}"
+      [ngClass]="{
+        'btn-disabled':
+          this.currentPage > 1 &&
+          (postRepository.postPreviews$ | async)?.length! < 3
+      }">
+      Page suivante
+    </a>
+  </div>
+}

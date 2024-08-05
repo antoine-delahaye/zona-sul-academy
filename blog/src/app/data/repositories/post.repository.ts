@@ -96,6 +96,7 @@ export class PostRepository {
     {name: 'postSingle'},
     withProps<PostSingle>({
       _createdAt: '',
+      title: '',
       bodyRaw: [],
       mainImage: {
         asset: {
@@ -103,8 +104,7 @@ export class PostRepository {
           metadata: {dimensions: {height: 0, width: 0}},
           path: ''
         }
-      },
-      title: ''
+      }
     })
   )
 

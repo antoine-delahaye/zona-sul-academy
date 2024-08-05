@@ -34,7 +34,9 @@ export class PresentationComponent implements OnInit {
   )
 
   protected featuredPost?: FeaturedPost
-  protected presentationSections: (ImageSection | VideoSection)[] = []
+  protected presentationContent?: SiteContent & {
+    pageBuilder: (ImageSection | VideoSection)[]
+  }
   protected membershipButton?: SiteContent
 
   public ngOnInit(): void {
@@ -49,10 +51,9 @@ export class PresentationComponent implements OnInit {
     this.siteContentRepository
       .siteContent$('presentation')
       .subscribe((presentationContent: SiteContent | undefined): void => {
-        this.presentationSections = presentationContent?.pageBuilder as (
-          | ImageSection
-          | VideoSection
-        )[]
+        this.presentationContent = presentationContent as SiteContent & {
+          pageBuilder: (ImageSection | VideoSection)[]
+        }
       })
 
     this.siteContentRepository

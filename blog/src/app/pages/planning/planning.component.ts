@@ -13,7 +13,14 @@ import {HourPipe} from '@shared/pipes/hour.pipe'
 @Component({
   selector: 'app-planning',
   standalone: true,
-  imports: [DatePipe, NgClass, AsyncPipe, NgTemplateOutlet, SkeletonComponent, HourPipe],
+  imports: [
+    DatePipe,
+    NgClass,
+    AsyncPipe,
+    NgTemplateOutlet,
+    SkeletonComponent,
+    HourPipe
+  ],
   templateUrl: 'planning.component.html',
   styles: `
     :host {

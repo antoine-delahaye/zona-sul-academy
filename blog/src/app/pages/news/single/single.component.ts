@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core'
-import {ActivatedRoute, Params} from '@angular/router'
+import {ActivatedRoute, Params, Router} from '@angular/router'
 import {DatePipe, NgOptimizedImage} from '@angular/common'
 
 import {PostService} from '@src/app/data/services/post.service'
@@ -16,6 +16,7 @@ import {
 })
 export class SingleComponent implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute)
+  private router: Router = inject(Router)
   private postService: PostService = inject(PostService)
   private postRepository: PostRepository = inject(PostRepository)
 
@@ -28,7 +29,11 @@ export class SingleComponent implements OnInit {
           if (!loading) {
             this.postRepository.postSingleStore
               .subscribe((post: PostSingle): void => {
-                this.post = post
+                if (post._createdAt) {
+                  this.post = post
+                } else {
+                  this.router.navigateByUrl('/404').then()
+                }
               })
               .unsubscribe()
           }
