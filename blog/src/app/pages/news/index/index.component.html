@@ -1,42 +1,53 @@
-@for (post of postRepository.postPreviews$ | async; track post.slug) {
-  <article
-    class="card card-compact bg-base-100 lg:col-span-8 lg:col-start-3 xl:col-span-6 xl:col-start-4">
-    <figure class="relative h-48 w-full sm:h-52 md:h-56 lg:h-72 xl:h-80">
-      <img
-        class="object-cover"
-        priority
-        fill
-        [ngSrc]="post.mainImage.asset.path"
-        [alt]="post.mainImage.asset.altText" />
-    </figure>
-    <div class="card-body border-x border-b">
-      <h3 class="card-title justify-between">
-        <span>{{ post.title }}</span>
-
-        <span class="text-base font-light">
-          {{ post['_createdAt'] | date: 'shortDate' }}
-        </span>
-      </h3>
-
-      <p>{{ post.excerpt }}</p>
-
-      <div class="card-actions justify-end">
-        <a class="btn btn-primary" routerLink="/actualites/{{ post.slug }}">
-          Lire la suite
-        </a>
-      </div>
-    </div>
-  </article>
-} @empty {
-  <section
-    class="col-span-full grid-cols-2 text-center *:col-span-full lg:col-span-6 lg:col-start-4">
-    <h2>Aucun post trouvé</h2>
-
-    <a class="btn" routerLink="/">Retour</a>
-  </section>
-}
-
 @if ((postRepository.postPreviews$ | async)?.length) {
+  <section class="hero col-span-full">
+    <div class="hero-content max-w-2xl text-center">
+      <h1 class="text-4xl">Les dernières actualités</h1>
+    </div>
+  </section>
+
+  @for (
+    post of postRepository.postPreviews$ | async;
+    track post.slug;
+    let isFirst = $first
+  ) {
+    <article
+      class="card card-compact bg-base-100 lg:col-span-8 lg:col-start-3 xl:col-span-6 xl:col-start-4"
+      itemtype="https://schema.org/BlogPosting"
+      itemscope>
+      <figure class="relative h-48 w-full sm:h-52 md:h-56 lg:h-72 xl:h-80">
+        <img
+          class="object-cover"
+          itemprop="image"
+          fill
+          [ngSrc]="post.mainImage.asset.path"
+          [alt]="post.mainImage.asset.altText"
+          [priority]="isFirst" />
+      </figure>
+      <div class="card-body border-x border-b">
+        <div class="inline-flex justify-between">
+          <h2 class="card-title justify-between" itemprop="headline">
+            {{ post.title }}
+          </h2>
+
+          <span class="text-base font-light" itemprop="datePublished">
+            {{ post['_createdAt'] | date: 'shortDate' }}
+          </span>
+        </div>
+
+        <p>{{ post.excerpt }}</p>
+
+        <div class="card-actions justify-end">
+          <a
+            class="btn btn-primary"
+            itemprop="url"
+            routerLink="/actualites/{{ post.slug }}">
+            Lire la suite
+          </a>
+        </div>
+      </div>
+    </article>
+  }
+
   <div class="join col-span-full grid grid-cols-2 lg:col-span-6 lg:col-start-4">
     <a
       class="btn btn-outline join-item"
@@ -51,11 +62,16 @@
       routerLink="/actualites"
       [queryParams]="{page: currentPage + 1}"
       [ngClass]="{
-        'btn-disabled':
-          this.currentPage > 1 &&
-          (postRepository.postPreviews$ | async)?.length! < 3
+        'btn-disabled': (postRepository.postPreviews$ | async)?.length! < 3
       }">
       Page suivante
     </a>
   </div>
+} @else {
+  <section
+    class="col-span-full grid-cols-2 text-center *:col-span-full lg:col-span-6 lg:col-start-4">
+    <h1 class="text-4xl">Aucun post trouvé</h1>
+
+    <a class="btn" routerLink="/">Retour</a>
+  </section>
 }

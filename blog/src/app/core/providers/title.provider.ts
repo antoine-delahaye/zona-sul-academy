@@ -18,8 +18,4 @@ export class TitleProvider extends TitleStrategy {
       this.title.setTitle(siteName)
     }
   }
-
-  public setNewsTitle(title: string): void {
-    this.title.setTitle(`${siteName} - ${title}`)
-  }
 }
