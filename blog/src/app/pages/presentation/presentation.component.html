@@ -10,7 +10,7 @@
     }
     <div class="hero-content text-center text-neutral-content">
       <div class="max-w-md">
-        <h2 class="mb-5">{{ featuredPost.title }}</h2>
+        <h1 class="mb-5 text-5xl">{{ featuredPost.title }}</h1>
 
         <p class="mb-5">{{ featuredPost.excerpt }}</p>
 
@@ -33,7 +33,11 @@
 <section class="hero col-span-full px-4 py-8 lg:p-16">
   <div class="hero-content text-center">
     <div class="max-w-2xl">
-      <h1 class="mb-6 font-bold">{{ presentationContent?.title }}</h1>
+      <h2
+        class="text-4xl font-bold"
+        [ngClass]="{'mb-6': presentationContent?.subtitleRaw?.length}">
+        {{ presentationContent?.title }}
+      </h2>
 
       @for (block of presentationContent?.subtitleRaw; track block._key) {
         <p class="text-lg leading-8 text-gray-600">
@@ -47,11 +51,12 @@
 @for (
   section of presentationContent?.pageBuilder;
   track section._key;
+  let isFirst = $first;
   let isEven = $even
 ) {
   <section class="lg:grid-cols-12">
     <div class="lg:col-span-4" [ngClass]="{'lg:col-end-13': !isEven}">
-      <h2 class="mb-4">{{ section.title }}</h2>
+      <h3 class="mb-4 text-3xl">{{ section.title }}</h3>
 
       @for (block of section?.bodyRaw; track block._key) {
         <p>{{ block.children[0].text }}</p>
@@ -71,7 +76,8 @@
           [ngSrc]="section.image.asset.path"
           [width]="section.image.asset.metadata.dimensions.width"
           [height]="section.image.asset.metadata.dimensions.height"
-          [alt]="section.image.asset.altText" />
+          [alt]="section.image.asset.altText"
+          [priority]="isFirst" />
 
         <div
           class="h-full w-full bg-black"

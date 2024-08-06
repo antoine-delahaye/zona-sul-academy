@@ -1,8 +1,8 @@
 @if (post) {
   <article
     class="lg:col-span-full xl:col-span-10 xl:col-start-2 2xl:col-span-8 2xl:col-start-3"
-    itemscope
-    itemtype="https://schema.org/BlogPosting">
+    itemtype="https://schema.org/BlogPosting"
+    itemscope>
     <header class="text-center">
       <p>
         Posté le
@@ -11,11 +11,12 @@
         </time>
       </p>
 
-      <h2 class="mb-8 mt-2" itemprop="headline">{{ post.title }}</h2>
+      <h1 class="mb-8 mt-2 text-5xl" itemprop="headline">{{ post.title }}</h1>
 
       <div class="relative mx-auto h-60 lg:h-56 xl:h-80 2xl:h-96">
         <img
           class="object-cover"
+          itemprop="image"
           priority
           fill
           [ngSrc]="post.mainImage.asset.path"
