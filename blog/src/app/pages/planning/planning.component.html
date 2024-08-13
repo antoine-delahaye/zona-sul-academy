@@ -35,7 +35,7 @@
   }
 </ng-template>
 
-<section class="hero col-span-full">
+<section class="hero col-span-full px-4 pt-8">
   <div class="hero-content max-w-2xl text-center">
     <h1 class="text-4xl">
       {{ (siteContentRepository.siteContent$('planning') | async)?.title }}
@@ -43,33 +43,35 @@
   </div>
 </section>
 
-<section class="overflow-x-auto">
-  <table class="table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Horaires</th>
-        <th>Lieu</th>
-        <th>Coach</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (event of events; track event._id) {
-        @if (event.day) {
-          <tr>
-            <th>{{ days[Number(event.day) - 1] }}</th>
-            <td>
-              {{ event.duration.start | hour }} -
-              {{ event.duration.end | hour }}
-            </td>
-            <td>{{ event.location }}</td>
-            <td>{{ event.person }}</td>
-          </tr>
+@if (events.length) {
+  <section class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Horaires</th>
+          <th>Lieu</th>
+          <th>Coach</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (event of events; track event._id) {
+          @if (event.day) {
+            <tr>
+              <th>{{ days[Number(event.day) - 1] }}</th>
+              <td>
+                {{ event.duration.start | hour }} -
+                {{ event.duration.end | hour }}
+              </td>
+              <td>{{ event.location }}</td>
+              <td>{{ event.person }}</td>
+            </tr>
+          }
         }
-      }
-    </tbody>
-  </table>
-</section>
+      </tbody>
+    </table>
+  </section>
+}
 
 <header
   class="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">

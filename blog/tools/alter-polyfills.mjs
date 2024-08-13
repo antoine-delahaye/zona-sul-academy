@@ -4,13 +4,6 @@ import {join} from 'node:path'
 
 import {worker} from './paths.mjs'
 
-/**
- * Split by lines and comment the banner
- * ```
- * import { createRequire } from 'node:module';
- * globalThis['require'] ??= createRequire(import.meta.url);
- * ```
- */
 const serverPolyfillsFile = join(worker, 'polyfills.server.mjs')
 const serverPolyfillsData = fs
   .readFileSync(serverPolyfillsFile, 'utf8')
@@ -23,6 +16,6 @@ for (let index = 0; index < 2; index++) {
 }
 
 // Add needed polyfills
-serverPolyfillsData.unshift(`globalThis['process'] = {};`)
+serverPolyfillsData.unshift(`globalThis['process'] = {env: {NODE_ENV: 'production'}};`)
 
 fs.writeFileSync(serverPolyfillsFile, serverPolyfillsData.join(EOL))
