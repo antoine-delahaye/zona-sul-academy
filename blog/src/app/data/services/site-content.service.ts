@@ -51,7 +51,7 @@ export class SiteContentService {
                   _key
                   title
                   bodyRaw
-                  url
+                  videoId
                 }
                 ... on MembershipSection {
                   __typename

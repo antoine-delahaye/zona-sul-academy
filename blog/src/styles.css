@@ -18,4 +18,8 @@ main {
     app-news-index, app-news-single, app-prices {
         @apply lg:grid-cols-12;
     }
+
+    youtube-player-placeholder, youtube-player iframe {
+        @apply !w-full;
+    }
 }

@@ -65,30 +65,32 @@
       }
     </div>
 
-    @if (section.__typename === 'ImageSection') {
-      <div
-        class="stack lg:col-span-6"
-        [ngClass]="{
-          'mb-5 mr-5 lg:mb-10 lg:mr-10': isEven,
-          'ml-5 mt-5 lg:col-end-9 lg:row-start-1 lg:ml-10 lg:mt-10': !isEven
-        }">
+    <div
+      class="stack lg:col-span-6"
+      [ngClass]="{
+        'mb-5 mr-5 lg:mb-10 lg:mr-10': isEven,
+        'ml-5 mt-5 lg:col-end-9 lg:row-start-1 lg:ml-10 lg:mt-10': !isEven
+      }">
+      @if (section.__typename === 'ImageSection') {
         <img
           [ngSrc]="section.image.asset.path"
           [width]="section.image.asset.metadata.dimensions.width"
           [height]="section.image.asset.metadata.dimensions.height"
           [alt]="section.image.asset.altText"
           [priority]="isFirst" />
+      } @else if (section.__typename === 'VideoSection') {
+        <youtube-player videoId="SPep4Aj3up8" />
+      }
 
-        <div
-          class="h-full w-full bg-black"
-          [ngClass]="{
-            '!translate-y-5 translate-x-5 lg:!translate-y-10 lg:translate-x-10':
-              isEven,
-            '!-translate-y-5 -translate-x-5 lg:!-translate-y-10 lg:-translate-x-10':
-              !isEven
-          }"></div>
-      </div>
-    }
+      <div
+        class="h-full w-full bg-black"
+        [ngClass]="{
+          '!translate-y-5 translate-x-5 lg:!translate-y-10 lg:translate-x-10':
+            isEven,
+          '!-translate-y-5 -translate-x-5 lg:!-translate-y-10 lg:-translate-x-10':
+            !isEven
+        }"></div>
+    </div>
   </section>
 }
 
