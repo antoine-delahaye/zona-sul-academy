@@ -39,7 +39,7 @@ export type VideoSection = {
     _key: string
     style: string
   }[]
-  url: string
+  videoId: string
 }
 
 export type MembershipSection = {

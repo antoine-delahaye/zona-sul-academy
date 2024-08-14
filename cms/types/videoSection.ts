@@ -16,8 +16,8 @@ export default defineType({
       type: 'blockContent'
     }),
     defineField({
-      name: 'url',
-      title: 'URL',
+      name: 'videoId',
+      title: 'Video ID',
       type: 'string'
     })
   ]

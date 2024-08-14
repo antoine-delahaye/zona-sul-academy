@@ -12,6 +12,7 @@ import {
 } from '@repository/site-content.repository'
 import {MediaComponent} from '@shared/media/media.component'
 import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
+import {YouTubePlayer} from '@angular/youtube-player'
 
 @Component({
   selector: 'app-presentation',
@@ -22,7 +23,8 @@ import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
     SkeletonComponent,
     RouterOutlet,
     NgClass,
-    NgOptimizedImage
+    NgOptimizedImage,
+    YouTubePlayer
   ],
   templateUrl: 'presentation.component.html'
 })
