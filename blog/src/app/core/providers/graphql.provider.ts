@@ -2,9 +2,9 @@ import {
   ApplicationConfig,
   inject,
   InjectionToken,
-  makeStateKey,
-  StateKey,
-  TransferState
+  // makeStateKey,
+  // StateKey,
+  // TransferState
 } from '@angular/core'
 import {Apollo, APOLLO_OPTIONS} from 'apollo-angular'
 import {HttpLink, HttpLinkHandler} from 'apollo-angular/http'
@@ -16,17 +16,17 @@ const uri: string = `https://${environment.sanity.projectId}.api.sanity.io/v${en
 const APOLLO_CACHE: InjectionToken<InMemoryCache> =
   new InjectionToken<InMemoryCache>('apollo-cache')
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const STATE_KEY: StateKey<never> = makeStateKey<any>('apollo.state')
+// const STATE_KEY: StateKey<never> = makeStateKey<any>('apollo.state')
 
 function apolloOptionsFactory(): {
   link: HttpLinkHandler
   cache: InMemoryCache
 } {
   const httpLink: HttpLink = inject(HttpLink)
-  const transferState: TransferState = inject(TransferState)
+  // const transferState: TransferState = inject(TransferState)
   const cache: InMemoryCache = inject(APOLLO_CACHE)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /*// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isBrowser: boolean = transferState.hasKey<any>(STATE_KEY)
   if (isBrowser) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,7 +37,7 @@ function apolloOptionsFactory(): {
       return cache.extract()
     })
     cache.reset().then()
-  }
+  }*/
 
   return {
     link: httpLink.create({uri}),
