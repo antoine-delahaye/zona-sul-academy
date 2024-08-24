@@ -4,5 +4,6 @@ export default defineCliConfig({
   api: {
     projectId: 'a4vlamka',
     dataset: process.env.SANITY_STUDIO_DATASET || 'development'
-  }
+  },
+  studioHost: 'zona-sul-academy'
 })
