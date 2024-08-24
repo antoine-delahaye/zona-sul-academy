@@ -7,9 +7,10 @@ import {schemaTypes} from './index'
 export default defineConfig({
   name: 'default',
   title: 'Zona Sul Academy',
-
   projectId: 'a4vlamka',
-  dataset: 'development',
+  hostname: 'zona-sul-academy',
+
+  dataset: process.env.SANITY_STUDIO_DATASET || 'development',
 
   plugins: [structureTool(), visionTool()],
 
