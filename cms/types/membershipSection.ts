@@ -37,8 +37,13 @@ export default defineType({
       type: 'number'
     }),
     defineField({
-      name: 'url',
-      title: 'URL',
+      name: 'buttonUrl',
+      title: 'Button URL',
+      type: 'string'
+    }),
+    defineField({
+      name: 'buttonText',
+      title: 'Button Text',
       type: 'string'
     })
   ]
