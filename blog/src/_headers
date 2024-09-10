@@ -2,7 +2,7 @@
   X-Frame-Options: DENY
   X-xss-protection: 1
   Strict-transport-security: max-age=31536000; preload
-  Permissions-Policy: document-domain=()
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' p.typekit.net; img-src 'self' data: cdn.sanity.io; font-src 'self' use.typekit.net; connect-src 'self' a4vlamka.api.sanity.io; frame-ancestors 'none'
   Access-Control-Allow-Origin: https://zonasulacademy.fr
 

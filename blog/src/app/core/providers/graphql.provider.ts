@@ -21,6 +21,7 @@ const APOLLO_CACHE: InjectionToken<InMemoryCache> =
 function apolloOptionsFactory(): {
   link: HttpLinkHandler
   cache: InMemoryCache
+  connectToDevTools: boolean
 } {
   const httpLink: HttpLink = inject(HttpLink)
   // const transferState: TransferState = inject(TransferState)
@@ -41,7 +42,8 @@ function apolloOptionsFactory(): {
 
   return {
     link: httpLink.create({uri}),
-    cache
+    cache,
+    connectToDevTools: false
   }
 }
 
