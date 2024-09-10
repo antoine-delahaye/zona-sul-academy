@@ -1,4 +1,10 @@
-import {CustomValidator, defineArrayMember, defineField, defineType, StringRule} from 'sanity'
+import {
+  CustomValidator,
+  defineArrayMember,
+  defineField,
+  defineType,
+  StringRule
+} from 'sanity'
 
 import {stringSlugValidator} from '../validators/stringSlug'
 

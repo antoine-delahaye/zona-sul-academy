@@ -22,6 +22,16 @@ export default defineType({
       of: [{type: 'string'}]
     }),
     defineField({
+      name: 'priceInfo',
+      title: 'Price Info',
+      type: 'string'
+    }),
+    defineField({
+      name: 'additionalInfo',
+      title: 'Additional Info',
+      type: 'string'
+    }),
+    defineField({
       name: 'price',
       title: 'Price',
       type: 'number'
