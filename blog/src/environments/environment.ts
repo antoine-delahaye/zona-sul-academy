@@ -3,7 +3,6 @@ export const environment = {
   sanity: {
     projectId: 'a4vlamka',
     dataset: 'production',
-    apiVersion: '2023-08-01',
-    useCdn: true
+    apiVersion: '2023-08-01'
   }
 }

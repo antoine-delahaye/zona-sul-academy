@@ -60,7 +60,10 @@ export class SiteContentService {
                   descriptionRaw
                   requirements
                   price
-                  url
+                  priceInfo
+                  additionalInfo
+                  buttonUrl
+                  buttonText
                 }
               }
             }

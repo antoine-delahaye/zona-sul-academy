@@ -1,7 +1,7 @@
 import {
   ApplicationConfig,
   inject,
-  InjectionToken,
+  InjectionToken
   // makeStateKey,
   // StateKey,
   // TransferState

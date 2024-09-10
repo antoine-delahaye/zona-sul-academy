@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core'
-import {CurrencyPipe} from '@angular/common'
+import {CurrencyPipe, NgClass} from '@angular/common'
 
 import {
   MembershipSection,
@@ -11,7 +11,7 @@ import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
 @Component({
   selector: 'app-prices',
   standalone: true,
-  imports: [SkeletonComponent, CurrencyPipe],
+  imports: [SkeletonComponent, CurrencyPipe, NgClass],
   templateUrl: 'prices.component.html'
 })
 export class PricesComponent implements OnInit {

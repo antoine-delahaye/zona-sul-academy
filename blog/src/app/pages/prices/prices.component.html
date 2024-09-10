@@ -12,10 +12,18 @@
   </div>
 </section>
 
-@for (section of content?.pageBuilder; track section._key) {
-  <section class="col-span-full !p-0 ring-1 ring-gray-200 lg:grid-cols-12">
-    <div class="p-8 sm:p-10 lg:col-span-7">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+@for (
+  section of content?.pageBuilder;
+  track section._key;
+  let isFirst = $first
+) {
+  <section
+    class="col-span-full !p-0 ring-1 ring-gray-200"
+    [ngClass]="{'lg:grid-cols-12': isFirst, 'lg:col-span-3': !isFirst}">
+    <div
+      class="p-8 sm:p-10"
+      [ngClass]="{'lg:col-span-7': isFirst, 'col-span-full': !isFirst}">
+      <h2 class="text-nowrap text-2xl font-bold tracking-tight text-gray-900">
         {{ section.title }}
       </h2>
 
@@ -23,55 +31,73 @@
         <p class="mt-6 text-base leading-7 text-gray-600">
           {{ block?.children?.[0]?.text! }}
         </p>
-      } @empty {
-        <app-skeleton />
       }
 
-      <div class="mt-10 flex items-center gap-x-4">
-        <p class="flex-none text-sm font-semibold leading-6">
-          Conditions d'accès
-        </p>
-        <div class="h-px flex-auto bg-gray-100"></div>
-      </div>
-      <ul
-        role="list"
-        class="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6">
-        @for (item of section.requirements; track item) {
-          <li class="flex gap-x-3">
-            <svg
-              class="h-6 w-5 flex-none"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                clip-rule="evenodd" />
-            </svg>
-            {{ item }}
-          </li>
-        }
-      </ul>
+      @if (section.requirements) {
+        <div class="mt-10 flex items-center gap-x-4">
+          <p class="flex-none text-sm font-semibold leading-6">
+            Conditions d'accès
+          </p>
+          <div class="h-px flex-auto bg-gray-100"></div>
+        </div>
+        <ul
+          role="list"
+          class="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6">
+          @for (item of section.requirements; track item) {
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd" />
+              </svg>
+              {{ item }}
+            </li>
+          }
+        </ul>
+      }
     </div>
-    <div class="p-2 lg:col-span-5">
+    <div
+      class="p-2"
+      [ngClass]="{'lg:col-span-5': isFirst, 'col-span-full': !isFirst}">
       <div
         class="bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
         <div class="mx-auto max-w-xs px-8">
-          <p class="text-base font-semibold text-gray-600">Via HelloAsso</p>
-          <h2 class="mt-6 text-5xl font-bold tracking-tight text-gray-900">
-            {{ section.price | currency: 'EUR' : 'symbol' : '0.0-2' }}
-          </h2>
+          @if (section.priceInfo) {
+            <p class="text-base font-semibold text-gray-600">
+              {{ section.priceInfo }}
+            </p>
+          }
 
-          <a
-            class="btn btn-neutral btn-wide mt-10"
-            target="_blank"
-            [href]="section.url">
-            Adhérer
-          </a>
+          @if (section.price) {
+            <h2
+              class="text-5xl font-bold tracking-tight text-gray-900"
+              [ngClass]="{'mt-6': section.priceInfo}">
+              {{ section.price | currency: 'EUR' : 'symbol' : '0.0-2' }}
+            </h2>
+          }
 
-          <p class="mt-6 text-xs leading-5 text-gray-600">
-            Paiement en main propre possible
-          </p>
+          @if (section.buttonUrl) {
+            <a
+              class="btn btn-neutral"
+              target="_blank"
+              [href]="section.buttonUrl"
+              [ngClass]="{'mt-10': section.price, 'btn-wide': isFirst}">
+              {{ section.buttonText }}
+            </a>
+          }
+
+          @if (section.additionalInfo) {
+            <p
+              class="text-xs leading-5 text-gray-600"
+              [ngClass]="{'mt-6': section.buttonUrl}">
+              {{ section.additionalInfo }}
+            </p>
+          }
         </div>
       </div>
     </div>

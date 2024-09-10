@@ -58,7 +58,10 @@ export type MembershipSection = {
   }[]
   requirements: string[]
   price: number
-  url: string
+  priceInfo: string
+  additionalInfo: string
+  buttonUrl: string
+  buttonText: string
 }
 
 export type SiteContent = {

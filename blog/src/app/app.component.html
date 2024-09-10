@@ -49,15 +49,6 @@
       routerLinkActive="active"
       [routerLink]="route.path"
       [routerLinkActiveOptions]="{exact: true}">
-      <!-- Hydration requires that the server and client html have the same structure -->
-      <!--@if (route.data) {
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="size-5"
-          [innerHtml]="route.data['icon'] | bypassHtmlSanitizer"></svg>
-      }-->
       @switch (i) {
         @case (0) {
           <svg
@@ -140,25 +131,33 @@
         {{ route.title }}
       </a>
     }
-  </nav>
-
-  <nav>
-    <p class="footer-title">Réseaux</p>
-
-    @for (social of socialMedias; track social.title) {
-      <a href="{{ social.url }}" target="_blank">
-        {{ social.title }}
-      </a>
-    }
-  </nav>
-
-  <nav>
-    <p class="footer-title">Légal</p>
 
     @for (route of legalRoutes; track route.title) {
       <a [routerLink]="route.path">
         {{ route.title }}
       </a>
     }
+  </nav>
+
+  <nav>
+    <p class="footer-title">Contact</p>
+
+    <a href="mailto:contact@zonasulacademy.fr" target="_blank">
+      contact&#64;zonasulacademy.fr
+    </a>
+
+    <a href="tel:+33650009593" target="_blank">06 50 00 95 93</a>
+  </nav>
+
+  <nav>
+    <p class="footer-title">Réseaux</p>
+
+    <div class="grid grid-flow-col gap-4">
+      @for (social of socialMedias; track social.slug) {
+        <a target="_blank" [href]="social.url">
+          <app-media [slug]="social.slug" class="size-8" />
+        </a>
+      }
+    </div>
   </nav>
 </footer>

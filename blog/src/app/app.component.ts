@@ -35,13 +35,13 @@ export class AppComponent implements OnInit {
   protected legalRoutes: Routes = legalRoutes
   protected title: string = siteName
   protected currentDate: Date = new Date()
-  protected socialMedias: {title: string; url: string}[] = [
+  protected socialMedias: {slug: string; url: string}[] = [
     {
-      title: 'Instagram',
+      slug: 'instagram',
       url: 'https://www.instagram.com/zonasulbjj'
     },
     {
-      title: 'HelloAsso',
+      slug: 'helloasso',
       url: 'https://www.helloasso.com/associations/zona-sul-academy'
     }
   ]
