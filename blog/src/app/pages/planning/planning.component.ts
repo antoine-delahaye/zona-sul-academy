@@ -9,18 +9,20 @@ import {
 import {SkeletonComponent} from '@shared/skeleton/skeleton.component'
 import {SiteContentRepository} from '@repository/site-content.repository'
 import {HourPipe} from '@shared/pipes/hour.pipe'
+import {MediaComponent} from "@shared/media/media.component";
 
 @Component({
   selector: 'app-planning',
   standalone: true,
-  imports: [
-    DatePipe,
-    NgClass,
-    AsyncPipe,
-    NgTemplateOutlet,
-    SkeletonComponent,
-    HourPipe
-  ],
+    imports: [
+        DatePipe,
+        NgClass,
+        AsyncPipe,
+        NgTemplateOutlet,
+        SkeletonComponent,
+        HourPipe,
+        MediaComponent
+    ],
   templateUrl: 'planning.component.html',
   styles: `
     :host {
