@@ -1,124 +1,179 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@font-face {
-    font-family: "gravesend-sans";
-    src: url("assets/fonts/GravesendSansThin.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 100;
-    font-stretch: normal;
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: 'zonasul';
+  color-scheme: 'light';
+  default: true;
+  prefersdark: false;
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(97% 0 0);
+  --color-base-300: oklch(94% 0 0);
+  --color-base-content: oklch(0% 0 0);
+  --color-primary: oklch(15.906% 0 0);
+  --color-primary-content: oklch(100% 0 0);
+  --color-secondary: oklch(21.455% 0.001 17.278);
+  --color-secondary-content: oklch(100% 0 0);
+  --color-accent: oklch(26.861% 0 0);
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: oklch(0% 0 0);
+  --color-neutral-content: oklch(100% 0 0);
+  --color-info: oklch(79.54% 0.103 205.9);
+  --color-info-content: oklch(15.908% 0.02 205.9);
+  --color-success: oklch(90.13% 0.153 164.14);
+  --color-success-content: oklch(18.026% 0.03 164.14);
+  --color-warning: oklch(88.37% 0.135 79.94);
+  --color-warning-content: oklch(17.674% 0.027 79.94);
+  --color-error: oklch(78.66% 0.15 28.47);
+  --color-error-content: oklch(15.732% 0.03 28.47);
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 @font-face {
-    font-family: "gravesend-sans";
-    src: url("assets/fonts/GravesendSansLight.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 300;
-    font-stretch: normal;
+  font-family: 'gravesend-sans';
+  src: url('/fonts/GravesendSansThin.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 100;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "gravesend-sans";
-    src: url("assets/fonts/GravesendSansMedium.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 500;
-    font-stretch: normal;
+  font-family: 'gravesend-sans';
+  src: url('/fonts/GravesendSansLight.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "gravesend-sans";
-    src: url("assets/fonts/GravesendSansBold.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 700;
-    font-stretch: normal;
+  font-family: 'gravesend-sans';
+  src: url('/fonts/GravesendSansMedium.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansThin.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 100;
-    font-stretch: normal;
+  font-family: 'gravesend-sans';
+  src: url('/fonts/GravesendSansBold.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansExtraLight.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 200;
-    font-stretch: normal;
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansThin.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 100;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansLight.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 300;
-    font-stretch: normal;
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansExtraLight.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 200;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansNormal.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 400;
-    font-stretch: normal;
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansLight.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansSemiBold.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 600;
-    font-stretch: normal;
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansNormal.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansBold.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 700;
-    font-stretch: normal;
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansSemiBold.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: normal;
 }
 
 @font-face {
-    font-family: "basic-sans";
-    src: url("assets/fonts/BasicSansBlack.ttf");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 900;
-    font-stretch: normal;
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansBold.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
 }
 
-h1, h2, h3 {
-    @apply font-bold;
+@font-face {
+  font-family: 'basic-sans';
+  src: url('/fonts/BasicSansBlack.ttf');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: normal;
 }
 
-main {
-    a:not(.btn):not(.planning-event) {
-        @apply hover:underline decoration-white;
-    }
+h1,
+h2,
+h3 {
+  @apply font-bold;
+}
 
-    section:not(.hero), app-news-index, app-news-single, app-prices {
-        @apply grid gap-8 px-4 py-8 lg:p-16;
-    }
+app-root {
+  @apply flex min-h-lvh flex-col;
+}
 
-    app-news-index, app-news-single, app-prices {
-        @apply lg:grid-cols-12;
-    }
+main a:not(.btn):not(.planning-event) {
+  @apply hover:underline decoration-white;
+}
 
-    youtube-player-placeholder, youtube-player iframe {
-        @apply !w-full;
-    }
+section:not(.hero),
+app-news-index,
+app-news-single,
+app-prices {
+  @apply grid gap-8 px-4 py-8 lg:p-16;
+}
+
+app-news-index,
+app-news-single,
+app-prices {
+  @apply lg:grid-cols-12;
+}
+
+youtube-player-placeholder,
+youtube-player iframe {
+  @apply !w-full;
+}
+
+.footer {
+  a {
+    @apply hover:underline;
+  }
+}
+
+.footer-transition {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
 }

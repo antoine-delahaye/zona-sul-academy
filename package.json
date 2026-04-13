@@ -1,14 +1,17 @@
 {
   "name": "zona-sul-academy",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.0.0",
+  "volta": {
+    "node": "24.14.1",
+    "npm": "11.12.1"
+  },
+  "workspaces": [
+    "blog",
+    "cms"
+  ],
   "scripts": {
-    "postinstall": "(cd cms && npm install) && (cd blog && npm install)",
-    "dev:cms": "cd cms && npm run dev",
-    "dev:blog": "cd blog && npm run dev",
-    "lint:cms": "cd cms && npm run lint",
-    "lint:blog": "cd blog && npm run lint",
-    "deploy": "cd cms && npm run deploy",
-    "deploy:production": "(cd cms && npm run deploy:production) && (cd blog && npm run build)"
+    "start:blog": "npm run start --workspace=blog",
+    "start:cms": "npm run start --workspace=cms",
+    "deploy": "npm run deploy:all --workspace=cms && npm run build --workspace=blog"
   }
 }

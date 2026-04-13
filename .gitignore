@@ -1,1 +1,5 @@
-.idea/
+node_modules/
+blog/.angular/
+cms/.sanity/
+*/node_modules/
+*/dist/

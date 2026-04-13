@@ -1,19 +1,18 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
-
-import {schemaTypes} from './index'
+import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
   name: 'default',
-  title: 'Zona Sul Academy',
-  projectId: 'a4vlamka',
+  title: 'zona-sul-academy',
 
-  dataset: process.env.SANITY_STUDIO_DATASET || 'development',
+  projectId: 'a4vlamka',
+  dataset: 'default',
 
   plugins: [structureTool(), visionTool()],
 
   schema: {
-    types: schemaTypes
-  }
+    types: schemaTypes,
+  },
 })

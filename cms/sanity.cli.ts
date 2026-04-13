@@ -3,7 +3,10 @@ import {defineCliConfig} from 'sanity/cli'
 export default defineCliConfig({
   api: {
     projectId: 'a4vlamka',
-    dataset: process.env.SANITY_STUDIO_DATASET || 'development'
+    dataset: 'default',
   },
-  studioHost: 'zona-sul-academy'
+  deployment: {
+    autoUpdates: true,
+    appId: 'jlx56hujlh4r5ejgkw9bs4vk',
+  },
 })

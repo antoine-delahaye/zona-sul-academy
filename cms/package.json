@@ -1,28 +1,33 @@
 {
-  "name": "zona-sul-academy-cms",
-  "version": "0.0.1",
-  "private": true,
+  "name": "cms",
+  "version": "1.0.0",
+  "packageManager": "npm@11.12.1",
   "scripts": {
     "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",
-    "deploy": "sanity graphql deploy",
-    "deploy:production": "sanity deploy && sanity graphql deploy --force",
-    "lint": "eslint --fix . && prettier --write ."
+    "deploy": "sanity deploy",
+    "deploy:graphql": "sanity graphql deploy",
+    "deploy:all": "sanity deploy && sanity graphql deploy"
   },
   "dependencies": {
-    "@sanity/cli": "^3.55.0",
-    "@sanity/vision": "^3.55.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "sanity": "^3.55.0",
-    "styled-components": "^6.1.12"
+    "@sanity/vision": "^5.21.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sanity": "^5.21.0",
+    "styled-components": "^6.1.18"
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "^4.0.0",
-    "@types/react": "^18.3.3",
-    "eslint": "^8.56.0",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.3"
+    "@sanity/eslint-config-studio": "^6.0.0",
+    "@types/react": "^19.2.14",
+    "eslint": "^9.28",
+    "prettier": "^3.5",
+    "typescript": "^5.8"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true
   }
 }

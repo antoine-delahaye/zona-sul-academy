@@ -1,0 +1,36 @@
+@if (post(); as p) {
+<article
+  class="lg:col-span-full xl:col-span-10 xl:col-start-2 2xl:col-span-8 2xl:col-start-3"
+  itemtype="https://schema.org/BlogPosting"
+  itemscope
+>
+  <header class="text-center">
+    <p>
+      Posté le
+      <time itemprop="datePublished" [dateTime]="p._createdAt">
+        {{ p._createdAt | date: 'shortDate' }}
+      </time>
+    </p>
+
+    <h1 class="mb-8 mt-2 text-5xl" itemprop="headline">{{ p.title }}</h1>
+
+    <div class="relative mx-auto h-60 lg:h-56 xl:h-80 2xl:h-96">
+      <img
+        class="object-cover"
+        itemprop="image"
+        priority
+        fill
+        [ngSrc]="p.mainImage.asset.path"
+        [alt]="p.mainImage.asset.altText"
+      />
+    </div>
+  </header>
+
+  <section>
+    @for (block of p.bodyRaw; track block._key) { @if (block.children.length) { @for (child of
+    block.children; track child._key) {
+    <p class="prose mx-auto">{{ child.text }}</p>
+    } } }
+  </section>
+</article>
+}

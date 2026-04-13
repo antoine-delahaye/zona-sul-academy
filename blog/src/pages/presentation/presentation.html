@@ -1,0 +1,85 @@
+@if (featuredPost(); as post) {
+<section class="hero relative min-h-[85vh] lg:min-h-screen">
+  @if (post.mainImage) {
+  <img
+    class="hero-overlay object-cover brightness-50"
+    fill
+    priority
+    [ngSrc]="post.mainImage.asset.path"
+    [alt]="post.mainImage.asset.altText"
+  />
+  }
+  <div class="hero-content text-center text-neutral-content">
+    <div class="max-w-md">
+      <h1 class="mb-5 text-5xl">{{ post.title }}</h1>
+
+      <p class="mb-5">{{ post.excerpt }}</p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a class="btn" [routerLink]="'actualites/' + post.slug"> En savoir plus </a>
+
+        @for (button of $any(post).featuredButtons; track button.text) {
+        <a class="btn" target="_blank" [href]="button.url"> {{ button.text }} </a>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+} @if (presentationContent(); as content) {
+<section class="hero col-span-full px-4 py-8 lg:p-16">
+  <div class="hero-content text-center">
+    <div class="max-w-2xl">
+      <h2 class="text-4xl font-bold" [class.mb-6]="content.subtitleRaw.length">
+        {{ content.title }}
+      </h2>
+
+      @for (block of content.subtitleRaw; track block._key) {
+      <p class="text-lg leading-8 text-gray-600">{{ block.children[0].text }}</p>
+      }
+    </div>
+  </div>
+</section>
+
+@for (section of content.pageBuilder; track section._key; let isFirst = $first; let isEven = $even)
+{
+<section class="lg:grid-cols-12">
+  <div class="lg:col-span-4" [class.lg:col-end-13]="!isEven">
+    <h3 class="mb-4 text-3xl">{{ section.title }}</h3>
+
+    @for (block of $any(section).bodyRaw; track block._key) {
+    <p>{{ block.children[0].text }}</p>
+    } @empty {
+    <app-skeleton />
+    }
+  </div>
+
+  <div
+    [class]="isEven ? 'stack lg:col-span-6 mb-5 mr-5 lg:mb-10 lg:mr-10' : 'stack lg:col-span-6 ml-5 mt-5 lg:col-end-9 lg:row-start-1 lg:ml-10 lg:mt-10'"
+  >
+    @if (section.__typename === 'ImageSection') {
+    <img
+      [ngSrc]="section.image.asset.path"
+      [width]="section.image.asset.metadata.dimensions.width"
+      [height]="section.image.asset.metadata.dimensions.height"
+      [alt]="section.image.asset.altText"
+      [priority]="isFirst"
+    />
+    } @else if (section.__typename === 'VideoSection') {
+    <youtube-player [videoId]="section.videoId || 'SPep4Aj3up8'" />
+    }
+
+    <div
+      [class]="isEven ? 'h-full w-full bg-black translate-y-5! translate-x-5 lg:translate-y-10! lg:translate-x-10' : 'h-full w-full bg-black -translate-y-5! -translate-x-5 lg:-translate-y-10! lg:-translate-x-10'"
+    ></div>
+  </div>
+</section>
+} } @if (membershipButton(); as membership) {
+<a
+  class="btn sticky bottom-28 left-full z-50 mb-12 mt-8 lg:btn-lg"
+  target="_blank"
+  [href]="membership.subtitleRaw[0].children[0].text"
+>
+  <app-media slug="helloasso" class="size-8 lg:size-10" />
+  Adhérer
+</a>
+}
