@@ -7,8 +7,7 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "deploy:graphql": "sanity graphql deploy",
-    "deploy:all": "sanity deploy && sanity graphql deploy"
+    "deploy:graphql": "sanity graphql deploy"
   },
   "dependencies": {
     "@sanity/vision": "^5.21.0",
