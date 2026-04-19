@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { YouTubePlayer } from '@angular/youtube-player';
@@ -30,10 +30,4 @@ export class Presentation {
   readonly membershipButton = computed(() =>
     this.allSiteContentResource.value()?.find((content) => content.slug === 'bouton-adhesion'),
   );
-
-  constructor() {
-    effect(() => {
-      console.log('Site content', this.allSiteContentResource.value());
-    });
-  }
 }
