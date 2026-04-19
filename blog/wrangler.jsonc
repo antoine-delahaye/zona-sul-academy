@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/wrangler/config-schema.json",
-  "name": "blog",
+  "name": "zona-sul-academy",
   "main": "./dist/server/server.mjs",
   "compatibility_date": "2026-04-13",
   "assets": {

@@ -6,12 +6,9 @@ import {schemaTypes} from './schemaTypes'
 export default defineConfig({
   name: 'default',
   title: 'zona-sul-academy',
-
   projectId: 'a4vlamka',
   dataset: 'default',
-
   plugins: [structureTool(), visionTool()],
-
   schema: {
     types: schemaTypes,
   },

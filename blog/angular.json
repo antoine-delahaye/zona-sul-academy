@@ -28,7 +28,7 @@
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": ["blog.ztmyriam.workers.dev"]
+              "allowedHosts": ["zonasulacademy.fr", "zona-sul-academy.pages.dev"]
             },
             "ssr": {
               "entry": "src/server.ts",

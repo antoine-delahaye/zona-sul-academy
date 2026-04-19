@@ -29,12 +29,12 @@
 <section class="hero col-span-full px-4 py-8 lg:p-16">
   <div class="hero-content text-center">
     <div class="max-w-2xl">
-      <h2 class="text-4xl font-bold" [class.mb-6]="content.subtitleRaw.length">
+      <h2 class="text-4xl font-bold" [class.mb-6]="content.subtitleRaw?.length">
         {{ content.title }}
       </h2>
 
       @for (block of content.subtitleRaw; track block._key) {
-      <p class="text-lg leading-8 text-gray-600">{{ block.children[0].text }}</p>
+      <p class="text-lg leading-8 text-gray-600">{{ block.children?.[0]?.text }}</p>
       }
     </div>
   </div>
@@ -47,7 +47,7 @@
     <h3 class="mb-4 text-3xl">{{ section.title }}</h3>
 
     @for (block of $any(section).bodyRaw; track block._key) {
-    <p>{{ block.children[0].text }}</p>
+    <p>{{ block.children?.[0]?.text }}</p>
     } @empty {
     <app-skeleton />
     }
@@ -77,7 +77,7 @@
 <a
   class="btn sticky bottom-28 left-full z-50 mb-12 mt-8 lg:btn-lg"
   target="_blank"
-  [href]="membership.subtitleRaw[0].children[0].text"
+  [href]="membership.subtitleRaw?.[0]?.children?.[0]?.text"
 >
   <app-media slug="helloasso" class="size-8 lg:size-10" />
   Adhérer

@@ -1,66 +1,63 @@
 import { Injectable, resource, inject } from '@angular/core';
 import { SiteContent } from '../models/site-content.model';
-import { GraphqlService } from './graphql.service';
+import { SanityService } from './sanity.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SiteContentService {
-  private graphql = inject(GraphqlService);
+  private sanity = inject(SanityService);
 
   private readonly _allSiteContent = resource({
     loader: async () => {
       const query = `
-        query getAllSiteContent {
-          allSiteContent {
-            _id
-            title
-            slug
-            subtitleRaw
-            pageBuilder {
-              ... on ImageSection {
-                __typename
-                _key
-                title
-                bodyRaw
-                image {
-                  asset {
-                    altText
-                    path
-                    metadata {
-                      dimensions {
-                        width
-                        height
-                      }
+        *[_type == "siteContent"] {
+          _id,
+          title,
+          slug,
+          "subtitleRaw": subtitle,
+          pageBuilder[] {
+            _type,
+            _key,
+            _type == "imageSection" => {
+              "__typename": "ImageSection",
+              title,
+              "bodyRaw": body,
+              image {
+                asset-> {
+                  altText,
+                  path,
+                  metadata {
+                    dimensions {
+                      width,
+                      height
                     }
                   }
                 }
               }
-              ... on VideoSection {
-                __typename
-                _key
-                title
-                bodyRaw
-                videoId
-              }
-              ... on MembershipSection {
-                __typename
-                _key
-                title
-                descriptionRaw
-                requirements
-                price
-                priceInfo
-                additionalInfo
-                buttonUrl
-                buttonText
-              }
+            },
+            _type == "videoSection" => {
+              "__typename": "VideoSection",
+              title,
+              "bodyRaw": body,
+              videoId
+            },
+            _type == "membershipSection" => {
+              "__typename": "MembershipSection",
+              title,
+              "descriptionRaw": description,
+              requirements,
+              price,
+              priceInfo,
+              additionalInfo,
+              buttonUrl,
+              buttonText
             }
           }
         }
       `;
-      const data = await this.graphql.fetchGraphQL<{ allSiteContent: SiteContent[] }>(query);
-      return data.allSiteContent;
+      const data = await this.sanity.fetchGROQ<SiteContent[]>(query);
+      return data;
     },
   });
 

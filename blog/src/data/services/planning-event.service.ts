@@ -1,35 +1,32 @@
 import { Injectable, resource, inject } from '@angular/core';
 import { PlanningEvent } from '../models/planning-event.model';
-import { GraphqlService } from './graphql.service';
+import { SanityService } from './sanity.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlanningEventService {
-  private graphql = inject(GraphqlService);
+  private sanity = inject(SanityService);
 
   public getAll() {
-    const query = `
-      query getPlanningEvents {
-        allPlanningEvent(sort: [{day: ASC}]) {
-          _id
-          title
-          date
-          day
-          duration {
-            start
-            end
-          }
-          location
-          person
-        }
-      }
-    `;
-
     return resource({
       loader: async () => {
-        const data = await this.graphql.fetchGraphQL<{ allPlanningEvent: PlanningEvent[] }>(query);
-        return data.allPlanningEvent;
+        const query = `
+          *[_type == "planningEvent"] | order(day asc) {
+            _id,
+            title,
+            date,
+            day,
+            duration {
+              start,
+              end
+            },
+            location,
+            person
+          }
+        `;
+        const data = await this.sanity.fetchGROQ<PlanningEvent[]>(query);
+        return data;
       },
     });
   }
