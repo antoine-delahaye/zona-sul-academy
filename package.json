@@ -1,18 +1,21 @@
 {
-  "name": "zona-sul-academy",
-  "version": "1.0.0",
-  "volta": {
-    "node": "24.14.1",
-    "npm": "11.12.1"
-  },
-  "workspaces": [
-    "blog",
-    "cms"
-  ],
-  "scripts": {
-    "lint": "npm run lint -w blog && npm run lint -w cms",
-    "start:blog": "npm run start -w blog",
-    "start:cms": "npm run start -w cms",
-    "deploy:cms": "npm run deploy -w cms && npm run deploy:graphql -w cms"
-  }
+    "name": "zona-sul-academy",
+    "version": "1.0.0",
+    "volta": {
+        "node": "24.14.1",
+        "npm": "11.12.1"
+    },
+    "workspaces": [
+        "blog",
+        "cms"
+    ],
+    "scripts": {
+        "lint": "npm run lint -w blog && npm run lint -w cms",
+        "start:blog": "npm run start -w blog",
+        "start:cms": "npm run start -w cms",
+        "deploy:cms": "npm run deploy -w cms && npm run deploy:graphql -w cms"
+    },
+    "overrides": {
+        "eslint": "^10.0.3"
+    }
 }
