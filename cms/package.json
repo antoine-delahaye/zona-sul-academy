@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "packageManager": "npm@11.12.1",
   "scripts": {
+    "lint": "eslint schemaTypes/*.ts validators/*.ts *.ts",
     "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",

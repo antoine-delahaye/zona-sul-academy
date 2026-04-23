@@ -10,6 +10,7 @@
     "cms"
   ],
   "scripts": {
+    "lint": "npm run lint -w blog && npm run lint -w cms",
     "start:blog": "npm run start -w blog",
     "start:cms": "npm run start -w cms",
     "deploy:cms": "npm run deploy -w cms && npm run deploy:graphql -w cms"

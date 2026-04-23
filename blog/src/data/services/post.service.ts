@@ -8,7 +8,7 @@ import { SanityService } from './sanity.service';
 export class PostService {
   private sanity = inject(SanityService);
 
-  public getPostPreviews(limit: number = 10, offset: number = 0) {
+  public getPostPreviews(limit = 10, offset = 0) {
     return resource({
       loader: async () => {
         const query = `

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-export const siteName: string = 'Zona Sul Academy';
+export const siteName = 'Zona Sul Academy';
 
 @Injectable()
 export class AppTitle extends TitleStrategy {
