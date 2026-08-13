@@ -177,6 +177,15 @@ youtube-player iframe {
   @apply hover:underline;
 }
 
+.navbar .btn-ghost:not(.btn-active) {
+  color: var(--color-primary-content);
+}
+
+.navbar .btn-ghost.btn-active {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
 /*
  * The fixed mobile dock fades out while the main footer is on screen, so the two
  * never overlap. `visibility` is animated too, otherwise the hidden dock would
