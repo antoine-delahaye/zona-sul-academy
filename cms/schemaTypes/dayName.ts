@@ -1,4 +1,4 @@
-import {defineType} from 'sanity'
+import { defineType } from 'sanity';
 
 export default defineType({
   name: 'dayName',
@@ -6,13 +6,13 @@ export default defineType({
   type: 'string',
   options: {
     list: [
-      {title: 'Monday', value: '1'},
-      {title: 'Tuesday', value: '2'},
-      {title: 'Wednesday', value: '3'},
-      {title: 'Thursday', value: '4'},
-      {title: 'Friday', value: '5'},
-      {title: 'Saturday', value: '6'},
-      {title: 'Sunday', value: '7'}
-    ]
-  }
-})
+      { title: 'Monday', value: '1' },
+      { title: 'Tuesday', value: '2' },
+      { title: 'Wednesday', value: '3' },
+      { title: 'Thursday', value: '4' },
+      { title: 'Friday', value: '5' },
+      { title: 'Saturday', value: '6' },
+      { title: 'Sunday', value: '7' },
+    ],
+  },
+});

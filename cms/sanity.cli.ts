@@ -1,4 +1,4 @@
-import {defineCliConfig} from 'sanity/cli'
+import { defineCliConfig } from 'sanity/cli';
 
 export default defineCliConfig({
   api: {
@@ -9,4 +9,4 @@ export default defineCliConfig({
     autoUpdates: true,
     appId: 'jlx56hujlh4r5ejgkw9bs4vk',
   },
-})
+});

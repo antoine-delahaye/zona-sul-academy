@@ -1,32 +1,59 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root',
-})
+import { SANITY_QUERY_URL } from '../sanity.config';
+
+/**
+ * GROQ query parameters. Values are JSON-encoded before being sent, so user
+ * input can never alter the shape of the query.
+ */
+export type GroqParams = Record<string, string | number | boolean>;
+
+interface GroqResponse<T> {
+  result?: T;
+  error?: {
+    description?: string;
+    message?: string;
+  };
+}
+
+@Service()
 export class SanityService {
-  private readonly apiUrl = 'https://a4vlamka.api.sanity.io/v2026-04-19/data/query/default';
+  /**
+   * Runs a GROQ query against the public dataset.
+   *
+   * @param query GROQ source. Reference parameters as `$name`; never interpolate
+   *   values into this string.
+   * @param params Values bound to the `$name` placeholders used by `query`.
+   * @param abortSignal Propagated from the calling `resource`, so a superseded
+   *   request is cancelled instead of racing the one that replaced it.
+   */
+  async query<T>(query: string, params: GroqParams = {}, abortSignal?: AbortSignal): Promise<T> {
+    const url = new URL(SANITY_QUERY_URL);
+    url.searchParams.set('query', query);
 
-  public async fetchGROQ<T>(query: string): Promise<T> {
-    const url = new URL(this.apiUrl);
-    url.searchParams.append('query', query);
+    for (const [name, value] of Object.entries(params)) {
+      url.searchParams.set(`$${name}`, JSON.stringify(value));
+    }
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const response = await fetch(url, {
+      headers: { Accept: 'application/json' },
+      signal: abortSignal,
     });
 
     if (!response.ok) {
-      throw new Error(`Sanity Error: ${response.statusText}`);
+      throw new Error(`Sanity request failed: ${response.status} ${response.statusText}`);
     }
 
-    const { result, error } = await response.json();
+    const body = (await response.json()) as GroqResponse<T>;
 
-    if (error) {
-      throw new Error(error.description || error.message || 'Unknown Sanity Error');
+    if (body.error) {
+      throw new Error(body.error.description ?? body.error.message ?? 'Unknown Sanity error');
     }
 
-    return result;
+    if (body.result === undefined) {
+      throw new Error('Sanity response did not contain a result');
+    }
+
+    return body.result;
   }
 }

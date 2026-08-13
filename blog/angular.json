@@ -1,5 +1,5 @@
 {
-  "$schema": "../node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "https://unpkg.com/@angular/cli@22/lib/config/schema.json",
   "version": 1,
   "cli": {
     "packageManager": "npm",
@@ -9,7 +9,6 @@
   "projects": {
     "blog": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -18,7 +17,14 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "server": "src/main.server.ts",
             "tsConfig": "tsconfig.app.json",
+            "outputPath": "dist",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts",
+              "platform": "neutral"
+            },
             "assets": [
               {
                 "glob": "**/*",
@@ -26,19 +32,21 @@
               }
             ],
             "styles": ["src/styles.css"],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
             "security": {
-              "allowedHosts": ["zonasulacademy.fr", "zona-sul-academy.ztmyriam.workers.dev"]
-            },
-            "ssr": {
-              "entry": "src/server.ts",
-              "experimentalPlatform": "neutral"
-            },
-            "outputPath": "dist"
+              "allowedHosts": [
+                "zonasulacademy.fr",
+                "www.zonasulacademy.fr",
+                "zona-sul-academy.ztmyriam.workers.dev"
+              ]
+            }
           },
           "configurations": {
             "production": {
+              "outputHashing": "all",
+              "sourceMap": {
+                "scripts": true,
+                "styles": false
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -50,8 +58,7 @@
                   "maximumWarning": "4kB",
                   "maximumError": "8kB"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,
@@ -74,12 +81,19 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "blog:build:development",
+            "tsConfig": "tsconfig.spec.json",
+            "runner": "vitest",
+            "coverageReporters": ["text-summary", "lcovonly"],
+            "coverageExclude": ["src/main.ts", "src/main.server.ts", "src/server.ts"]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html", "*.mjs"]
           }
         }
       }

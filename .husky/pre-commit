@@ -1,0 +1,8 @@
+# --relative: lint-staged resolves absolute paths by default (lib/generateTasks.js).
+# On Windows, prettier/eslint are invoked through cmd.exe (required to spawn .cmd
+# shims), which caps the command line at 8191 chars. With this repo's absolute
+# path prefix (~65 chars, itself containing a space that forces quoting on every
+# argument), a commit touching ~80 files already exceeds that limit. Relative
+# paths remove both the prefix and the quoting, at negligible risk since no
+# tracked path in this repo contains a space.
+npx lint-staged --relative

@@ -1,53 +1,42 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  Injector,
-  runInInjectionContext,
-  signal,
-} from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, computed, inject, input } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 
+import { ImageAltPipe } from '../../shared/pipes/image-alt';
 import { PostService } from '../../data/services/post.service';
-import { PostPreview } from '../../data/models/post.model';
+
+const POSTS_PER_PAGE = 3;
+
+/** Coerces the `?page=` query parameter into a usable page number. */
+function toPageNumber(value: string | number | undefined): number {
+  const parsed = typeof value === 'number' ? value : Number.parseInt(value ?? '', 10);
+
+  return Number.isFinite(parsed) && parsed >= 1 ? Math.trunc(parsed) : 1;
+}
 
 @Component({
   selector: 'app-news-index',
-  imports: [RouterLink, NgOptimizedImage, DatePipe],
+  imports: [RouterLink, NgOptimizedImage, DatePipe, ImageAltPipe],
   templateUrl: './index.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'grid gap-8 px-4 py-8 lg:grid-cols-12 lg:p-16',
+  },
 })
 export class Index {
-  private readonly route = inject(ActivatedRoute);
   private readonly postService = inject(PostService);
-  private readonly injector = inject(Injector);
 
-  readonly currentPage = signal<number>(1);
-  readonly posts = signal<PostPreview[] | undefined>(undefined);
+  /** Bound from `?page=` by `withComponentInputBinding()`. */
+  readonly page = input(1, { transform: toPageNumber });
 
-  constructor() {
-    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
-      const pageParam = params['page'];
-      const page = pageParam ? parseInt(pageParam as string, 10) : 1;
-      const validPage = page < 1 ? 1 : page;
+  private readonly postsResource = this.postService.previews(this.page, POSTS_PER_PAGE);
 
-      this.currentPage.set(validPage);
+  readonly posts = this.postsResource.value;
+  readonly isLoading = this.postsResource.isLoading;
+  readonly hasFailed = computed(() => this.postsResource.status() === 'error');
 
-      const offset = (validPage - 1) * 3;
-
-      runInInjectionContext(this.injector, () => {
-        const res = this.postService.getPostPreviews(3, offset);
-
-        effect(() => {
-          const value = res.value();
-          if (value !== undefined) {
-            this.posts.set(value);
-          }
-        });
-      });
-    });
-  }
+  readonly previousPage = computed(() => this.page() - 1);
+  readonly nextPage = computed(() => this.page() + 1);
+  readonly hasPreviousPage = computed(() => this.page() > 1);
+  /** A full page suggests there is more; a short page means this is the last one. */
+  readonly hasNextPage = computed(() => this.posts().length === POSTS_PER_PAGE);
 }

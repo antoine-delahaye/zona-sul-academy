@@ -1,6 +1,13 @@
 {
   "name": "Zona Sul Academy",
   "short_name": "Zona Sul",
+  "description": "Association sportive loi 1901 proposant l'enseignement du jiu-jitsu brésilien et du grappling sur Orléans",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0d0d0d",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
@@ -11,9 +18,12 @@
       "src": "android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  ]
 }

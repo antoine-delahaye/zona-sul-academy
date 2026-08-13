@@ -1,59 +1,35 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  Injector,
-  input,
-  runInInjectionContext,
-  signal,
-} from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, inject, input } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 
+import { BlockTextPipe } from '../../shared/pipes/block-text';
+import { ImageAltPipe } from '../../shared/pipes/image-alt';
 import { PostService } from '../../data/services/post.service';
-import { PostSingle } from '../../data/models/post.model';
 
 @Component({
   selector: 'app-news-single',
-  imports: [NgOptimizedImage, DatePipe],
+  imports: [RouterLink, NgOptimizedImage, DatePipe, BlockTextPipe, ImageAltPipe],
   templateUrl: './single.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'grid gap-8 px-4 py-8 lg:grid-cols-12 lg:p-16',
+  },
 })
 export class Single {
+  private readonly postService = inject(PostService);
+
+  /** Bound from the `:slug` route parameter by `withComponentInputBinding()`. */
   readonly slug = input.required<string>();
 
-  private readonly postService = inject(PostService);
-  private readonly router = inject(Router);
-  private readonly injector = inject(Injector);
+  private readonly postResource = this.postService.bySlug(this.slug);
 
-  readonly post = signal<PostSingle | undefined>(undefined);
+  readonly post = this.postResource.value;
+  readonly isLoading = this.postResource.isLoading;
+  readonly hasFailed = computed(() => this.postResource.status() === 'error');
 
-  constructor() {
-    toObservable(this.slug)
-      .pipe(takeUntilDestroyed())
-      .subscribe((currentSlug) => {
-        if (!currentSlug) return;
-
-        runInInjectionContext(this.injector, () => {
-          const postResource = this.postService.getPostSingle(currentSlug);
-
-          effect(() => {
-            const value = postResource.value();
-            const isLoading = postResource.isLoading();
-
-            if (value) {
-              if (value._createdAt) {
-                this.post.set(value);
-              } else {
-                this.router.navigateByUrl('/404');
-              }
-            } else if (!isLoading && value === undefined) {
-              this.router.navigateByUrl('/404');
-            }
-          });
-        });
-      });
-  }
+  /**
+   * A resolved-but-empty result means the slug does not exist. The not-found
+   * state is rendered in place rather than redirected to, so the URL the visitor
+   * shared stays intact.
+   */
+  readonly notFound = computed(() => this.postResource.status() === 'resolved' && !this.post());
 }

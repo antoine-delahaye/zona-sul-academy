@@ -1,51 +1,48 @@
-import { SanityImage } from './post.model';
+import { PortableTextBlock } from './portable-text.model';
+import { SanityImage } from './sanity-image.model';
 
-export interface PortableTextBlock {
-  children?:
-    | {
-        text: string;
-        _type: string;
-        _key: string;
-      }[]
-    | null;
-  _type: string;
-  _key: string;
-  style: string;
-}
-
+/**
+ * Page builder sections, discriminated by Sanity's own `_type`.
+ *
+ * Narrowing on `_type` in a template (`@if (section._type === 'imageSection')`)
+ * gives the compiler a fully typed section, so no `$any()` cast is needed.
+ */
 export interface ImageSection {
-  __typename: 'ImageSection';
+  _type: 'imageSection';
   _key: string;
   title: string;
-  bodyRaw?: PortableTextBlock[] | null;
+  body?: PortableTextBlock[] | null;
   image: SanityImage;
 }
 
 export interface VideoSection {
-  __typename: 'VideoSection';
+  _type: 'videoSection';
   _key: string;
   title: string;
-  bodyRaw?: PortableTextBlock[] | null;
-  videoId: string;
+  body?: PortableTextBlock[] | null;
+  videoId: string | null;
 }
 
 export interface MembershipSection {
-  __typename: 'MembershipSection';
+  _type: 'membershipSection';
   _key: string;
   title: string;
-  descriptionRaw?: PortableTextBlock[] | null;
-  requirements: string[];
-  price: number;
-  priceInfo: string;
-  additionalInfo: string;
-  buttonUrl: string;
-  buttonText: string;
+  description?: PortableTextBlock[] | null;
+  requirements?: string[] | null;
+  price: number | null;
+  priceInfo: string | null;
+  additionalInfo: string | null;
+  buttonUrl: string | null;
+  buttonText: string | null;
 }
 
+export type PageSection = ImageSection | VideoSection | MembershipSection;
+
+/** A Studio-managed page, addressed by slug (`presentation`, `tarifs`, `planning`…). */
 export interface SiteContent {
   _id: string;
   title: string;
   slug: string;
-  subtitleRaw?: PortableTextBlock[] | null;
-  pageBuilder: (ImageSection | VideoSection | MembershipSection)[];
+  subtitle?: PortableTextBlock[] | null;
+  pageBuilder?: PageSection[] | null;
 }

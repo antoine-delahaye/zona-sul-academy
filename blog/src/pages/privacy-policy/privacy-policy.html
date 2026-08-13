@@ -1,0 +1,79 @@
+<section class="col-span-full hero">
+  <div class="hero-content max-w-2xl text-center">
+    <div>
+      <h1 class="text-4xl">Politique de confidentialité</h1>
+
+      <p class="mt-4 text-gray-600">
+        Dernière mise à jour :
+        <time [dateTime]="lastUpdated.toISOString()">{{ lastUpdated | date: 'longDate' }}</time>
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="mx-auto prose max-w-2xl lg:col-span-8 lg:col-start-3">
+  <h2>Responsable du traitement</h2>
+
+  <p>
+    Ce site est édité par l'association Zona Sul Academy, association sportive régie par la loi du
+    1<sup>er</sup> juillet 1901, dont le siège est situé à Orléans (Loiret, France). Pour toute
+    question relative à vos données, vous pouvez écrire à
+    <a [href]="`mailto:${contactEmail}`">{{ contactEmail }}</a
+    >.
+  </p>
+
+  <h2>Données collectées</h2>
+
+  <p>
+    Ce site est un site de consultation : il ne comporte ni formulaire, ni espace membre, ni système
+    de commentaires. Nous ne collectons donc aucune donnée personnelle vous concernant lorsque vous
+    le consultez, et nous n'utilisons ni cookie publicitaire, ni outil de mesure d'audience.
+  </p>
+
+  <p>
+    Si vous nous contactez par courriel ou par téléphone, les informations que vous transmettez
+    (nom, adresse électronique, numéro de téléphone, contenu du message) sont utilisées uniquement
+    pour vous répondre et pour la gestion de la vie associative. Elles ne sont ni cédées, ni vendues
+    à des tiers.
+  </p>
+
+  <h2>Prestataires techniques</h2>
+
+  <p>
+    L'affichage des pages met en œuvre les prestataires suivants, qui peuvent enregistrer votre
+    adresse IP dans leurs journaux techniques pour des raisons de sécurité et de bon fonctionnement
+    :
+  </p>
+
+  <ul>
+    <li><strong>Cloudflare</strong> — hébergement et diffusion du site.</li>
+    <li><strong>Sanity</strong> — stockage et diffusion des textes et des images publiés.</li>
+    <li>
+      <strong>YouTube (Google)</strong> — uniquement sur les pages contenant une vidéo intégrée. La
+      lecture d'une vidéo peut entraîner le dépôt de cookies par Google, soumis à sa propre
+      politique de confidentialité.
+    </li>
+  </ul>
+
+  <p>
+    Les liens vers Instagram et HelloAsso vous redirigent vers des services externes qui appliquent
+    leurs propres conditions et politiques de confidentialité.
+  </p>
+
+  <h2>Durée de conservation</h2>
+
+  <p>
+    Les courriels échangés avec l'association sont conservés le temps nécessaire au traitement de
+    votre demande et à la gestion administrative de l'association, puis supprimés.
+  </p>
+
+  <h2>Vos droits</h2>
+
+  <p>
+    Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique
+    et Libertés, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation et
+    d'opposition sur les données vous concernant. Pour exercer ces droits, écrivez à
+    <a [href]="`mailto:${contactEmail}`">{{ contactEmail }}</a
+    >. Vous pouvez également introduire une réclamation auprès de la CNIL.
+  </p>
+</div>

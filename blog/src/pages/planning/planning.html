@@ -1,9 +1,12 @@
-@if (planningContent(); as content) {
-<section class="hero col-span-full px-4 pt-8">
+<section class="col-span-full hero px-4 pt-8">
   <div class="hero-content max-w-2xl text-center">
-    <h1 class="text-4xl">{{ content.title }}</h1>
+    <h1 class="text-4xl">{{ content()?.title ?? 'Planning' }}</h1>
   </div>
 </section>
-}
 
-<app-media class="mx-auto" slug="planning" />
+<app-media
+  slug="planning"
+  imageClass="mx-auto h-auto w-full"
+  altText="Planning des cours de Zona Sul Academy"
+  [priority]="true"
+/>

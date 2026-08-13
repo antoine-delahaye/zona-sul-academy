@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'featuredButton',
@@ -8,18 +8,18 @@ export default defineType({
     defineField({
       name: 'text',
       title: 'Text',
-      type: 'string'
+      type: 'string',
     }),
     defineField({
       name: 'url',
       title: 'URL',
-      type: 'url'
+      type: 'url',
     }),
     defineField({
       title: 'Open in new tab',
       name: 'openInNewTab',
       type: 'boolean',
-      initialValue: false
-    })
-  ]
-})
+      initialValue: false,
+    }),
+  ],
+});

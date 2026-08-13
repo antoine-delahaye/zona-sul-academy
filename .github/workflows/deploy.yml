@@ -1,31 +1,95 @@
 name: Deploy Worker
+
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+# A newer push supersedes an in-flight run, but never cancel a deploy midway.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
 jobs:
-  deploy:
+  verify:
+    name: Lint, test and build
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: "24.14.1"
-          cache: "npm"
+          # Single source of truth, shared with Volta and local installs.
+          node-version-file: .nvmrc
+          cache: npm
+
+      # `npm ci` installs exactly what the lockfile pins, unlike `npm install`.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck CMS
+        run: npm run typecheck -w cms
+
+      - name: Test blog
+        run: npm test
+
+      - name: Build blog
+        run: npm run build -w blog
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-dist
+          path: blog/dist
+          retention-days: 5
+
+  deploy:
+    name: Deploy to Cloudflare
+    needs: verify
+    # Pull requests are verified but never deployed.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://zonasulacademy.fr
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build Blog
+      # Rebuilt rather than downloaded: wrangler needs the source maps and the
+      # build is only a few seconds.
+      - name: Build blog
         run: npm run build -w blog
 
       - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: "blog"
+          workingDirectory: blog

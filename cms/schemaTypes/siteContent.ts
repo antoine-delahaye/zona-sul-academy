@@ -1,12 +1,6 @@
-import {
-  CustomValidator,
-  defineArrayMember,
-  defineField,
-  defineType,
-  StringRule
-} from 'sanity'
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
-import {stringSlugValidator} from '../validators/stringSlug'
+import { stringSlugValidator } from '../validators/stringSlug';
 
 export default defineType({
   name: 'siteContent',
@@ -15,38 +9,39 @@ export default defineType({
   fields: [
     defineField({
       name: 'title',
-      type: 'string'
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'string',
-      validation: (Rule: StringRule) =>
-        Rule.required().custom(stringSlugValidator as CustomValidator)
+      description:
+        'Identifier the site looks this page up by: `presentation`, `tarifs`, `planning` or `bouton-adhesion`.',
+      validation: (Rule) => Rule.required().custom(stringSlugValidator),
     }),
     defineField({
       name: 'subtitle',
       title: 'Subtitle',
-      type: 'blockContent'
+      type: 'blockContent',
+      description: 'Intro paragraphs shown under the page title.',
     }),
     defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
       of: [
-        defineArrayMember({
-          name: 'imageSection',
-          type: 'imageSection'
-        }),
-        defineArrayMember({
-          name: 'videoSection',
-          type: 'videoSection'
-        }),
-        defineArrayMember({
-          name: 'membershipSection',
-          type: 'membershipSection'
-        })
-      ]
-    })
-  ]
-})
+        defineArrayMember({ name: 'imageSection', type: 'imageSection' }),
+        defineArrayMember({ name: 'videoSection', type: 'videoSection' }),
+        defineArrayMember({ name: 'membershipSection', type: 'membershipSection' }),
+      ],
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'slug',
+    },
+  },
+});

@@ -1,33 +1,30 @@
 {
   "name": "cms",
   "version": "1.0.0",
-  "packageManager": "npm@11.12.1",
+  "private": true,
   "scripts": {
-    "lint": "eslint schemaTypes/*.ts validators/*.ts *.ts",
     "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "deploy": "sanity deploy",
-    "deploy:graphql": "sanity graphql deploy"
+    "deploy:graphql": "sanity graphql deploy",
+    "schema:extract": "sanity schema extract"
   },
   "dependencies": {
-    "@sanity/vision": "^5.22.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "sanity": "^5.22.0",
-    "styled-components": "^6.1.18"
+    "@sanity/vision": "^6.9.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.9.2",
+    "styled-components": "^6.5.2"
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "^6.0.0",
-    "@types/react": "^19.2.14",
-    "eslint": "^10.0.3",
-    "prettier": "^3.8.1",
-    "typescript": "~5.9.2"
-  },
-  "prettier": {
-    "bracketSpacing": false,
-    "printWidth": 100,
-    "semi": false,
-    "singleQuote": true
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "eslint": "^10.8.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.67.0"
   }
 }

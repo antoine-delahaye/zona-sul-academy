@@ -1,5 +1,14 @@
+# Dependencies
 node_modules/
+*/node_modules/
+
+# Build output
+*/dist/
 blog/.angular/
 cms/.sanity/
-*/node_modules/
-*/dist/
+
+# Tooling caches
+.wrangler/
+*/.wrangler/
+*.tsbuildinfo
+*/out-tsc/

@@ -1,55 +1,111 @@
+# Zona Sul Academy — guide de contribution
 
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+Site du club de jiu-jitsu brésilien et grappling Zona Sul Academy (Orléans).
+Monorepo npm workspaces à deux paquets :
 
-## TypeScript Best Practices
+| Workspace | Rôle                                                                |
+| --------- | ------------------------------------------------------------------- |
+| `blog/`   | Front Angular 22 en SSR, déployé comme Cloudflare Worker            |
+| `cms/`    | Sanity Studio 6 : schémas de contenu, déployé sur `*.sanity.studio` |
 
-- Use strict type checking
-- Prefer type inference when the type is obvious
-- Avoid the `any` type; use `unknown` when type is uncertain
+## Commandes
 
-## Angular Best Practices
+```bash
+npm run start:blog      # ng serve
+npm run start:cms       # sanity dev
+npm run build           # build des deux workspaces
+npm run lint            # ESLint sur les deux workspaces
+npm test                # tests unitaires du blog (Vitest)
+npm run format          # Prettier sur tout le dépôt
+```
 
-- Always use standalone components over NgModules
-- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
-- Use signals for state management
-- Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
-- Use `NgOptimizedImage` for all static images.
-  - `NgOptimizedImage` does not work for inline base64 images.
+Node est épinglé (`.nvmrc`, `volta`) : Angular 22 exige `^24.15.0 || >=26`.
 
-## Accessibility Requirements
+Les scripts d'installation ne sont pas approuvés (garde `allow-scripts` de npm 11.17+),
+et c'est volontaire : les binaires de plateforme (esbuild, workerd) sont livrés dans
+les paquets optionnels, donc build, lint, tests et `wrangler deploy` fonctionnent
+depuis un `npm ci` propre sans autoriser un seul script.
 
-- It MUST pass all AXE checks.
-- It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
+## Monorepo et outillage d'éditeur
 
-### Components
+npm hisse les paquets de façon non garantie : un même paquet peut se retrouver dans
+`node_modules/` ou dans `blog/node_modules/` d'une installation à l'autre. D'où
+deux règles :
 
-- Keep components small and focused on a single responsibility
-- Use `input()` and `output()` functions instead of decorators
-- Use `computed()` for derived state
-- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
-- Prefer inline templates for small components
-- Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
-- When using external templates/styles, use paths relative to the component TS file.
+- Les `$schema` de `blog/angular.json` et `blog/wrangler.jsonc` pointent vers des
+  **URL distantes** (unpkg), pas vers un chemin relatif dans `node_modules`.
+- `@angular/language-server` et `typescript` sont déclarés à la **racine** : les
+  serveurs de langage (Zed, Neovim…) les cherchent dans le `node_modules` de la
+  racine du projet ouvert. Sans `typescript` à la racine, npm y laissait la 5.9.3
+  tirée en peer par `typescript-eslint`, que le compilateur Angular 22 refuse.
 
-## State Management
+## Flux de données
 
-- Use signals for local component state
-- Use `computed()` for derived state
-- Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
+Le blog lit Sanity en **GROQ via `fetch`**, sans SDK, pour garder le bundle Worker
+minimal.
 
-## Templates
+- `blog/src/data/sanity.config.ts` — projectId, dataset, version d'API. Source unique.
+- `blog/src/data/services/groq.ts` — toutes les requêtes GROQ, avec une projection
+  d'image partagée.
+- `blog/src/data/services/sanity.service.ts` — exécute les requêtes.
 
-- Keep templates simple and avoid complex logic
-- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
-- Use the async pipe to handle observables
-- Do not assume globals like (`new Date()`) are available.
+Règles :
 
-## Services
+- **Ne jamais interpoler une valeur dans une requête GROQ.** Utiliser `$nom` et
+  passer la valeur en paramètre à `SanityService.query`.
+- Chaque `resource()` porte un `id`, ce qui fait passer les données par le transfer
+  state SSR au lieu d'être refetchées à l'hydratation.
+- Les slugs sont des `string` simples, pas le type `slug` de Sanity : les requêtes
+  comparent `slug == $slug`. Changer cela casserait toutes les requêtes.
+- Le texte alternatif des images vient de `image.alt`, avec repli sur
+  `asset->altText` puis sur un libellé explicite (`sanityImageAlt`).
+- Le Portable Text est aplati avec `portableTextBlockToPlainText` : un paragraphe
+  formaté arrive découpé en plusieurs spans.
 
-- Design services around a single responsibility
-- Use the `providedIn: 'root'` option for singleton services
-- Use the `inject()` function instead of constructor injection
+## Conventions Angular 22
+
+- Composants standalone. Ne pas écrire `standalone: true` (défaut depuis v20).
+- **Ne pas écrire `changeDetection: ChangeDetectionStrategy.OnPush`** : c'est le
+  défaut depuis la v22.
+- Services : décorateur `@Service()`, pas `@Injectable({providedIn: 'root'})`.
+  Utiliser `@Service({autoProvided: false})` pour un service fourni manuellement.
+- Injection par `inject()`, en tête de classe.
+- État en signaux : `signal`, `computed`, `linkedSignal`, `resource`. Pas de
+  `BehaviorSubject`, pas de pipe `async`.
+- Entrées/sorties via `input()` / `output()`. Les paramètres de route et de query
+  arrivent directement en `input()` grâce à `withComponentInputBinding()`.
+- Bindings d'hôte dans l'objet `host` du décorateur, jamais `@HostBinding` /
+  `@HostListener`.
+- Templates : flux de contrôle natif (`@if`, `@for`, `@switch`), `class`/`style`
+  bindings (pas `ngClass` / `ngStyle`), pas de `$any()` — corriger le type.
+- Images via `NgOptimizedImage` (`ngSrc`). Le loader Sanity est configuré dans
+  `app.config.ts`.
+- Lazy loading pour toutes les routes.
+
+## Accessibilité
+
+Le lint applique `templateAccessibility`. Attendu : conformité WCAG AA, contrastes
+suffisants, gestion du focus, `alt` pertinent (chaîne vide pour une image
+décorative), navigation par liens `<a>` et non par `<button>`.
+
+## Styles
+
+Tailwind 4 + daisyUI 5, dans `blog/src/styles.css`.
+
+- Les utilitaires `font-basic` / `font-gravesend` viennent du bloc `@theme` : une
+  police ajoutée doit y être déclarée, sinon la classe n'existe pas.
+- Attention aux noms de classes daisyUI 4 périmés (`btm-nav`, `card-compact`) :
+  utiliser `dock` / `dock-active` / `dock-label` et `card-sm`.
+- Les composants de page portent leur grille dans `host.class`.
+
+## Déploiement
+
+`blog/wrangler.jsonc` décrit un Worker avec assets statiques.
+
+- `public/_headers` ne s'applique **qu'aux assets statiques**. Cloudflare ne
+  l'applique pas aux réponses générées par le Worker, donc les en-têtes de
+  sécurité des pages SSR sont définis dans `blog/src/server.ts`. Garder les deux
+  cohérents.
+- Tout nouvel hôte servant le site doit être ajouté à `security.allowedHosts`
+  dans `angular.json`, sinon le SSR répond 400.
+- Après modification de `wrangler.jsonc`, relancer `npm run cf-typegen -w blog`.

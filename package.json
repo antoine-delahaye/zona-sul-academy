@@ -1,21 +1,44 @@
 {
-    "name": "zona-sul-academy",
-    "version": "1.0.0",
-    "volta": {
-        "node": "24.14.1",
-        "npm": "11.12.1"
-    },
-    "workspaces": [
-        "blog",
-        "cms"
-    ],
-    "scripts": {
-        "lint": "npm run lint -w blog && npm run lint -w cms",
-        "start:blog": "npm run start -w blog",
-        "start:cms": "npm run start -w cms",
-        "deploy:cms": "npm run deploy -w cms && npm run deploy:graphql -w cms"
-    },
-    "overrides": {
-        "eslint": "^10.0.3"
-    }
+  "name": "zona-sul-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site du club de jiu-jitsu brésilien et grappling Zona Sul Academy (Orléans)",
+  "license": "MIT",
+  "engines": {
+    "node": "^24.15.0 || >=26.0.0",
+    "npm": ">=11.0.0"
+  },
+  "volta": {
+    "node": "24.19.0",
+    "npm": "11.17.0"
+  },
+  "packageManager": "npm@11.17.0",
+  "workspaces": [
+    "blog",
+    "cms"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "start": "npm run start -w blog",
+    "start:blog": "npm run start -w blog",
+    "start:cms": "npm run dev -w cms",
+    "build": "npm run build --workspaces",
+    "test": "npm run test -w blog",
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint -w blog -- --fix && npm run lint -w cms -- --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "deploy:blog": "npm run deploy -w blog",
+    "deploy:cms": "npm run deploy -w cms && npm run deploy:graphql -w cms"
+  },
+  "devDependencies": {
+    "@angular/language-server": "^22.1.1",
+    "eslint": "^10.8.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript": "~6.0.3"
+  },
+  "overrides": {}
 }

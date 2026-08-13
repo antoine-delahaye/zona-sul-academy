@@ -1,0 +1,7 @@
+<span class="sr-only">Chargement du contenu…</span>
+
+<span class="flex flex-col gap-3" aria-hidden="true">
+  @for (placeholder of placeholders(); track $index) {
+    <span [class]="$last ? 'h-4 w-2/3 skeleton' : 'h-4 w-full skeleton'"></span>
+  }
+</span>

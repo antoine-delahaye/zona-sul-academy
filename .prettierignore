@@ -1,0 +1,12 @@
+# Dependencies and build output
+node_modules/
+blog/dist/
+blog/.angular/
+cms/dist/
+cms/.sanity/
+cms/static/
+
+# Generated files — do not reformat, they get overwritten
+blog/worker-configuration.d.ts
+cms/schema.json
+package-lock.json

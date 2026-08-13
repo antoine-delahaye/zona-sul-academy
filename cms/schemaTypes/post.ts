@@ -1,12 +1,6 @@
-import {
-  CustomValidator,
-  defineField,
-  defineType,
-  ImageRule,
-  StringRule
-} from 'sanity'
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
-import {stringSlugValidator} from '../validators/stringSlug'
+import { stringSlugValidator } from '../validators/stringSlug';
 
 export default defineType({
   name: 'post',
@@ -17,68 +11,77 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule: StringRule) => Rule.required()
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'string',
-      validation: (Rule: StringRule) =>
-        Rule.required().custom(stringSlugValidator as CustomValidator)
+      description: 'Used in the article URL: /actualites/<slug>.',
+      validation: (Rule) => Rule.required().custom(stringSlugValidator),
     }),
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
-      rows: 4
+      rows: 4,
+      description: 'Shown on the news listing and in the home page hero.',
     }),
     defineField({
       name: 'mainImage',
       title: 'Main image',
       type: 'image',
+      options: { hotspot: true },
       fields: [
         defineField({
           name: 'alt',
+          title: 'Alternative text',
           type: 'string',
-          title: 'Alternative text'
-        })
+          description: 'Read aloud by screen readers. Leave empty only for decorative images.',
+          validation: (Rule) => Rule.required().warning('Add alternative text for accessibility.'),
+        }),
       ],
-      options: {
-        hotspot: true
-      },
-      validation: (Rule: ImageRule) => Rule.required()
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'body',
       title: 'Body',
-      type: 'blockContent'
+      type: 'blockContent',
     }),
     defineField({
       name: 'featured',
       title: 'Featured',
       type: 'boolean',
-      initialValue: false
+      description: 'Featured posts are promoted to the home page hero.',
+      initialValue: false,
     }),
     defineField({
       name: 'featuredButtons',
       title: 'Featured Buttons',
       type: 'array',
-      of: [
-        {
-          type: 'featuredButton'
-        }
-      ]
-    })
+      description: 'Extra call-to-action buttons, shown in the home page hero only.',
+      of: [defineArrayMember({ type: 'featuredButton' })],
+    }),
+  ],
+  orderings: [
+    {
+      name: 'createdAtDesc',
+      title: 'Newest first',
+      by: [{ field: '_createdAt', direction: 'desc' }],
+    },
   ],
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
-      media: 'mainImage'
+      excerpt: 'excerpt',
+      featured: 'featured',
+      media: 'mainImage',
     },
-    prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
-    }
-  }
-})
+    prepare({ title, excerpt, featured }) {
+      return {
+        title: featured ? `★ ${title}` : title,
+        subtitle: excerpt,
+      };
+    },
+  },
+});

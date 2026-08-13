@@ -1,23 +1,17 @@
-import { Injectable, inject } from '@angular/core';
-import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
+import { Service, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 
-export const siteName = 'Zona Sul Academy';
+export const SITE_NAME = 'Zona Sul Academy';
 
-@Injectable()
+/** Prefixes every route title with the site name. */
+@Service({ autoProvided: false })
 export class AppTitle extends TitleStrategy {
-  readonly title = inject(Title);
-
-  constructor() {
-    super();
-  }
+  private readonly title = inject(Title);
 
   override updateTitle(routerState: RouterStateSnapshot): void {
-    const title: string | undefined = this.buildTitle(routerState);
-    if (title !== undefined) {
-      this.title.setTitle(`${siteName} - ${title}`);
-    } else {
-      this.title.setTitle(siteName);
-    }
+    const routeTitle = this.buildTitle(routerState);
+
+    this.title.setTitle(routeTitle ? `${SITE_NAME} - ${routeTitle}` : SITE_NAME);
   }
 }

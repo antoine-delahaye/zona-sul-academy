@@ -1,23 +1,27 @@
-import {defineType} from 'sanity'
+import { defineType } from 'sanity';
+
+const FIRST_HOUR = 6;
+const LAST_HOUR = 24;
+const STEP_MINUTES = 15;
+
+/** Selectable times, in 15-minute steps from 06:00 up to 23:45. */
+function allowedTimes(): string[] {
+  const times: string[] = [];
+
+  for (let hour = FIRST_HOUR; hour < LAST_HOUR; hour++) {
+    for (let minute = 0; minute < 60; minute += STEP_MINUTES) {
+      times.push(`${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`);
+    }
+  }
+
+  return times;
+}
 
 export default defineType({
   name: 'timeValue',
   title: 'Time',
   type: 'string',
   options: {
-    list: ALLOWED_TIMES()
-  }
-})
-
-// A function that generates an array of times from 00:00 to 23:30
-export function ALLOWED_TIMES(): string[] {
-  const times: string[] = []
-  for (let h: number = 6; h < 24; h++) {
-    for (let m: number = 0; m < 60; m += 15) {
-      times.push(
-        `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`
-      )
-    }
-  }
-  return times
-}
+    list: allowedTimes(),
+  },
+});

@@ -1,23 +1,24 @@
-import blockContent from './blockContent'
-import post from './post'
-import planningEvent from './planningEvent'
-import media from './media'
-import siteContent from './siteContent'
+import type { SchemaTypeDefinition } from 'sanity';
 
-import featuredButton from './featuredButton'
-import duration from './duration'
-import timeValue from './timeValue'
-import dayName from './dayName'
-import imageSection from './imageSection'
-import videoSection from './videoSection'
-import membershipSection from './membershipSection'
+import blockContent from './blockContent';
+import dayName from './dayName';
+import duration from './duration';
+import featuredButton from './featuredButton';
+import imageSection from './imageSection';
+import media from './media';
+import membershipSection from './membershipSection';
+import planningEvent from './planningEvent';
+import post from './post';
+import siteContent from './siteContent';
+import timeValue from './timeValue';
+import videoSection from './videoSection';
 
-export const schemaTypes = [
+/** Documents editors create directly. */
+const documents = [post, planningEvent, media, siteContent];
+
+/** Objects reused inside documents. */
+const objects = [
   blockContent,
-  post,
-  planningEvent,
-  media,
-  siteContent,
   featuredButton,
   duration,
   timeValue,
@@ -25,4 +26,6 @@ export const schemaTypes = [
   imageSection,
   videoSection,
   membershipSection,
-]
+];
+
+export const schemaTypes: SchemaTypeDefinition[] = [...documents, ...objects];

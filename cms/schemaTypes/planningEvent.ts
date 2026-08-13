@@ -1,10 +1,4 @@
-import {
-  DateRule,
-  defineField,
-  defineType,
-  StringRule,
-  ValidationContext
-} from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'planningEvent',
@@ -15,64 +9,61 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule: StringRule) => Rule.required()
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'date',
       title: 'Date',
       type: 'date',
-      validation: (Rule: DateRule) =>
-        Rule.custom((date: string | undefined, context: ValidationContext) => {
-          const day = context.document?.day
-          if (!date && !day) {
-            return 'Either date or day must be filled'
-          }
-          return true
-        })
+      description: 'For a one-off event. Use "Day" instead for a weekly slot.',
+      validation: (Rule) =>
+        Rule.custom((date, context) =>
+          date || context.document?.day ? true : 'Either date or day must be filled',
+        ),
     }),
     defineField({
       name: 'day',
       title: 'Day',
       type: 'dayName',
+      description: 'For a slot that repeats every week.',
       validation: (Rule) =>
-        Rule.custom((day, context: ValidationContext) => {
-          const date = context.document?.date
-          if (!day && !date) {
-            return 'Either day or date must be filled'
-          }
-          return true
-        })
+        Rule.custom((day, context) =>
+          day || context.document?.date ? true : 'Either day or date must be filled',
+        ),
     }),
     defineField({
       name: 'duration',
       title: 'Duration',
-      type: 'duration'
+      type: 'duration',
     }),
     defineField({
       name: 'location',
       title: 'Location',
-      type: 'string'
+      type: 'string',
     }),
     defineField({
       name: 'person',
       title: 'Person',
-      type: 'string'
-    })
+      type: 'string',
+    }),
   ],
   preview: {
     select: {
       title: 'title',
-      date: 'startTime',
-      duration: 'duration',
+      start: 'duration.start',
+      end: 'duration.end',
       location: 'location',
-      person: 'person'
     },
-    prepare(selection) {
-      const {title, duration, location} = selection
+    // Every field here is optional, so the subtitle is assembled from whatever
+    // is actually filled in rather than interpolated blindly.
+    prepare({ title, start, end, location }) {
+      const timeRange = start && end ? `${start} – ${end}` : (start ?? '');
+      const subtitle = [timeRange, location].filter(Boolean).join(' · ');
+
       return {
-        title: `${title}`,
-        subtitle: `${duration.start} - ${duration.end} at ${location}`
-      }
-    }
-  }
-})
+        title: typeof title === 'string' ? title : 'Untitled event',
+        subtitle: subtitle || undefined,
+      };
+    },
+  },
+});

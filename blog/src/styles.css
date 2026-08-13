@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
-@plugin "daisyui";
-@plugin "daisyui/theme" {
+@plugin 'daisyui';
+@plugin 'daisyui/theme' {
   name: 'zonasul';
   color-scheme: 'light';
   default: true;
@@ -36,10 +36,24 @@
   --noise: 0;
 }
 
+/*
+ * Registers the `font-basic` and `font-gravesend` utilities. Without these theme
+ * variables Tailwind v4 emits no `font-*` class at all, and the @font-face
+ * families below would be downloaded but never applied.
+ */
+@theme {
+  --font-basic: 'basic-sans', ui-sans-serif, system-ui, sans-serif;
+  --font-gravesend: 'gravesend-sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * `font-display: swap` renders fallback text immediately instead of leaving the
+ * page blank while the face downloads.
+ */
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansThin.ttf');
-  font-display: auto;
+  src: url('/fonts/GravesendSansThin.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 100;
   font-stretch: normal;
@@ -47,8 +61,8 @@
 
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansLight.ttf');
-  font-display: auto;
+  src: url('/fonts/GravesendSansLight.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 300;
   font-stretch: normal;
@@ -56,8 +70,8 @@
 
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansMedium.ttf');
-  font-display: auto;
+  src: url('/fonts/GravesendSansMedium.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 500;
   font-stretch: normal;
@@ -65,8 +79,8 @@
 
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansBold.ttf');
-  font-display: auto;
+  src: url('/fonts/GravesendSansBold.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 700;
   font-stretch: normal;
@@ -74,8 +88,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansThin.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansThin.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 100;
   font-stretch: normal;
@@ -83,8 +97,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansExtraLight.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansExtraLight.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 200;
   font-stretch: normal;
@@ -92,8 +106,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansLight.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansLight.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 300;
   font-stretch: normal;
@@ -101,8 +115,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansNormal.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansNormal.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
   font-stretch: normal;
@@ -110,8 +124,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansSemiBold.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansSemiBold.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 600;
   font-stretch: normal;
@@ -119,8 +133,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansBold.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansBold.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 700;
   font-stretch: normal;
@@ -128,8 +142,8 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansBlack.ttf');
-  font-display: auto;
+  src: url('/fonts/BasicSansBlack.ttf') format('truetype');
+  font-display: swap;
   font-style: normal;
   font-weight: 900;
   font-stretch: normal;
@@ -145,35 +159,42 @@ app-root {
   @apply flex min-h-lvh flex-col;
 }
 
-main a:not(.btn):not(.planning-event) {
-  @apply hover:underline decoration-white;
+main a:not(.btn) {
+  @apply decoration-white hover:underline;
 }
 
-section:not(.hero),
-app-news-index,
-app-news-single,
-app-prices {
+/* Page components declare their own grid through a host class. */
+section:not(.hero) {
   @apply grid gap-8 px-4 py-8 lg:p-16;
-}
-
-app-news-index,
-app-news-single,
-app-prices {
-  @apply lg:grid-cols-12;
 }
 
 youtube-player-placeholder,
 youtube-player iframe {
-  @apply !w-full;
+  @apply w-full!;
 }
 
-.footer {
-  a {
-    @apply hover:underline;
-  }
+.footer a {
+  @apply hover:underline;
 }
 
-.footer-transition {
-  transition: opacity 0.5s ease-in-out;
+/*
+ * The fixed mobile dock fades out while the main footer is on screen, so the two
+ * never overlap. `visibility` is animated too, otherwise the hidden dock would
+ * keep swallowing taps.
+ */
+.dock {
+  transition:
+    opacity 0.4s ease-in-out,
+    visibility 0.4s ease-in-out;
+}
+
+.dock-hidden {
   opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock {
+    transition: none;
+  }
 }

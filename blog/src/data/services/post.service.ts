@@ -1,109 +1,54 @@
-import { Injectable, resource, inject } from '@angular/core';
-import { PostPreview, PostSingle, FeaturedPost } from '../models/post.model';
+import { Service, Signal, inject, resource } from '@angular/core';
+
+import { FeaturedPost, PostPreview, PostSingle } from '../models/post.model';
+import { FEATURED_POSTS_QUERY, POST_BY_SLUG_QUERY, POST_PREVIEWS_QUERY } from './groq';
 import { SanityService } from './sanity.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class PostService {
-  private sanity = inject(SanityService);
+  private readonly sanity = inject(SanityService);
 
-  public getPostPreviews(limit = 10, offset = 0) {
+  /**
+   * One page of post previews, reloaded whenever `page` changes.
+   *
+   * Must be called from an injection context (a component field initialiser),
+   * since the returned resource is tied to the caller's lifecycle.
+   */
+  previews(page: Signal<number>, pageSize: number) {
     return resource({
-      loader: async () => {
-        const query = `
-          *[_type == "post"] | order(_createdAt desc) [${offset}...${offset + limit}] {
-            title,
-            _createdAt,
-            slug,
-            excerpt,
-            mainImage {
-              asset-> {
-                altText,
-                path,
-                metadata {
-                  dimensions {
-                    width,
-                    height
-                  }
-                }
-              }
-            }
-          }
-        `;
-        const data = await this.sanity.fetchGROQ<PostPreview[]>(query);
-        return data;
+      id: 'sanity.post-previews',
+      defaultValue: [] as PostPreview[],
+      params: () => {
+        const from = (Math.max(1, page()) - 1) * pageSize;
+        return { from, to: from + pageSize };
       },
+      loader: ({ params, abortSignal }) =>
+        this.sanity.query<PostPreview[]>(POST_PREVIEWS_QUERY, params, abortSignal),
     });
   }
 
-  public getPostSingle(slug: string) {
+  /**
+   * A single post, reloaded whenever `slug` changes.
+   *
+   * Resolves to `null` when no post matches, which callers can distinguish from
+   * `undefined` (still loading) to render a not-found state.
+   */
+  bySlug(slug: Signal<string>) {
     return resource({
-      loader: async () => {
-        const query = `
-          *[_type == "post" && slug == "${slug}"] {
-            title,
-            _createdAt,
-            mainImage {
-              asset-> {
-                altText,
-                path,
-                metadata {
-                  dimensions {
-                    width,
-                    height
-                  }
-                }
-              }
-            },
-            "bodyRaw": body[] {
-              _type,
-              _key,
-              style,
-              children[] {
-                text,
-                _type,
-                _key
-              }
-            }
-          }
-        `;
-        const data = await this.sanity.fetchGROQ<PostSingle[]>(query);
-        return data[0];
-      },
+      id: 'sanity.post-by-slug',
+      params: () => ({ slug: slug() }),
+      loader: ({ params, abortSignal }) =>
+        this.sanity.query<PostSingle | null>(POST_BY_SLUG_QUERY, params, abortSignal),
     });
   }
 
-  public getFeaturedPosts() {
+  /** Posts flagged `featured` in the Studio, newest first. */
+  featured() {
     return resource({
-      loader: async () => {
-        const query = `
-          *[_type == "post" && featured == true] {
-            title,
-            slug,
-            excerpt,
-            mainImage {
-              asset-> {
-                altText,
-                path,
-                metadata {
-                  dimensions {
-                    width,
-                    height
-                  }
-                }
-              }
-            },
-            featuredButtons[] {
-              text,
-              url,
-              openInNewTab
-            }
-          }
-        `;
-        const data = await this.sanity.fetchGROQ<FeaturedPost[]>(query);
-        return data;
-      },
+      id: 'sanity.featured-posts',
+      defaultValue: [] as FeaturedPost[],
+      loader: ({ abortSignal }) =>
+        this.sanity.query<FeaturedPost[]>(FEATURED_POSTS_QUERY, {}, abortSignal),
     });
   }
 }

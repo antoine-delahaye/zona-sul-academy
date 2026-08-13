@@ -1,67 +1,23 @@
-import { Injectable, resource, inject } from '@angular/core';
+import { Service, computed, inject, resource } from '@angular/core';
+
 import { SiteContent } from '../models/site-content.model';
+import { SITE_CONTENT_QUERY } from './groq';
 import { SanityService } from './sanity.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class SiteContentService {
-  private sanity = inject(SanityService);
+  private readonly sanity = inject(SanityService);
 
-  private readonly _allSiteContent = resource({
-    loader: async () => {
-      const query = `
-        *[_type == "siteContent"] {
-          _id,
-          title,
-          slug,
-          "subtitleRaw": subtitle,
-          pageBuilder[] {
-            _type,
-            _key,
-            _type == "imageSection" => {
-              "__typename": "ImageSection",
-              title,
-              "bodyRaw": body,
-              image {
-                asset-> {
-                  altText,
-                  path,
-                  metadata {
-                    dimensions {
-                      width,
-                      height
-                    }
-                  }
-                }
-              }
-            },
-            _type == "videoSection" => {
-              "__typename": "VideoSection",
-              title,
-              "bodyRaw": body,
-              videoId
-            },
-            _type == "membershipSection" => {
-              "__typename": "MembershipSection",
-              title,
-              "descriptionRaw": description,
-              requirements,
-              price,
-              priceInfo,
-              additionalInfo,
-              buttonUrl,
-              buttonText
-            }
-          }
-        }
-      `;
-      const data = await this.sanity.fetchGROQ<SiteContent[]>(query);
-      return data;
-    },
+  /** Every Studio-managed page, fetched once and shared across routes. */
+  readonly all = resource({
+    id: 'sanity.site-content',
+    defaultValue: [] as SiteContent[],
+    loader: ({ abortSignal }) =>
+      this.sanity.query<SiteContent[]>(SITE_CONTENT_QUERY, {}, abortSignal),
   });
 
-  public getAll() {
-    return this._allSiteContent;
+  /** Narrows the shared collection down to one page, by slug. */
+  bySlug(slug: string) {
+    return computed(() => this.all.value().find((content) => content.slug === slug));
   }
 }
