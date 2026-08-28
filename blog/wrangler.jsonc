@@ -13,13 +13,17 @@
   },
   // Lets the contact endpoint in src/server.ts mail the club through Email
   // Routing, with no third-party provider and no API key. `destination_address`
-  // pins the recipient, so the Worker can only ever write to that one address —
-  // and it has to be a verified destination address in the zone's Email Routing
-  // settings, otherwise `send()` is rejected at runtime.
+  // pins the recipient, so the Worker can only ever write to that one address.
+  //
+  // It must be a *verified destination address* of the account (Email Routing →
+  // Destination addresses), which is not the same thing as a custom address on
+  // the zone: `contact@zonasulacademy.fr` is a routing rule that forwards to the
+  // mailbox below, so sending to it fails with "destination address is not a
+  // verified address". Mailing the mailbox directly lands in the same inbox.
   "send_email": [
     {
       "name": "SEND_EMAIL",
-      "destination_address": "contact@zonasulacademy.fr",
+      "destination_address": "zonasulacademy@gmail.com",
     },
   ],
   "observability": {

@@ -15,11 +15,11 @@
 export const CONTACT_ENDPOINT = '/api/contact';
 
 /**
- * The club's mailbox: recipient of every submission, and the address the site
- * shows visitors who would rather write directly.
+ * The club's public address, shown to visitors who would rather write directly.
  *
- * It must stay in sync with `destination_address` of the `send_email` binding in
- * `wrangler.jsonc`, which is what actually allows the Worker to mail it.
+ * Not what the Worker mails: Email Routing forwards this address to the mailbox
+ * named by `CONTACT_DELIVERY_ADDRESS`, and only that mailbox is a verified
+ * destination the `send_email` binding may write to.
  */
 export const CONTACT_EMAIL = 'contact@zonasulacademy.fr';
 

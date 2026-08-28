@@ -29,6 +29,9 @@ describe('App', () => {
 
     expect(app.leadingLinks.length + app.trailingLinks.length).toBe(app.navigationLinks.length);
     expect(app.leadingLinks[0].title).toBe('Le club');
+
+    // An odd number of entries leaves the extra one on the right of the logo.
+    expect(app.trailingLinks.length).toBeGreaterThanOrEqual(app.leadingLinks.length);
   });
 
   it('renders every navigation entry in the mobile dock with an icon', () => {

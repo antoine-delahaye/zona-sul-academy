@@ -1,5 +1,4 @@
 import {
-  CONTACT_EMAIL,
   ContactErrors,
   ContactPayload,
   ContactResponse,
@@ -42,6 +41,18 @@ export interface ContactEnv {
  * with Email Routing enabled. Replies reach the visitor through `Reply-To`.
  */
 const SENDER = { name: 'Formulaire zonasulacademy.fr', email: 'formulaire@zonasulacademy.fr' };
+
+/**
+ * Where the mail is actually delivered, and the value `destination_address` in
+ * `wrangler.jsonc` has to repeat.
+ *
+ * Deliberately not `CONTACT_EMAIL`: the `send_email` binding only accepts a
+ * *verified destination address* of the account, and `contact@zonasulacademy.fr`
+ * is a custom address on the zone — a routing rule that forwards here. Sending to
+ * it is rejected with "destination address is not a verified address", so the
+ * Worker writes to the mailbox behind it, which is the same inbox.
+ */
+const RECIPIENT = { name: 'Zona Sul Academy', email: 'zonasulacademy@gmail.com' };
 
 /**
  * Hard ceiling on the request body, comfortably above the sum of the field
@@ -207,7 +218,7 @@ export async function handleContactRequest(
   try {
     await sendEmail.send({
       from: SENDER,
-      to: CONTACT_EMAIL,
+      to: RECIPIENT,
       // So hitting Reply in the mailbox answers the visitor, not the Worker.
       replyTo: { name: message.name, email: message.email },
       subject: `[Site] ${message.subject}`,

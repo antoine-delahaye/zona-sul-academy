@@ -112,9 +112,16 @@ dans `blog/src/server.ts` **avant** Angular, et traitée par
   dans le nom ou l'objet permettrait d'injecter des en-têtes dans le courriel.
 - L'envoi passe par le binding `send_email` de Cloudflare Email Routing, pas par un
   prestataire tiers : `env.SEND_EMAIL.send({from, to, subject, text})` laisse workerd
-  composer le MIME, donc aucune librairie mail n'est nécessaire. Prérequis côté
-  Cloudflare : Email Routing activé sur la zone, et `contact@zonasulacademy.fr`
-  vérifiée comme adresse de destination.
+  composer le MIME, donc aucune librairie mail n'est nécessaire.
+- **Le destinataire n'est pas `contact@zonasulacademy.fr`.** Le binding n'accepte
+  qu'une _adresse de destination vérifiée_ du compte (Email Routing → Destination
+  addresses), ce qui n'est pas la même chose qu'une adresse personnalisée de la
+  zone : `contact@` est une règle de routage qui forwarde vers
+  `zonasulacademy@gmail.com`, et lui écrire échoue avec `destination address is not
+a verified address`. Le Worker écrit donc à la boîte derrière, même boîte de
+  réception. `CONTACT_EMAIL` reste l'adresse publique affichée aux visiteurs, et
+  `RECIPIENT` dans `contact.endpoint.ts` doit rester égal à `destination_address`
+  de `wrangler.jsonc`.
 - L'expéditeur (`formulaire@zonasulacademy.fr`) n'a pas besoin d'exister comme boîte,
   seulement d'être sur la zone. Le visiteur est joignable via `Reply-To`.
 - L'anti-robot est Cloudflare Turnstile. La _site key_ est publique et vit dans

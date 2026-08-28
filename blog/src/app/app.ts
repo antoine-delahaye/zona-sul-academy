@@ -41,9 +41,15 @@ export class App {
   readonly navigationLinks = navigationLinks;
   readonly legalLinks = legalLinks;
 
-  /** The desktop header renders the navigation on either side of the logo. */
-  readonly leadingLinks = navigationLinks.slice(0, Math.ceil(navigationLinks.length / 2));
-  readonly trailingLinks = navigationLinks.slice(Math.ceil(navigationLinks.length / 2));
+  /**
+   * The desktop header renders the navigation on either side of the logo. An odd
+   * number of entries leaves the extra one on the right, which is where the eye
+   * expects the overflow.
+   */
+  private static readonly leadingCount = Math.floor(navigationLinks.length / 2);
+
+  readonly leadingLinks = navigationLinks.slice(0, App.leadingCount);
+  readonly trailingLinks = navigationLinks.slice(App.leadingCount);
 
   readonly socialLinks: readonly SocialLink[] = [
     {
