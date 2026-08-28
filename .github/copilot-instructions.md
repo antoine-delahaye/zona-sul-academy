@@ -98,6 +98,33 @@ Tailwind 4 + daisyUI 5, dans `blog/src/styles.css`.
   utiliser `dock` / `dock-active` / `dock-label` et `card-sm`.
 - Les composants de page portent leur grille dans `host.class`.
 
+## Formulaire de contact
+
+Le formulaire de `/contact` poste sur `/api/contact`, une route du Worker interceptée
+dans `blog/src/server.ts` **avant** Angular, et traitée par
+`blog/src/contact.endpoint.ts`.
+
+- Les règles de validation vivent dans `blog/src/shared/contact/contact.model.ts` et
+  sont appliquées **des deux côtés** : le navigateur pour les erreurs en ligne, le
+  Worker parce que rien n'empêche de poster directement sur l'endpoint. Ne pas
+  dupliquer une règle d'un seul côté.
+- Les champs sur une ligne sont normalisés avant l'envoi : sans cela, un CR ou un LF
+  dans le nom ou l'objet permettrait d'injecter des en-têtes dans le courriel.
+- L'envoi passe par le binding `send_email` de Cloudflare Email Routing, pas par un
+  prestataire tiers : `env.SEND_EMAIL.send({from, to, subject, text})` laisse workerd
+  composer le MIME, donc aucune librairie mail n'est nécessaire. Prérequis côté
+  Cloudflare : Email Routing activé sur la zone, et `contact@zonasulacademy.fr`
+  vérifiée comme adresse de destination.
+- L'expéditeur (`formulaire@zonasulacademy.fr`) n'a pas besoin d'exister comme boîte,
+  seulement d'être sur la zone. Le visiteur est joignable via `Reply-To`.
+- L'anti-robot est Cloudflare Turnstile. La _site key_ est publique et vit dans
+  `blog/src/shared/turnstile/turnstile.config.ts` ; la _secret key_ est un secret
+  Worker (`wrangler secret put TURNSTILE_SECRET_KEY`). La vérification échoue
+  fermée : erreur réseau ou réponse illisible comptent comme un échec.
+- `ng serve` n'a ni binding ni secret : l'endpoint y répond 503 et le formulaire
+  affiche le repli mailto. Pour l'essayer réellement, `npm run preview -w blog`
+  (wrangler dev) avec un `blog/.dev.vars` copié depuis `blog/.dev.vars.example`.
+
 ## Déploiement
 
 `blog/wrangler.jsonc` décrit un Worker avec assets statiques.

@@ -1,6 +1,9 @@
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 
+import { ContactEnv, handleContactRequest } from './contact.endpoint';
+import { CONTACT_ENDPOINT } from './shared/contact/contact.model';
 import { SANITY_API_HOST, SANITY_IMAGE_CDN_URL } from './data/sanity.config';
+import { TURNSTILE_ORIGIN } from './shared/turnstile/turnstile.config';
 
 const angularApp = new AngularAppEngine();
 
@@ -17,6 +20,10 @@ const YOUTUBE_THUMBNAIL_ORIGIN = 'https://i.ytimg.com';
  * inline hydration/transfer-state scripts and injects component styles as inline
  * `<style>` blocks. Tightening this means switching to the builder's hash-based
  * `security.autoCsp` option, which is still in preview.
+ *
+ * `TURNSTILE_ORIGIN` appears three times over because the anti-robot widget on
+ * the contact page loads a script, mounts an iframe, and reports its outcome back
+ * to Cloudflare.
  */
 const CONTENT_SECURITY_POLICY = [
   `default-src 'self'`,
@@ -24,12 +31,12 @@ const CONTENT_SECURITY_POLICY = [
   `object-src 'none'`,
   `form-action 'self'`,
   `frame-ancestors 'none'`,
-  `script-src 'self' 'unsafe-inline' ${YOUTUBE_API_ORIGIN} ${YOUTUBE_SCRIPT_ORIGIN}`,
+  `script-src 'self' 'unsafe-inline' ${TURNSTILE_ORIGIN} ${YOUTUBE_API_ORIGIN} ${YOUTUBE_SCRIPT_ORIGIN}`,
   `style-src 'self' 'unsafe-inline'`,
   `img-src 'self' data: ${SANITY_IMAGE_CDN_URL} ${YOUTUBE_THUMBNAIL_ORIGIN}`,
   `font-src 'self'`,
-  `connect-src 'self' ${SANITY_API_ORIGIN}`,
-  `frame-src ${YOUTUBE_PLAYER_ORIGIN} ${YOUTUBE_API_ORIGIN}`,
+  `connect-src 'self' ${SANITY_API_ORIGIN} ${TURNSTILE_ORIGIN}`,
+  `frame-src ${TURNSTILE_ORIGIN} ${YOUTUBE_PLAYER_ORIGIN} ${YOUTUBE_API_ORIGIN}`,
   `upgrade-insecure-requests`,
 ].join('; ');
 
@@ -80,13 +87,35 @@ function withSecurityHeaders(response: Response, requestUrl: string): Response {
   });
 }
 
-export const reqHandler = createRequestHandler(async (request) => {
+/**
+ * The single path through the Worker, whichever entry point called it.
+ *
+ * @param env Cloudflare bindings and secrets. Only the default export receives
+ *   them: `reqHandler` is called by the Angular dev server with the request
+ *   alone, so the contact endpoint answers 503 under `ng serve`.
+ */
+async function handle(request: Request, env?: ContactEnv): Promise<Response> {
+  // Intercepted before Angular, which would otherwise render the 404 page for it.
+  if (new URL(request.url).pathname === CONTACT_ENDPOINT) {
+    return withSecurityHeaders(await handleContactRequest(request, env), request.url);
+  }
+
   const response = await angularApp.handle(request);
 
   return withSecurityHeaders(
     response ?? new Response('Page not found.', { status: 404 }),
     request.url,
   );
-});
+}
 
-export default { fetch: reqHandler };
+/** Used by the Angular dev server, which looks this export up by name. */
+export const reqHandler = createRequestHandler((request) => handle(request));
+
+/**
+ * Used by workerd. Declared separately from `reqHandler` because Angular's
+ * `RequestHandlerFunction` takes only a request, and the contact endpoint needs
+ * the `env` argument the runtime passes alongside it.
+ */
+export default {
+  fetch: (request: Request, env: ContactEnv): Promise<Response> => handle(request, env),
+};

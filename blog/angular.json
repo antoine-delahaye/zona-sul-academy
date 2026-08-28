@@ -36,7 +36,9 @@
               "allowedHosts": [
                 "zonasulacademy.fr",
                 "www.zonasulacademy.fr",
-                "zona-sul-academy.ztmyriam.workers.dev"
+                "zona-sul-academy.ztmyriam.workers.dev",
+                "localhost",
+                "127.0.0.1"
               ]
             }
           },

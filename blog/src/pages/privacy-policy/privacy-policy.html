@@ -25,16 +25,22 @@
   <h2>Données collectées</h2>
 
   <p>
-    Ce site est un site de consultation : il ne comporte ni formulaire, ni espace membre, ni système
-    de commentaires. Nous ne collectons donc aucune donnée personnelle vous concernant lorsque vous
-    le consultez, et nous n'utilisons ni cookie publicitaire, ni outil de mesure d'audience.
+    Ce site est un site de consultation : il ne comporte ni espace membre, ni système de
+    commentaires. Sa simple consultation ne donne lieu à aucune collecte de données personnelles, et
+    nous n'utilisons ni cookie publicitaire, ni outil de mesure d'audience.
   </p>
 
   <p>
-    Si vous nous contactez par courriel ou par téléphone, les informations que vous transmettez
-    (nom, adresse électronique, numéro de téléphone, contenu du message) sont utilisées uniquement
-    pour vous répondre et pour la gestion de la vie associative. Elles ne sont ni cédées, ni vendues
-    à des tiers.
+    Le <a routerLink="/contact">formulaire de contact</a> est le seul endroit du site où des données
+    vous concernant sont recueillies : votre nom, votre adresse électronique, votre numéro de
+    téléphone si vous choisissez de le renseigner, l'objet et le contenu de votre message. Ces
+    informations nous parviennent par courriel et ne sont pas stockées ailleurs.
+  </p>
+
+  <p>
+    Que vous nous écriviez par ce formulaire, par courriel ou par téléphone, ces informations sont
+    utilisées uniquement pour vous répondre et pour la gestion de la vie associative. Elles ne sont
+    ni cédées, ni vendues à des tiers.
   </p>
 
   <h2>Prestataires techniques</h2>
@@ -46,7 +52,12 @@
   </p>
 
   <ul>
-    <li><strong>Cloudflare</strong> — hébergement et diffusion du site.</li>
+    <li>
+      <strong>Cloudflare</strong> — hébergement et diffusion du site, acheminement des messages
+      envoyés depuis le formulaire de contact, et vérification anti-robot de ce formulaire
+      (Turnstile). Turnstile ne dépose pas de cookie publicitaire et ne sert pas au suivi
+      publicitaire.
+    </li>
     <li><strong>Sanity</strong> — stockage et diffusion des textes et des images publiés.</li>
     <li>
       <strong>YouTube (Google)</strong> — uniquement sur les pages contenant une vidéo intégrée. La

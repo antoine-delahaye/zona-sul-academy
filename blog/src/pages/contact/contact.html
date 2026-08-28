@@ -1,0 +1,196 @@
+<section class="col-span-full hero">
+  <div class="hero-content max-w-2xl text-center">
+    <div>
+      <h1 class="mb-6 text-4xl">Nous contacter</h1>
+
+      <p class="text-lg leading-8 text-gray-600">
+        Une question sur les cours, un premier entraînement à programmer, une demande de
+        renseignement&nbsp;? Écrivez-nous, nous vous répondons dès que possible.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="mx-auto w-full max-w-2xl lg:col-span-8 lg:col-start-3">
+  <div aria-live="polite">
+    @if (status() === 'sent') {
+      <div class="mb-8 alert alert-success">
+        <p>
+          Merci, votre message est parti. Nous vous répondons à l'adresse que vous avez indiquée.
+        </p>
+      </div>
+    }
+  </div>
+
+  @if (status() === 'failed' && failureReason(); as reason) {
+    <div class="mb-8 alert alert-error" role="alert">
+      <p>
+        {{ reason }} Vous pouvez aussi nous écrire directement à
+        <a [href]="mailtoContact">{{ contactEmail }}</a
+        >.
+      </p>
+    </div>
+  }
+
+  <form class="grid gap-6" novalidate (submit)="submit($event)">
+    <p class="text-sm text-gray-600">
+      Les champs suivis d'un astérisque&nbsp;(*) sont obligatoires.
+    </p>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div class="grid content-start gap-2">
+        <label class="font-semibold" for="contact-name">Nom et prénom *</label>
+
+        <input
+          #nameField
+          id="contact-name"
+          class="input w-full"
+          type="text"
+          name="name"
+          autocomplete="name"
+          required
+          [attr.maxlength]="maxLengths.name"
+          [class.input-error]="visibleErrors().name"
+          [attr.aria-invalid]="visibleErrors().name ? 'true' : null"
+          [attr.aria-describedby]="visibleErrors().name ? 'contact-name-error' : null"
+          [value]="name()"
+          (input)="name.set(nameField.value)"
+        />
+
+        @if (visibleErrors().name; as error) {
+          <p id="contact-name-error" class="text-sm text-error">{{ error }}</p>
+        }
+      </div>
+
+      <div class="grid content-start gap-2">
+        <label class="font-semibold" for="contact-email">Adresse e-mail *</label>
+
+        <input
+          #emailField
+          id="contact-email"
+          class="input w-full"
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+          [attr.maxlength]="maxLengths.email"
+          [class.input-error]="visibleErrors().email"
+          [attr.aria-invalid]="visibleErrors().email ? 'true' : null"
+          [attr.aria-describedby]="visibleErrors().email ? 'contact-email-error' : null"
+          [value]="email()"
+          (input)="email.set(emailField.value)"
+        />
+
+        @if (visibleErrors().email; as error) {
+          <p id="contact-email-error" class="text-sm text-error">{{ error }}</p>
+        }
+      </div>
+
+      <div class="grid content-start gap-2">
+        <label class="font-semibold" for="contact-phone">Téléphone</label>
+
+        <input
+          #phoneField
+          id="contact-phone"
+          class="input w-full"
+          type="tel"
+          name="phone"
+          autocomplete="tel"
+          [attr.maxlength]="maxLengths.phone"
+          [class.input-error]="visibleErrors().phone"
+          [attr.aria-invalid]="visibleErrors().phone ? 'true' : null"
+          [attr.aria-describedby]="
+            visibleErrors().phone ? 'contact-phone-error' : 'contact-phone-hint'
+          "
+          [value]="phone()"
+          (input)="phone.set(phoneField.value)"
+        />
+
+        @if (visibleErrors().phone; as error) {
+          <p id="contact-phone-error" class="text-sm text-error">{{ error }}</p>
+        } @else {
+          <p id="contact-phone-hint" class="text-sm text-gray-600">
+            Facultatif, si vous préférez qu'on vous rappelle.
+          </p>
+        }
+      </div>
+
+      <div class="grid content-start gap-2">
+        <label class="font-semibold" for="contact-subject">Objet *</label>
+
+        <input
+          #subjectField
+          id="contact-subject"
+          class="input w-full"
+          type="text"
+          name="subject"
+          required
+          [attr.maxlength]="maxLengths.subject"
+          [class.input-error]="visibleErrors().subject"
+          [attr.aria-invalid]="visibleErrors().subject ? 'true' : null"
+          [attr.aria-describedby]="visibleErrors().subject ? 'contact-subject-error' : null"
+          [value]="subject()"
+          (input)="subject.set(subjectField.value)"
+        />
+
+        @if (visibleErrors().subject; as error) {
+          <p id="contact-subject-error" class="text-sm text-error">{{ error }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="grid gap-2">
+      <label class="font-semibold" for="contact-message">Votre message *</label>
+
+      <textarea
+        #messageField
+        id="contact-message"
+        class="textarea h-48 w-full"
+        name="message"
+        required
+        [attr.maxlength]="maxLengths.message"
+        [class.textarea-error]="visibleErrors().message"
+        [attr.aria-invalid]="visibleErrors().message ? 'true' : null"
+        [attr.aria-describedby]="visibleErrors().message ? 'contact-message-error' : null"
+        [value]="body()"
+        (input)="body.set(messageField.value)"
+      ></textarea>
+
+      @if (visibleErrors().message; as error) {
+        <p id="contact-message-error" class="text-sm text-error">{{ error }}</p>
+      }
+    </div>
+
+    <app-turnstile />
+
+    @if (checkUnavailable()) {
+      <p class="text-sm text-error" role="alert">
+        La vérification anti-robot n'a pas pu se charger&nbsp;: vérifiez votre connexion ou votre
+        bloqueur de contenu, puis rechargez la page. En attendant, écrivez-nous à
+        <a [href]="mailtoContact">{{ contactEmail }}</a
+        >.
+      </p>
+    }
+
+    <div class="flex flex-wrap items-center gap-4">
+      <button class="btn btn-neutral" type="submit" [disabled]="sending()">
+        @if (sending()) {
+          <span class="loading loading-spinner" aria-hidden="true"></span>
+          Envoi en cours…
+        } @else {
+          Envoyer le message
+        }
+      </button>
+
+      <p class="text-sm text-gray-600">
+        Ou écrivez-nous à <a [href]="mailtoContact">{{ contactEmail }}</a
+        >.
+      </p>
+    </div>
+
+    <p class="text-sm text-gray-600">
+      Les informations transmises servent uniquement à traiter votre demande. Voir la
+      <a routerLink="/confidentialite">politique de confidentialité</a>.
+    </p>
+  </form>
+</div>

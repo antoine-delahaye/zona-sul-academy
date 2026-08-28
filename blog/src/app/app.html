@@ -62,7 +62,9 @@
         fill="currentColor"
         aria-hidden="true"
       >
-        <path fill-rule="evenodd" clip-rule="evenodd" [attr.d]="link.icon" />
+        @for (path of link.icon; track path) {
+          <path fill-rule="evenodd" clip-rule="evenodd" [attr.d]="path" />
+        }
       </svg>
 
       <span class="dock-label">{{ link.title }}</span>

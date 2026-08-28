@@ -36,11 +36,17 @@ describe('App', () => {
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
-    const dockLinks = host.querySelectorAll('nav.dock a');
-    const icons = host.querySelectorAll('nav.dock svg path[d]');
+    const dockLinks = [...host.querySelectorAll('nav.dock a')];
+    const { navigationLinks } = fixture.componentInstance;
 
-    expect(dockLinks.length).toBe(fixture.componentInstance.navigationLinks.length);
-    expect(icons.length).toBe(fixture.componentInstance.navigationLinks.length);
+    expect(dockLinks.length).toBe(navigationLinks.length);
+
+    // An icon may need more than one path — the envelope does — so the assertion
+    // is per entry, then against the total declared alongside the routes.
+    expect(dockLinks.every((link) => link.querySelector('svg path[d]') !== null)).toBe(true);
+    expect(host.querySelectorAll('nav.dock svg path[d]').length).toBe(
+      navigationLinks.flatMap((link) => link.icon).length,
+    );
   });
 
   it('keeps the dock visible until the footer comes into view', () => {

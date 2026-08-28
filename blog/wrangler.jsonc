@@ -11,6 +11,17 @@
     "binding": "ASSETS",
     "directory": "./dist/browser",
   },
+  // Lets the contact endpoint in src/server.ts mail the club through Email
+  // Routing, with no third-party provider and no API key. `destination_address`
+  // pins the recipient, so the Worker can only ever write to that one address —
+  // and it has to be a verified destination address in the zone's Email Routing
+  // settings, otherwise `send()` is rejected at runtime.
+  "send_email": [
+    {
+      "name": "SEND_EMAIL",
+      "destination_address": "contact@zonasulacademy.fr",
+    },
+  ],
   "observability": {
     "enabled": true,
   },

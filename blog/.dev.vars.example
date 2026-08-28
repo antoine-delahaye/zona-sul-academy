@@ -1,0 +1,8 @@
+# Copy to blog/.dev.vars for `npm run preview -w blog` (wrangler dev).
+#
+# The value below is Cloudflare's "always passes" Turnstile *test* secret, which
+# pairs with the test site key in src/shared/turnstile/turnstile.config.ts. In
+# production the real secret is set with:
+#
+#   npx wrangler secret put TURNSTILE_SECRET_KEY --cwd blog
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

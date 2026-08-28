@@ -12,3 +12,6 @@ cms/.sanity/
 */.wrangler/
 *.tsbuildinfo
 */out-tsc/
+
+# Worker secrets for `wrangler dev`; see blog/.dev.vars.example.
+blog/.dev.vars
