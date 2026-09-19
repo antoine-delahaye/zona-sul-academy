@@ -47,7 +47,6 @@
 <nav
   class="dock z-50 bg-neutral font-gravesend text-xs text-neutral-content *:bg-neutral lg:hidden"
   aria-label="Navigation principale"
-  [class.dock-hidden]="siteFooterVisible()"
 >
   @for (link of navigationLinks; track link.path) {
     <a
@@ -72,7 +71,7 @@
   }
 </nav>
 
-<footer #siteFooter class="footer bg-primary p-10 text-primary-content sm:footer-horizontal">
+<footer class="footer bg-primary p-10 text-primary-content sm:footer-horizontal">
   <aside class="mx-auto place-items-center lg:place-items-start">
     <app-media slug="logo" imageClass="h-14 w-auto" altText="" />
 

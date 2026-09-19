@@ -51,19 +51,4 @@ describe('App', () => {
       navigationLinks.flatMap((link) => link.icon).length,
     );
   });
-
-  it('keeps the dock visible until the footer comes into view', () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-
-    const host = fixture.nativeElement as HTMLElement;
-    const dock = host.querySelector('nav.dock');
-
-    expect(dock?.classList.contains('dock-hidden')).toBe(false);
-
-    fixture.componentInstance.siteFooterVisible.set(true);
-    fixture.detectChanges();
-
-    expect(dock?.classList.contains('dock-hidden')).toBe(true);
-  });
 });

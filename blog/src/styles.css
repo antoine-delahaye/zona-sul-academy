@@ -187,23 +187,18 @@ youtube-player iframe {
 }
 
 /*
- * The fixed mobile dock fades out while the main footer is on screen, so the two
- * never overlap. `visibility` is animated too, otherwise the hidden dock would
- * keep swallowing taps.
+ * The mobile dock stays pinned to the bottom of the viewport all the way down,
+ * footer included. Hiding it there left short pages — the planning is one image
+ * tall, so its footer never leaves the screen — with no one-tap navigation at
+ * all, and the footer's own links are not where people look for it.
+ *
+ * Since it now overlays the footer, the footer reserves the dock's height below
+ * its content: `p-10` again, then the dock (4rem plus the home-indicator inset
+ * daisyUI already pads it with). Above `lg` the dock is `hidden`, so nothing to
+ * clear.
  */
-.dock {
-  transition:
-    opacity 0.4s ease-in-out,
-    visibility 0.4s ease-in-out;
-}
-
-.dock-hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dock {
-    transition: none;
+@media (width < 64rem) {
+  .footer {
+    padding-bottom: calc(--spacing(10) + 4rem + env(safe-area-inset-bottom));
   }
 }
