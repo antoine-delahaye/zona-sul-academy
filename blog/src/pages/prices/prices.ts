@@ -10,7 +10,7 @@ import { SiteContentService } from '../../data/services/site-content.service';
   imports: [CurrencyPipe, BlockTextPipe],
   templateUrl: './prices.html',
   host: {
-    class: 'grid gap-8 px-4 py-8 lg:grid-cols-12 lg:p-16',
+    class: 'grid gap-8 px-4 py-8 md:grid-cols-2 lg:grid-cols-12 lg:p-16',
   },
 })
 export class Prices {

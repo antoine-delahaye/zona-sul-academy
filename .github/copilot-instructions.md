@@ -102,6 +102,23 @@ Tailwind 4 + daisyUI 5, dans `blog/src/styles.css`.
 - Attention aux noms de classes daisyUI 4 périmés (`btm-nav`, `card-compact`) :
   utiliser `dock` / `dock-active` / `dock-label` et `card-sm`.
 - Les composants de page portent leur grille dans `host.class`.
+- **Les couleurs viennent du thème, jamais de la rampe `gray-*` de Tailwind**,
+  qui tire sur le bleu alors que le thème `zonasul` est strictement neutre :
+  `text-base-content`, `text-base-content/70` pour du texte secondaire,
+  `bg-base-200`, `ring-base-300`.
+- Le contenu long (politique de confidentialité, corps d'article) est du HTML nu
+  mis en forme par `prose`, via `@tailwindcss/typography`. Sans le plugin la
+  classe ne fait rien et ces pages deviennent un pavé sans interlignes ni puces.
+  Pas de variante `prose-gray` / `prose-neutral` : daisyUI remappe déjà la
+  palette de `prose` sur le thème.
+- `prose` va sur un conteneur qui n'est **pas** un `<section>` : la règle globale
+  `section:not(.hero)` ajoute une grille `gap-8` et un `px-4` qui se cumulent
+  avec les marges et le padding déjà posés.
+- La bascule mobile/desktop de la navigation est à `md` : au-dessus le `<header>`
+  porte le menu, en dessous c'est le dock. Trois endroits doivent rester
+  d'accord — `md:block` / `md:flex` du header, `md:hidden` du dock, et le
+  `@media (width < 48rem)` de `styles.css` qui réserve la hauteur du dock sous
+  le footer.
 
 ## Formulaire de contact
 

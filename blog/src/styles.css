@@ -1,5 +1,14 @@
 @import 'tailwindcss';
 
+/*
+ * Long-form content (the privacy policy, an article body) is marked up as bare
+ * `<h2>`/`<p>`/`<ul>` and relies on `prose` for its rhythm. Without this plugin
+ * the class does nothing, and Tailwind's preflight leaves those pages as a
+ * single unspaced block with unmarked lists. No `prose-*` colour variant is
+ * needed: daisyUI already remaps the prose palette onto the theme.
+ */
+@plugin '@tailwindcss/typography';
+
 @plugin 'daisyui';
 @plugin 'daisyui/theme' {
   name: 'zonasul';
@@ -9,7 +18,7 @@
   --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(97% 0 0);
   --color-base-300: oklch(94% 0 0);
-  --color-base-content: oklch(0% 0 0);
+  --color-base-content: oklch(21% 0 0);
   --color-primary: oklch(15.906% 0 0);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(21.455% 0.001 17.278);
@@ -159,8 +168,14 @@ app-root {
   @apply flex min-h-lvh flex-col;
 }
 
+/*
+ * Nothing sets a link apart from its paragraph in a greyscale theme, so body
+ * links are underlined outright. `decoration-white` used to paint the hover
+ * underline white on a white page, which left links indistinguishable from
+ * plain text whether hovered or not. Buttons carry their own affordance.
+ */
 main a:not(.btn) {
-  @apply decoration-white hover:underline;
+  @apply underline underline-offset-2 hover:decoration-2;
 }
 
 /* Page components declare their own grid through a host class. */
@@ -194,10 +209,10 @@ youtube-player iframe {
  *
  * Since it now overlays the footer, the footer reserves the dock's height below
  * its content: `p-10` again, then the dock (4rem plus the home-indicator inset
- * daisyUI already pads it with). Above `lg` the dock is `hidden`, so nothing to
- * clear.
+ * daisyUI already pads it with). The breakpoint tracks the dock's own `md:hidden`
+ * — above it the header carries the navigation and there is nothing to clear.
  */
-@media (width < 64rem) {
+@media (width < 48rem) {
   .footer {
     padding-bottom: calc(--spacing(10) + 4rem + env(safe-area-inset-bottom));
   }

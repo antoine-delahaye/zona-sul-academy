@@ -3,7 +3,7 @@
     <div>
       <h1 class="mb-6 text-4xl">Nous contacter</h1>
 
-      <p class="text-lg leading-8 text-gray-600">
+      <p class="text-lg leading-8 text-base-content/70">
         Une question sur les cours, un premier entraînement à programmer, une demande de
         renseignement&nbsp;? Écrivez-nous, nous vous répondons dès que possible.
       </p>
@@ -33,7 +33,7 @@
   }
 
   <form class="grid gap-6" novalidate (submit)="submit($event)">
-    <p class="text-sm text-gray-600">
+    <p class="text-sm text-base-content/70">
       Les champs suivis d'un astérisque&nbsp;(*) sont obligatoires.
     </p>
 
@@ -109,7 +109,7 @@
         @if (visibleErrors().phone; as error) {
           <p id="contact-phone-error" class="text-sm text-error">{{ error }}</p>
         } @else {
-          <p id="contact-phone-hint" class="text-sm text-gray-600">
+          <p id="contact-phone-hint" class="text-sm text-base-content/70">
             Facultatif, si vous préférez qu'on vous rappelle.
           </p>
         }
@@ -182,13 +182,13 @@
         }
       </button>
 
-      <p class="text-sm text-gray-600">
+      <p class="text-sm text-base-content/70">
         Ou écrivez-nous à <a [href]="mailtoContact">{{ contactEmail }}</a
         >.
       </p>
     </div>
 
-    <p class="text-sm text-gray-600">
+    <p class="text-sm text-base-content/70">
       Les informations transmises servent uniquement à traiter votre demande. Voir la
       <a routerLink="/confidentialite">politique de confidentialité</a>.
     </p>

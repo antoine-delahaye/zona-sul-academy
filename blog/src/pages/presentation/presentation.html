@@ -1,5 +1,5 @@
 @if (featuredPost(); as post) {
-  <section class="relative hero min-h-[85vh] lg:min-h-screen">
+  <section class="relative hero min-h-[85svh] lg:min-h-svh">
     <img
       class="hero-overlay object-cover brightness-50"
       fill
@@ -10,7 +10,7 @@
 
     <div class="hero-content text-center text-neutral-content">
       <div class="max-w-md">
-        <h1 class="mb-5 text-5xl">{{ post.title }}</h1>
+        <h1 class="mb-5 text-4xl sm:text-5xl">{{ post.title }}</h1>
 
         <p class="mb-5">{{ post.excerpt }}</p>
 
@@ -42,7 +42,7 @@
         </h2>
 
         @for (block of content.subtitle; track block._key) {
-          <p class="text-lg leading-8 text-gray-600">{{ block | blockText }}</p>
+          <p class="text-lg leading-8 text-base-content/70">{{ block | blockText }}</p>
         }
       </div>
     </div>

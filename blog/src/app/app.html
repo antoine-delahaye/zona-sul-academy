@@ -1,7 +1,7 @@
 <header
-  class="navbar top-0 z-50 justify-between bg-primary font-gravesend text-primary-content drop-shadow lg:sticky"
+  class="navbar top-0 z-50 justify-between bg-primary font-gravesend text-primary-content drop-shadow md:sticky"
 >
-  <nav class="hidden flex-1 lg:block" aria-label="Navigation principale">
+  <nav class="hidden flex-1 md:block" aria-label="Navigation principale">
     <ul class="menu menu-horizontal gap-2">
       @for (link of leadingLinks; track link.path) {
         <li>
@@ -22,7 +22,7 @@
     <app-media slug="logo" imageClass="h-14 w-auto flex-none" [altText]="title" [priority]="true" />
   </a>
 
-  <nav class="hidden flex-1 justify-end lg:flex" aria-label="Navigation principale (suite)">
+  <nav class="hidden flex-1 justify-end md:flex" aria-label="Navigation principale (suite)">
     <ul class="menu menu-horizontal gap-2">
       @for (link of trailingLinks; track link.path) {
         <li>
@@ -45,7 +45,7 @@
 </main>
 
 <nav
-  class="dock z-50 bg-neutral font-gravesend text-xs text-neutral-content *:bg-neutral lg:hidden"
+  class="dock z-50 bg-neutral font-gravesend text-xs text-neutral-content *:bg-neutral md:hidden"
   aria-label="Navigation principale"
 >
   @for (link of navigationLinks; track link.path) {

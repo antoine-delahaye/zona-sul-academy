@@ -4,9 +4,21 @@
   </div>
 </section>
 
-<app-media
-  slug="planning"
-  imageClass="mx-auto h-auto w-full"
-  altText="Planning des cours de Zona Sul Academy"
-  [priority]="true"
-/>
+<p class="px-4 pb-4 text-center text-sm text-base-content/70 md:hidden">
+  Faites glisser le planning vers la gauche pour voir la fin de la semaine.
+</p>
+
+<!--
+  The schedule is a wide grid of six day columns. Fitted to a phone screen its
+  labels come out around 6px tall, which is what the image was doing before, so
+  below `md` it is drawn wider than the viewport and panned instead. The region
+  is focusable and named, otherwise its content is unreachable by keyboard.
+-->
+<div class="overflow-x-auto" role="region" tabindex="0" aria-label="Planning des cours">
+  <app-media
+    slug="planning"
+    imageClass="mx-auto h-auto w-full min-w-3xl md:min-w-0"
+    altText="Planning des cours de Zona Sul Academy"
+    [priority]="true"
+  />
+</div>

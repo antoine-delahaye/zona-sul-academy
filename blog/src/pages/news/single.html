@@ -12,7 +12,7 @@
         </time>
       </p>
 
-      <h1 class="mt-2 mb-8 text-5xl" itemprop="headline">{{ post.title }}</h1>
+      <h1 class="mt-2 mb-8 text-4xl sm:text-5xl" itemprop="headline">{{ post.title }}</h1>
 
       <div class="relative mx-auto h-60 lg:h-56 xl:h-80 2xl:h-96">
         <img
@@ -26,11 +26,11 @@
       </div>
     </header>
 
-    <section>
+    <div class="mx-auto prose">
       @for (block of post.body; track block._key) {
-        <p class="mx-auto prose">{{ block | blockText }}</p>
+        <p>{{ block | blockText }}</p>
       }
-    </section>
+    </div>
   </article>
 } @else if (isLoading()) {
   <p class="col-span-full text-center" role="status">Chargement de l'article…</p>

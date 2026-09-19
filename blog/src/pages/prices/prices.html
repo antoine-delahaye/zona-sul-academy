@@ -5,7 +5,7 @@
         <h1 class="mb-6 text-4xl">{{ content.title }}</h1>
 
         @for (block of content.subtitle; track block._key) {
-          <p class="text-lg leading-8 text-gray-600">{{ block | blockText }}</p>
+          <p class="text-lg leading-8 text-base-content/70">{{ block | blockText }}</p>
         }
       </div>
     </div>
@@ -15,28 +15,28 @@
     <section
       [class]="
         $first
-          ? 'col-span-full p-0! ring-1 ring-gray-200 lg:grid-cols-12'
-          : 'col-span-full p-0! ring-1 ring-gray-200 lg:col-span-3'
+          ? 'col-span-full p-0! ring-1 ring-base-300 lg:grid-cols-12'
+          : 'col-span-full p-0! ring-1 ring-base-300 md:col-span-1 lg:col-span-3'
       "
     >
       <div class="p-8 sm:p-10" [class.lg:col-span-7]="$first" [class.col-span-full]="!$first">
-        <h2 class="text-2xl font-bold tracking-tight text-nowrap text-gray-900">
+        <h2 class="text-2xl font-bold tracking-tight">
           {{ membership.title }}
         </h2>
 
         @for (block of membership.description; track block._key) {
-          <p class="mt-6 text-base leading-7 text-gray-600">{{ block | blockText }}</p>
+          <p class="mt-6 text-base leading-7 text-base-content/70">{{ block | blockText }}</p>
         }
 
         @if (membership.requirements?.length) {
           <div class="mt-10 flex items-center gap-x-4">
             <h3 class="flex-none text-sm leading-6 font-semibold">Conditions d'accès</h3>
 
-            <div class="h-px flex-auto bg-gray-100"></div>
+            <div class="h-px flex-auto bg-base-300"></div>
           </div>
 
           <ul
-            class="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+            class="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-base-content/70 sm:grid-cols-2 sm:gap-6"
           >
             @for (requirement of membership.requirements; track requirement) {
               <li class="flex gap-x-3">
@@ -62,18 +62,15 @@
 
       <div class="p-2" [class.lg:col-span-5]="$first" [class.col-span-full]="!$first">
         <div
-          class="bg-gray-50 py-10 text-center ring-1 ring-gray-900/5 ring-inset lg:flex lg:flex-col lg:justify-center lg:py-16"
+          class="bg-base-200 py-10 text-center ring-1 ring-base-content/5 ring-inset lg:flex lg:flex-col lg:justify-center lg:py-16"
         >
           <div class="mx-auto max-w-xs px-8">
             @if (membership.priceInfo) {
-              <p class="text-base font-semibold text-gray-600">{{ membership.priceInfo }}</p>
+              <p class="text-base font-semibold text-base-content/70">{{ membership.priceInfo }}</p>
             }
 
             @if (membership.price !== null) {
-              <p
-                class="text-5xl font-bold tracking-tight text-gray-900"
-                [class.mt-6]="membership.priceInfo"
-              >
+              <p class="text-5xl font-bold tracking-tight" [class.mt-6]="membership.priceInfo">
                 {{ membership.price | currency: 'EUR' : 'symbol' : '0.0-2' }}
               </p>
             }
@@ -92,7 +89,7 @@
             }
 
             @if (membership.additionalInfo) {
-              <p class="text-xs leading-5 text-gray-600" [class.mt-6]="membership.buttonUrl">
+              <p class="text-xs leading-5 text-base-content/70" [class.mt-6]="membership.buttonUrl">
                 {{ membership.additionalInfo }}
               </p>
             }
