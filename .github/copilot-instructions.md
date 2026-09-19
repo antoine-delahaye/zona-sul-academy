@@ -30,7 +30,7 @@ depuis un `npm ci` propre sans autoriser un seul script.
 
 npm hisse les paquets de façon non garantie : un même paquet peut se retrouver dans
 `node_modules/` ou dans `blog/node_modules/` d'une installation à l'autre. D'où
-deux règles :
+trois règles :
 
 - Les `$schema` de `blog/angular.json` et `blog/wrangler.jsonc` pointent vers des
   **URL distantes** (unpkg), pas vers un chemin relatif dans `node_modules`.
@@ -38,6 +38,11 @@ deux règles :
   serveurs de langage (Zed, Neovim…) les cherchent dans le `node_modules` de la
   racine du projet ouvert. Sans `typescript` à la racine, npm y laissait la 5.9.3
   tirée en peer par `typescript-eslint`, que le compilateur Angular 22 refuse.
+- `vitest` et `@vitest/coverage-v8` sont déclarés à la **racine** en plus de `blog/` :
+  le builder `unit-test` d'`@angular/build` fait un `require('vitest/node')` depuis
+  l'endroit où npm l'a posé. Quand `@angular/build` remonte à la racine et que
+  `vitest` reste dans `blog/node_modules/`, `ng test` meurt sur un module introuvable.
+  À la racine, les deux placements de `@angular/build` le résolvent.
 
 ## Flux de données
 

@@ -6,6 +6,7 @@ node_modules/
 */dist/
 blog/.angular/
 cms/.sanity/
+blog/coverage/
 
 # Tooling caches
 .wrangler/
