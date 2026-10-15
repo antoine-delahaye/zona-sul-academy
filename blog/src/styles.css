@@ -61,7 +61,7 @@
  */
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansThin.ttf') format('truetype');
+  src: url('/fonts/GravesendSansThin.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 100;
@@ -70,7 +70,7 @@
 
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansLight.ttf') format('truetype');
+  src: url('/fonts/GravesendSansLight.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 300;
@@ -79,7 +79,7 @@
 
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansMedium.ttf') format('truetype');
+  src: url('/fonts/GravesendSansMedium.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 500;
@@ -88,7 +88,7 @@
 
 @font-face {
   font-family: 'gravesend-sans';
-  src: url('/fonts/GravesendSansBold.ttf') format('truetype');
+  src: url('/fonts/GravesendSansBold.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 700;
@@ -97,7 +97,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansThin.ttf') format('truetype');
+  src: url('/fonts/BasicSansThin.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 100;
@@ -106,7 +106,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansExtraLight.ttf') format('truetype');
+  src: url('/fonts/BasicSansExtraLight.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 200;
@@ -115,7 +115,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansLight.ttf') format('truetype');
+  src: url('/fonts/BasicSansLight.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 300;
@@ -124,7 +124,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansNormal.ttf') format('truetype');
+  src: url('/fonts/BasicSansNormal.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 400;
@@ -133,7 +133,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansSemiBold.ttf') format('truetype');
+  src: url('/fonts/BasicSansSemiBold.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 600;
@@ -142,7 +142,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansBold.ttf') format('truetype');
+  src: url('/fonts/BasicSansBold.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 700;
@@ -151,7 +151,7 @@
 
 @font-face {
   font-family: 'basic-sans';
-  src: url('/fonts/BasicSansBlack.ttf') format('truetype');
+  src: url('/fonts/BasicSansBlack.woff2') format('woff2');
   font-display: swap;
   font-style: normal;
   font-weight: 900;
