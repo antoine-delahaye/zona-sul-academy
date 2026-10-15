@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start:blog"],
       "port": 4200
+    },
+    {
+      "name": "blog-worker",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview", "-w", "blog"],
+      "port": 8787
     }
   ]
 }

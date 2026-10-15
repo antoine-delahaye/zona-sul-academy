@@ -1,0 +1,7 @@
+# LF everywhere, whatever core.autocrlf says: .editorconfig and Prettier both
+# expect LF, and a CRLF shebang-less hook in .husky/ breaks under sh.
+* text=auto eol=lf
+
+*.ico binary
+*.png binary
+*.ttf binary
