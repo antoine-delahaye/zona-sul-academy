@@ -1,5 +1,6 @@
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 
+import { NOT_FOUND_PATH, matchesRoute } from './app/app.routes';
 import { ContactEnv, handleContactRequest } from './contact.endpoint';
 import { CONTACT_ENDPOINT } from './shared/contact/contact.model';
 import { SANITY_API_HOST, SANITY_IMAGE_CDN_URL } from './data/sanity.config';
@@ -88,16 +89,65 @@ function withSecurityHeaders(response: Response, requestUrl: string): Response {
 }
 
 /**
+ * Minimal shape of the static assets binding declared in `wrangler.jsonc`, typed
+ * here for the same reason as `SendEmailBinding` in `contact.endpoint.ts`.
+ */
+interface AssetsBinding {
+  fetch(request: Request): Promise<Response>;
+}
+
+interface WorkerEnv extends ContactEnv {
+  /** Absent under `ng serve`, which runs the SSR entry outside workerd. */
+  readonly ASSETS?: AssetsBinding;
+}
+
+/**
+ * Answers a URL no route matches with the not-found page prerendered at build
+ * time, without starting Angular.
+ *
+ * Rendering costs a few hundred milliseconds of CPU whatever the page, against
+ * 10 on the Workers free plan. Vulnerability scanners probing `/wp-login.php`,
+ * `/.env` and the like in bursts got the Worker cut off, which failed real
+ * visitors' requests in the same burst too.
+ *
+ * @returns `undefined` when the static copy cannot be read, notably under
+ *   `ng serve`, so that Angular renders the page instead.
+ */
+async function serveNotFoundPage(request: Request, env?: WorkerEnv): Promise<Response | undefined> {
+  if (!env?.ASSETS) {
+    return undefined;
+  }
+
+  const page = await env.ASSETS.fetch(new Request(new URL(`/${NOT_FOUND_PATH}/`, request.url)));
+
+  if (!page.ok) {
+    return undefined;
+  }
+
+  return new Response(page.body, { status: 404, headers: page.headers });
+}
+
+/**
  * The single path through the Worker, whichever entry point called it.
  *
  * @param env Cloudflare bindings and secrets. Only the default export receives
  *   them: `reqHandler` is called by the Angular dev server with the request
  *   alone, so the contact endpoint answers 503 under `ng serve`.
  */
-async function handle(request: Request, env?: ContactEnv): Promise<Response> {
+async function handle(request: Request, env?: WorkerEnv): Promise<Response> {
+  const { pathname } = new URL(request.url);
+
   // Intercepted before Angular, which would otherwise render the 404 page for it.
-  if (new URL(request.url).pathname === CONTACT_ENDPOINT) {
+  if (pathname === CONTACT_ENDPOINT) {
     return withSecurityHeaders(await handleContactRequest(request, env), request.url);
+  }
+
+  if (!matchesRoute(pathname)) {
+    const notFound = await serveNotFoundPage(request, env);
+
+    if (notFound) {
+      return withSecurityHeaders(notFound, request.url);
+    }
   }
 
   const response = await angularApp.handle(request);
@@ -117,5 +167,5 @@ export const reqHandler = createRequestHandler((request) => handle(request));
  * the `env` argument the runtime passes alongside it.
  */
 export default {
-  fetch: (request: Request, env: ContactEnv): Promise<Response> => handle(request, env),
+  fetch: (request: Request, env: WorkerEnv): Promise<Response> => handle(request, env),
 };

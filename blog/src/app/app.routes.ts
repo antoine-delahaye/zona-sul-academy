@@ -93,6 +93,17 @@ export const legalLinks: readonly LegalLink[] = legalRoutes.map(({ title, path }
   path,
 }));
 
+/**
+ * Where the not-found page is prerendered at build time. The Worker serves that
+ * static copy for any URL no route matches, see `matchesRoute`.
+ */
+export const NOT_FOUND_PATH = '404';
+
+const notFoundRoute = {
+  title: 'Page introuvable',
+  loadComponent: () => import('../pages/not-found/not-found').then((m) => m.NotFound),
+} satisfies Route;
+
 export const routes: Routes = [
   ...navigationRoutes.map(({ title, path, loadComponent }) => ({ title, path, loadComponent })),
   ...legalRoutes.map(({ title, path, loadComponent }) => ({ title, path, loadComponent })),
@@ -100,9 +111,32 @@ export const routes: Routes = [
     path: 'actualites/:slug',
     loadComponent: () => import('../pages/news/single').then((m) => m.Single),
   },
-  {
-    title: 'Page introuvable',
-    path: '**',
-    loadComponent: () => import('../pages/not-found/not-found').then((m) => m.NotFound),
-  },
+  { ...notFoundRoute, path: NOT_FOUND_PATH },
+  { ...notFoundRoute, path: '**' },
 ];
+
+/**
+ * Whether `pathname` matches a route other than the catch-all.
+ *
+ * Lets the Worker answer an unknown URL without starting Angular: rendering costs
+ * the same few hundred milliseconds of CPU for the not-found page as for any
+ * other, and vulnerability scanners probe dozens of such URLs in a few seconds.
+ */
+export function matchesRoute(pathname: string): boolean {
+  const segments = pathname.split('/').filter(Boolean);
+
+  return routes.some(({ path }) => {
+    if (path === undefined || path === '**') {
+      return false;
+    }
+
+    const routeSegments = path.split('/').filter(Boolean);
+
+    return (
+      routeSegments.length === segments.length &&
+      routeSegments.every(
+        (segment, index) => segment.startsWith(':') || segment === segments[index],
+      )
+    );
+  });
+}

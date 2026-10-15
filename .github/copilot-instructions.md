@@ -164,4 +164,13 @@ a verified address`. Le Worker écrit donc à la boîte derrière, même boîte 
   cohérents.
 - Tout nouvel hôte servant le site doit être ajouté à `security.allowedHosts`
   dans `angular.json`, sinon le SSR répond 400.
+- **Le budget CPU est de 10 ms par requête** (plan Workers gratuit), alors qu'un
+  rendu Angular en coûte plusieurs centaines. D'où deux règles :
+  - Une URL qui ne correspond à aucune route (`matchesRoute` dans `app.routes.ts`)
+    reçoit la page 404 prérendue au build (`/404/`, `RenderMode.Prerender`), lue
+    via le binding `ASSETS` sans démarrer Angular. Sans cela, les rafales de
+    scanners (`/wp-login.php`, `/.env`…) faisaient couper le Worker. Une route
+    ajoutée à `routes` est reconnue automatiquement.
+  - L'inlining du CSS critique (`inlineCritical`) est désactivé en production :
+    Beasties analysait les 116 Ko de CSS à chaque requête SSR.
 - Après modification de `wrangler.jsonc`, relancer `npm run cf-typegen -w blog`.

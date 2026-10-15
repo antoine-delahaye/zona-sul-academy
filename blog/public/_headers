@@ -7,6 +7,11 @@
   Strict-transport-security: max-age=31536000; includeSubDomains; preload
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
 
+# Prerendered copy of the not-found page, served by the Worker for unknown URLs.
+# Reached directly it answers 200, so keep it out of search results.
+/404/
+  X-Robots-Tag: noindex
+
 # Build output is content-hashed, so it can be cached indefinitely.
 /*.js
   Cache-Control: public, max-age=31536000, immutable
